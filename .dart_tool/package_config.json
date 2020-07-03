@@ -56,10 +56,22 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "dots_indicator",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/dots_indicator-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///C:/src/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "2.2"
+    },
+    {
+      "name": "flutter_screenutil",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_screenutil-0.4.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
     },
     {
       "name": "flutter_test",
@@ -72,6 +84,12 @@
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image-2.1.12",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "introduction_screen",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/introduction_screen-1.0.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
     },
     {
       "name": "matcher",
@@ -170,7 +188,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-07-03T08:48:07.919952Z",
+  "generated": "2020-07-03T13:19:16.215231Z",
   "generator": "pub",
   "generatorVersion": "2.8.4"
 }
