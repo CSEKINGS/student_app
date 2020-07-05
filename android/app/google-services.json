@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "152519400604",
+    "firebase_url": "https://student-app-5f69d.firebaseio.com",
+    "project_id": "student-app-5f69d",
+    "storage_bucket": "student-app-5f69d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152519400604:android:7f8dcf53a51b064ef5e159",
+        "android_client_info": {
+          "package_name": "com.csekings.student_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152519400604-3u1jra5j3q7egvoq92oblqr8sbibb751.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDCat-Hp0FURTBv4ZkEUiW7Aik_fufh-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152519400604-3u1jra5j3q7egvoq92oblqr8sbibb751.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
