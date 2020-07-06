@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/student/screens/dashboard.dart';
-import 'package:student_app/student/screens/notes.dart';
 import 'package:student_app/student/screens/profile.dart';
+import 'package:student_app/student/screens/viewnotes.dart';
 
-class BottomNav extends StatefulWidget {
+class StudentBottomNav extends StatefulWidget {
   @override
-  _BottomNavState createState() => _BottomNavState();
+  _StudentBottomNavState createState() => _StudentBottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> {
+class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Dashboard(),
-    Notes(),
     Profile(),
+    Notes(),
   ];
 
   void onTappedBar(int index) {

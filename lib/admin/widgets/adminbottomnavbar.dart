@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/admin/screens/attendanceentry.dart';
+import 'package:student_app/admin/screens/markentry.dart';
+import 'package:student_app/admin/screens/uploadnotes.dart';
 
-class BottomNav extends StatefulWidget {
+class AdminBottomNav extends StatefulWidget {
   @override
-  _BottomNavState createState() => _BottomNavState();
+  _AdminBottomNavState createState() => _AdminBottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> {
+class _AdminBottomNavState extends State<AdminBottomNav> {
   int _currentIndex = 0;
-  final List<Widget> _children = [];
+  final List<Widget> _children = [
+    AttendanceEntry(),
+    MarkEntry(),
+    UploadNotes(),
+  ];
 
   void onTappedBar(int index) {
     setState(() {
@@ -25,11 +32,11 @@ class _BottomNavState extends State<BottomNav> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Dashboard'),
+            title: Text('Attendance'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            title: Text('Profile'),
+            title: Text('Grade'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sync),
