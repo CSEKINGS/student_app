@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/common/widgets/formcard.dart';
+import 'package:student_app/student/screens/bottomnavbar.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -124,9 +125,14 @@ class _LoginPageState extends State<LoginPage> {
                           child: Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) => BottomNavBar()),
+                                );
+                              },
                               child: Center(
-                                child: Text("SIGN IN",
+                                child: Text("Student",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: "Poppins-Bold",
