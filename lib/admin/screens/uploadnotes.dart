@@ -20,7 +20,7 @@ class UploadNotesState extends State<UploadNotes> {
   String _path;
   Map<String, String> _paths;
   String _extension;
-  FileType _pickType;
+  FileType _pickType = FileType.any;
   bool _multiPick = false;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   List<StorageUploadTask> _tasks = <StorageUploadTask>[];
@@ -29,11 +29,9 @@ class UploadNotesState extends State<UploadNotes> {
     try {
       _path = null;
       if (_multiPick) {
-        _paths = await FilePicker.getMultiFilePath(
-            type: _pickType, allowedExtensions: [_extension]);
+        _paths = await FilePicker.getMultiFilePath(type: _pickType);
       } else {
-        _path = await FilePicker.getFilePath(
-            type: _pickType, allowedExtensions: [_extension]);
+        _path = await FilePicker.getFilePath(type: _pickType);
       }
       uploadToFirebase();
     } on PlatformException catch (e) {
@@ -55,7 +53,7 @@ class UploadNotesState extends State<UploadNotes> {
   upload(fileName, filePath) {
     _extension = fileName.toString().split('.').last;
     StorageReference storageRef =
-        FirebaseStorage.instance.ref().child(fileName);
+        FirebaseStorage.instance.ref().child("notes/$fileName");
     final StorageUploadTask uploadTask = storageRef.putFile(
       File(filePath),
       StorageMetadata(
@@ -65,38 +63,6 @@ class UploadNotesState extends State<UploadNotes> {
     setState(() {
       _tasks.add(uploadTask);
     });
-  }
-
-  dropDown() {
-    return DropdownButton(
-      hint: new Text('Select'),
-      value: _pickType,
-      items: <DropdownMenuItem>[
-        new DropdownMenuItem(
-          child: new Text('Audio'),
-          value: FileType.audio,
-        ),
-        new DropdownMenuItem(
-          child: new Text('Image'),
-          value: FileType.image,
-        ),
-        new DropdownMenuItem(
-          child: new Text('Video'),
-          value: FileType.video,
-        ),
-        new DropdownMenuItem(
-          child: new Text('Any'),
-          value: FileType.any,
-        ),
-      ],
-      onChanged: (value) => setState(() {
-        _pickType = value;
-      }),
-    );
-  }
-
-  String _bytesTransferred(StorageTaskSnapshot snapshot) {
-    return '${snapshot.bytesTransferred}/${snapshot.totalByteCount}';
   }
 
   @override
@@ -123,7 +89,6 @@ class UploadNotesState extends State<UploadNotes> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              dropDown(),
               SwitchListTile.adaptive(
                 title: Text('Pick multiple files', textAlign: TextAlign.left),
                 onChanged: (bool value) => setState(() => _multiPick = value),
@@ -164,17 +129,17 @@ class UploadNotesState extends State<UploadNotes> {
     final String path = await ref.getPath();
     print(
       'Success!\nDownloaded $name \nUrl: $url'
-      '\npath: $path \nBytes Count :: $byteCount',
+          '\npath: $path \nBytes Count :: $byteCount',
     );
-    _scaffoldKey.currentState.showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.white,
-        content: Image.memory(
-          bodyBytes,
-          fit: BoxFit.fill,
-        ),
-      ),
-    );
+//    _scaffoldKey.currentState.showSnackBar(
+//      SnackBar(
+//        backgroundColor: Colors.white,
+//        content: Image.memory(
+//          bodyBytes,
+//          fit: BoxFit.fill,
+//        ),
+//      ),
+//    );
   }
 }
 
