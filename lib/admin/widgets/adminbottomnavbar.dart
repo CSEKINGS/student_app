@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/admin/screens/attendanceentry.dart';
 import 'package:student_app/admin/screens/markentry.dart';
 import 'package:student_app/admin/screens/uploadnotes.dart';
+import 'package:student_app/admin/screens/uploadprofile.dart';
 
 class AdminBottomNav extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
     AttendanceEntry(),
     MarkEntry(),
     UploadNotes(),
+    UploadProfile(),
   ];
 
   void onTappedBar(int index) {
@@ -27,11 +29,12 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: onTappedBar,
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.check_box),
             title: Text('Attendance'),
           ),
           BottomNavigationBarItem(
@@ -39,8 +42,12 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
             title: Text('Grade'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sync),
+            icon: Icon(Icons.file_upload),
             title: Text('Notes'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.cloud_upload),
+            title: Text('Profile'),
           ),
         ],
       ),

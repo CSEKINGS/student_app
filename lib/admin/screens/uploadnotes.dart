@@ -79,11 +79,9 @@ class UploadNotesState extends State<UploadNotes> {
     });
 
     return new MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: new Scaffold(
         key: _scaffoldKey,
-        appBar: new AppBar(
-          title: Text(widget.title),
-        ),
         body: new Container(
           padding: EdgeInsets.all(20.0),
           child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/student/screens/dashboard.dart';
+import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
 import 'package:student_app/student/screens/viewnotes.dart';
 
@@ -12,6 +13,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Dashboard(),
+    Grade(),
     Profile(),
     Notes(),
   ];
@@ -27,6 +29,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: onTappedBar,
         currentIndex: _currentIndex,
         items: [
@@ -36,10 +39,14 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
+            title: Text('Grade'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
             title: Text('Profile'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sync),
+            icon: Icon(Icons.file_download),
             title: Text('Notes'),
           ),
         ],
