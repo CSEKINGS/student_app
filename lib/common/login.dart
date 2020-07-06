@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../Widgets/FormCard.dart';
+import 'package:student_app/common/widgets/formcard.dart';
 
 class LoginPage extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:student_app/Screens/login.dart';
+import 'package:student_app/common/login.dart';
 
 class OnBoardingPage extends StatefulWidget {
   @override
