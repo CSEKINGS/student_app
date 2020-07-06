@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/common/widgets/formcard.dart';
-import 'package:student_app/student/screens/bottomnavbar.dart';
+
+import 'file:///C:/Users/Harish/AndroidStudioProjects/student_app/lib/student/widgets/bottomnavbar.dart';
 
 class LoginPage extends StatefulWidget {
   @override
