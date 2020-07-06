@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/student/screens/dashboard.dart';
-import 'package:student_app/student/screens/notes.dart';
-import 'package:student_app/student/screens/profile.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -10,11 +7,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    Dashboard(),
-    Notes(),
-    Profile(),
-  ];
+  final List<Widget> _children = [];
 
   void onTappedBar(int index) {
     setState(() {

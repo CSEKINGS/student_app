@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                      builder: (_) => BottomNavBar()),
+                                      builder: (_) => BottomNav()),
                                 );
                               },
                               child: Center(
