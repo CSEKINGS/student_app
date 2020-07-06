@@ -129,7 +129,7 @@ class UploadNotesState extends State<UploadNotes> {
     final String path = await ref.getPath();
     print(
       'Success!\nDownloaded $name \nUrl: $url'
-          '\npath: $path \nBytes Count :: $byteCount',
+      '\npath: $path \nBytes Count :: $byteCount',
     );
 //    _scaffoldKey.currentState.showSnackBar(
 //      SnackBar(
