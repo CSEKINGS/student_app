@@ -54,6 +54,7 @@ class UploadNotesState extends State<UploadNotes> {
     _extension = fileName.toString().split('.').last;
     StorageReference storageRef =
         FirebaseStorage.instance.ref().child("notes/$fileName");
+
     final StorageUploadTask uploadTask = storageRef.putFile(
       File(filePath),
       StorageMetadata(
