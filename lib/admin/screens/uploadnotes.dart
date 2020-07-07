@@ -4,7 +4,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+
+String filemeta;
+int filesize;
 
 class UploadNotes extends StatefulWidget {
   UploadNotes() : super();
@@ -45,8 +47,12 @@ class UploadNotesState extends State<UploadNotes> {
       _paths.forEach((fileName, filePath) => {upload(fileName, filePath)});
     } else {
       String fileName = _path.split('/').last;
+
       String filePath = _path;
       upload(fileName, filePath);
+      setState(() {
+        filemeta = fileName;
+      });
     }
   }
 
@@ -73,7 +79,7 @@ class UploadNotesState extends State<UploadNotes> {
       final Widget tile = UploadTaskListTile(
         task: task,
         onDismissed: () => setState(() => _tasks.remove(task)),
-        onDownload: () => downloadFile(task.lastSnapshot.ref),
+        onUpload: () => uploadMetadata(task.lastSnapshot.ref),
       );
       children.add(tile);
     });
@@ -112,50 +118,29 @@ class UploadNotesState extends State<UploadNotes> {
     );
   }
 
-  Future<void> downloadFile(StorageReference ref) async {
+  Future<void> uploadMetadata(StorageReference ref) async {
     final String url = await ref.getDownloadURL();
-    final http.Response downloadData = await http.get(url);
-    final Directory systemTempDir = Directory.systemTemp;
-    final File tempFile = File('${systemTempDir.path}/tmp.jpg');
-    if (tempFile.existsSync()) {
-      await tempFile.delete();
-    }
-    await tempFile.create();
-    final StorageFileDownloadTask task = ref.writeToFile(tempFile);
-    final int byteCount = (await task.future).totalByteCount;
-    var bodyBytes = downloadData.bodyBytes;
-    final String name = await ref.getName();
-    final String path = await ref.getPath();
-    print(
-      'Success!\nDownloaded $name \nUrl: $url'
-      '\npath: $path \nBytes Count :: $byteCount',
-    );
-//    _scaffoldKey.currentState.showSnackBar(
-//      SnackBar(
-//        backgroundColor: Colors.white,
-//        content: Image.memory(
-//          bodyBytes,
-//          fit: BoxFit.fill,
-//        ),
-//      ),
-//    );
+    print(url);
+    print(filemeta);
+    print(filesize);
   }
 }
 
 class UploadTaskListTile extends StatelessWidget {
   const UploadTaskListTile(
-      {Key key, this.task, this.onDismissed, this.onDownload})
+      {Key key, this.task, this.onDismissed, this.onUpload})
       : super(key: key);
 
   final StorageUploadTask task;
   final VoidCallback onDismissed;
-  final VoidCallback onDownload;
+  final VoidCallback onUpload;
 
   String get status {
     String result;
     if (task.isComplete) {
       if (task.isSuccessful) {
         result = 'Complete';
+        onUpload();
       } else if (task.isCanceled) {
         result = 'Canceled';
       } else {
@@ -170,6 +155,8 @@ class UploadTaskListTile extends StatelessWidget {
   }
 
   String _bytesTransferred(StorageTaskSnapshot snapshot) {
+    filesize = snapshot.totalByteCount;
+
     return '${snapshot.bytesTransferred}/${snapshot.totalByteCount}';
   }
 
@@ -215,13 +202,6 @@ class UploadTaskListTile extends StatelessWidget {
                   child: IconButton(
                     icon: const Icon(Icons.cancel),
                     onPressed: () => task.cancel(),
-                  ),
-                ),
-                Offstage(
-                  offstage: !(task.isComplete && task.isSuccessful),
-                  child: IconButton(
-                    icon: const Icon(Icons.file_download),
-                    onPressed: onDownload,
                   ),
                 ),
               ],
