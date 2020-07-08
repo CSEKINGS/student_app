@@ -32,8 +32,13 @@ dependencies:
   shared_preferences: ^0.5.7+3
   file_picker: ^1.4.3+1
   http: ^0.12.1
-  firebase_storage: ^3.1.6
+  firebase_storage:
+    git:
+      url: git://github.com/danysz/flutterfire.git
+      ref: master
+      path: packages/firebase_storage
   introduction_screen: ^1.0.9
+  cloud_firestore: ^0.13.7
 
 
 

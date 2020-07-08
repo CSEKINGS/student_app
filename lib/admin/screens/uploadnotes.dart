@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,8 @@ class UploadNotes extends StatefulWidget {
 }
 
 class UploadNotesState extends State<UploadNotes> {
+  final databaseReference = Firestore.instance;
+
   //
   String _path;
   Map<String, String> _paths;
@@ -59,7 +62,7 @@ class UploadNotesState extends State<UploadNotes> {
   upload(fileName, filePath) {
     _extension = fileName.toString().split('.').last;
     StorageReference storageRef =
-        FirebaseStorage.instance.ref().child("notes/$fileName");
+    FirebaseStorage.instance.ref().child("notes/$fileName");
 
     final StorageUploadTask uploadTask = storageRef.putFile(
       File(filePath),
@@ -94,11 +97,11 @@ class UploadNotesState extends State<UploadNotes> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SwitchListTile.adaptive(
-                title: Text('Pick multiple files', textAlign: TextAlign.left),
-                onChanged: (bool value) => setState(() => _multiPick = value),
-                value: _multiPick,
-              ),
+//              SwitchListTile.adaptive(
+//                title: Text('Pick multiple files', textAlign: TextAlign.left),
+//                onChanged: (bool value) => setState(() => _multiPick = value),
+//                value: _multiPick,
+//              ),
               OutlineButton(
                 onPressed: () => openFileExplorer(),
                 child: new Text("Open file picker"),
@@ -118,11 +121,19 @@ class UploadNotesState extends State<UploadNotes> {
     );
   }
 
+  void createRecord(url) async {
+    await databaseReference
+        .collection("notes")
+        .document("1")
+        .setData({'name': filemeta, 'url': url, 'size': filesize});
+    DocumentReference ref = await databaseReference
+        .collection("notes")
+        .add({'name': filemeta, 'url': url, 'size': filesize});
+  }
+
   Future<void> uploadMetadata(StorageReference ref) async {
     final String url = await ref.getDownloadURL();
-    print(url);
-    print(filemeta);
-    print(filesize);
+    createRecord(url);
   }
 }
 
