@@ -82,7 +82,6 @@ class UploadNotesState extends State<UploadNotes> {
       final Widget tile = UploadTaskListTile(
         task: task,
         onDismissed: () => setState(() => _tasks.remove(task)),
-
       );
       children.add(tile);
     });
@@ -120,8 +119,6 @@ class UploadNotesState extends State<UploadNotes> {
       ),
     );
   }
-
-
 }
 
 class UploadTaskListTile extends StatelessWidget {
