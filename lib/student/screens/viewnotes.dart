@@ -1,5 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Notes extends StatefulWidget {
   @override
@@ -8,8 +9,9 @@ class Notes extends StatefulWidget {
 
 class _NotesState extends State<Notes> {
   List name;
+  String path;
 
-  void getName() {
+  getName() {
     final StorageReference storageRef =
         FirebaseStorage.instance.ref().child('notes');
     storageRef.listAll().then((result) {
@@ -19,16 +21,24 @@ class _NotesState extends State<Notes> {
     });
   }
 
-  printUrl() async {
-    StorageReference ref =
-        FirebaseStorage.instance.ref().child("notes/sample.pdf");
-    String url = (await ref.getDownloadURL()).toString();
-    print(url);
+  printUrl(String name) async {
+    StorageReference ref = FirebaseStorage.instance.ref().child("notes/$name");
+    String furl = (await ref.getDownloadURL()).toString();
+
+    _launchURL() async {
+      var url = furl;
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+
+    return _launchURL();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getName();
   }
@@ -44,6 +54,9 @@ class _NotesState extends State<Notes> {
               trailing: Icon(Icons.file_download),
               leading: Icon(Icons.picture_as_pdf),
               title: Text(name[index]),
+              onTap: () {
+                printUrl(name[index]);
+              },
             ),
           );
         },

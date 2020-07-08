@@ -6,9 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-String filemeta;
-int filesize;
-
 class UploadNotes extends StatefulWidget {
   UploadNotes() : super();
 
@@ -53,9 +50,6 @@ class UploadNotesState extends State<UploadNotes> {
 
       String filePath = _path;
       upload(fileName, filePath);
-      setState(() {
-        filemeta = fileName;
-      });
     }
   }
 
@@ -96,11 +90,11 @@ class UploadNotesState extends State<UploadNotes> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-//              SwitchListTile.adaptive(
-//                title: Text('Pick multiple files', textAlign: TextAlign.left),
-//                onChanged: (bool value) => setState(() => _multiPick = value),
-//                value: _multiPick,
-//              ),
+              SwitchListTile.adaptive(
+                title: Text('Pick multiple files', textAlign: TextAlign.left),
+                onChanged: (bool value) => setState(() => _multiPick = value),
+                value: _multiPick,
+              ),
               OutlineButton(
                 onPressed: () => openFileExplorer(),
                 child: new Text("Open file picker"),
@@ -122,20 +116,17 @@ class UploadNotesState extends State<UploadNotes> {
 }
 
 class UploadTaskListTile extends StatelessWidget {
-  const UploadTaskListTile(
-      {Key key, this.task, this.onDismissed, this.onUpload})
+  const UploadTaskListTile({Key key, this.task, this.onDismissed})
       : super(key: key);
 
   final StorageUploadTask task;
   final VoidCallback onDismissed;
-  final VoidCallback onUpload;
 
   String get status {
     String result;
     if (task.isComplete) {
       if (task.isSuccessful) {
         result = 'Complete';
-        onUpload();
       } else if (task.isCanceled) {
         result = 'Canceled';
       } else {
@@ -150,8 +141,6 @@ class UploadTaskListTile extends StatelessWidget {
   }
 
   String _bytesTransferred(StorageTaskSnapshot snapshot) {
-    filesize = snapshot.totalByteCount;
-
     return '${snapshot.bytesTransferred}/${snapshot.totalByteCount}';
   }
 
