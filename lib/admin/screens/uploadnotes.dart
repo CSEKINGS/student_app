@@ -62,7 +62,7 @@ class UploadNotesState extends State<UploadNotes> {
   upload(fileName, filePath) {
     _extension = fileName.toString().split('.').last;
     StorageReference storageRef =
-    FirebaseStorage.instance.ref().child("notes/$fileName");
+        FirebaseStorage.instance.ref().child("notes/$fileName");
 
     final StorageUploadTask uploadTask = storageRef.putFile(
       File(filePath),
@@ -82,7 +82,7 @@ class UploadNotesState extends State<UploadNotes> {
       final Widget tile = UploadTaskListTile(
         task: task,
         onDismissed: () => setState(() => _tasks.remove(task)),
-        onUpload: () => uploadMetadata(task.lastSnapshot.ref),
+
       );
       children.add(tile);
     });
@@ -121,20 +121,7 @@ class UploadNotesState extends State<UploadNotes> {
     );
   }
 
-  void createRecord(url) async {
-    await databaseReference
-        .collection("notes")
-        .document("1")
-        .setData({'name': filemeta, 'url': url, 'size': filesize});
-    DocumentReference ref = await databaseReference
-        .collection("notes")
-        .add({'name': filemeta, 'url': url, 'size': filesize});
-  }
 
-  Future<void> uploadMetadata(StorageReference ref) async {
-    final String url = await ref.getDownloadURL();
-    createRecord(url);
-  }
 }
 
 class UploadTaskListTile extends StatelessWidget {
