@@ -43,13 +43,20 @@ class UploadNotesState extends State<UploadNotes> {
   }
 
   uploadToFirebase() {
-    if (_multiPick) {
-      _paths.forEach((fileName, filePath) => {upload(fileName, filePath)});
-    } else {
-      String fileName = _path.split('/').last;
+    try {
+      if (_multiPick) {
+        _paths.forEach((fileName, filePath) => {upload(fileName, filePath)});
+      } else {
+        String fileName = _path.split('/').last;
 
-      String filePath = _path;
-      upload(fileName, filePath);
+        String filePath = _path;
+        upload(fileName, filePath);
+      }
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text("No file selected, Please select a file to upload."),
+      ));
     }
   }
 

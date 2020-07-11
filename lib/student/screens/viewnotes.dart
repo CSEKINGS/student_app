@@ -15,9 +15,11 @@ class _NotesState extends State<Notes> {
     final StorageReference storageRef =
         FirebaseStorage.instance.ref().child('notes');
     storageRef.listAll().then((result) {
-      setState(() {
-        name = result['items'].keys.toList();
-      });
+      if (mounted) {
+        setState(() {
+          name = result['items'].keys.toList();
+        });
+      }
     });
   }
 
