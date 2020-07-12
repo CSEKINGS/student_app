@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:student_app/common/login.dart';
 
 class FormCard extends StatelessWidget {
+  TextEditingController etusername = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return new Container(
       width: double.infinity,
-//      height: ScreenUtil.getInstance().setHeight(500),
+//    height: ScreenUtil.getInstance().setHeight(500),
       padding: EdgeInsets.only(bottom: 1),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -38,10 +40,11 @@ class FormCard extends StatelessWidget {
                 style: TextStyle(
                     fontFamily: "Poppins-Medium",
                     fontSize: ScreenUtil.getInstance().setSp(26))),
-            TextField(
+            TextFormField(
               decoration: InputDecoration(
                   hintText: "username",
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              controller: etusername,
             ),
             SizedBox(
               height: ScreenUtil.getInstance().setHeight(30),
@@ -50,7 +53,7 @@ class FormCard extends StatelessWidget {
                 style: TextStyle(
                     fontFamily: "Poppins-Medium",
                     fontSize: ScreenUtil.getInstance().setSp(26))),
-            TextField(
+            TextFormField(
               obscureText: true,
               decoration: InputDecoration(
                   hintText: "Password",

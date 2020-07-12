@@ -5,6 +5,7 @@ import 'package:student_app/student/screens/profile.dart';
 import 'package:student_app/student/screens/viewnotes.dart';
 
 class StudentBottomNav extends StatefulWidget {
+  StudentBottomNav(String uname);
   @override
   _StudentBottomNavState createState() => _StudentBottomNavState();
 }

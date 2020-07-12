@@ -40,6 +40,7 @@ dependencies:
   introduction_screen: ^1.0.9
   cloud_firestore: ^0.13.7
   url_launcher: ^5.5.0
+  image_picker:
 
 
 

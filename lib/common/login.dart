@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/adminbottomnavbar.dart';
 import 'package:student_app/common/widgets/formcard.dart';
 import 'package:student_app/student/widgets/studentbottomnavbar.dart';
+import 'package:student_app/student/screens/profile.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,6 +11,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  FormCard form = new FormCard();
+
+  String uname = '';
+
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
         height: 16.0,
@@ -142,9 +147,11 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
+                                  uname = form.etusername.text;
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (_) => StudentBottomNav()),
+                                        builder: (_) =>
+                                            StudentBottomNav(uname)),
                                   );
                                 },
                                 child: Center(
