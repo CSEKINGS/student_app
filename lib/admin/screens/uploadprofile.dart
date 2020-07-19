@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -8,18 +12,20 @@ class UploadProfile extends StatefulWidget {
 }
 
 class _UploadProfile extends State<UploadProfile> {
-  String id;
-  String name;
-  String rollno;
-  String regno;
-  String email;
-  String phno;
-  String blood;
-  String batch;
-  String dept;
-  String addr;
+  String id, name, rollno, regno, email, phno, blood, batch, dept, addr, dobb;
+  File _image;
+  String profileurl;
 
-  upload() {
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+      print('Image Path $_image');
+    });
+  }
+
+  Future upload(BuildContext context) async {
     if (formkey.currentState.validate()) {
       DocumentReference ref = Firestore.instance
           .collection('student')
@@ -31,15 +37,35 @@ class _UploadProfile extends State<UploadProfile> {
         'Rollno': '$rollno',
         'Regno': '$regno',
         'Email': '$email',
-        'Phone No.': '$phno',
-        'Blood Group': '$blood',
+        'PhoneNo.': '$phno',
+        'BloodGroup': '$blood',
         'Batch': '$batch',
         'Department': '$dept',
-        'Address': '$addr'
+        'Address': '$addr',
+        'ProfileUrl': '$profileurl'
       });
-      setState(() => ref.documentID);
-      print(ref.documentID);
-      ;
+      //      String fileName = basename(_image.path);
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child('profile/$batch/$dept/$rollno');
+      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+      var url = (await taskSnapshot.ref.getDownloadURL());
+      profileurl = url.toString();
+
+      setState(() {
+        print("Profile Picture uploaded");
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('Profile Picture Uploaded'),
+        ));
+      });
+
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Submitted Successfully'),
+      ));
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Invalid Details'),
+      ));
     }
   }
 
@@ -79,6 +105,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildregno() {
     return TextFormField(
+      keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           labelText: 'Register Number', hintText: 'Ex: 820617104035'),
       maxLength: 12,
@@ -103,7 +130,7 @@ class _UploadProfile extends State<UploadProfile> {
           return 'Email Required';
         }
         if (!RegExp(
-                r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?]")
+                r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
             .hasMatch(value)) {
           return 'Valid Email Required';
         }
@@ -117,6 +144,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildphno() {
     return TextFormField(
+      keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           labelText: 'Phone Number', hintText: 'Ex: 9849342931'),
       maxLength: 10,
@@ -143,14 +171,16 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String value) {
-        blood = value;
+        blood = value.toUpperCase();
       },
     );
   }
 
   Widget buildbatch() {
     return TextFormField(
+      keyboardType: TextInputType.phone,
       decoration: InputDecoration(labelText: 'Batch', hintText: 'Ex: 2017'),
+      maxLength: 04,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Batch Required';
@@ -173,7 +203,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String value) {
-        dept = value;
+        dept = value.toUpperCase();
       },
     );
   }
@@ -195,12 +225,25 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
+  Widget builddob() {
+    return TextFormField(
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(labelText: 'DOB', hintText: 'EX: 30-12-1999'),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Address Required';
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        dobb = value.toString();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Student Upload'),
-      ),
       body: SingleChildScrollView(
         child: new Container(
           margin: EdgeInsets.all(20),
@@ -212,18 +255,31 @@ class _UploadProfile extends State<UploadProfile> {
                 buildname(),
                 buildrolno(),
                 buildregno(),
-                buildemail(),
                 buildphno(),
-                buildblood(),
+                builddob(),
                 buildbatch(),
+                buildemail(),
+                buildblood(),
                 builddept(),
                 buildaddr(),
+                RaisedButton(
+                  child: Text(
+                    'Profile',
+                    style: TextStyle(
+                      color: Colors.lightGreen,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  onPressed: () {
+                    getImage();
+                  },
+                ),
                 RaisedButton(
                   child: Text('Submit',
                       style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
                   onPressed: () {
                     formkey.currentState.save();
-                    upload();
+                    upload(context);
                   },
                 ),
               ],

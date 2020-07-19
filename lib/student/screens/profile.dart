@@ -70,7 +70,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  LoginPage log = new LoginPage();
+  static LoginPage log = new LoginPage();
+  String jj = log.cc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,9 +84,9 @@ class _ProfileState extends State<Profile> {
             StreamBuilder(
                 stream: Firestore.instance
                     .collection('student')
-                    .document('dept')
-                    .collection('batch')
-                    .document('regno')
+                    .document('cse')
+                    .collection('2017')
+                    .document('$jj')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {

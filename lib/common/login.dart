@@ -8,12 +8,24 @@ import 'package:student_app/student/screens/profile.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
+  static _LoginPageState sd = new _LoginPageState();
+  String cc = sd.uname;
 }
 
 class _LoginPageState extends State<LoginPage> {
-  FormCard form = new FormCard();
-
-  String uname = '';
+  String uname;
+  String gg;
+  Widget textform() {
+    return TextFormField(
+      decoration: InputDecoration(
+          hintText: "username",
+          hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+      onSaved: (String value) {
+        gg = value;
+        print('$gg');
+      },
+    );
+  }
 
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
@@ -40,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.black26.withOpacity(.2),
         ),
       );
-
+  final GlobalKey<FormState> logkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
@@ -82,9 +94,81 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: ScreenUtil.getInstance().setHeight(180),
                   ),
-                  FormCard(),
+                  Container(
+                    width: double.infinity,
+//    height: ScreenUtil.getInstance().setHeight(500),
+                    padding: EdgeInsets.only(bottom: 1),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(0.0, 15.0),
+                              blurRadius: 15.0),
+                          BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(0.0, -10.0),
+                              blurRadius: 10.0),
+                        ]),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("Login",
+                              style: TextStyle(
+                                  fontSize: ScreenUtil.getInstance().setSp(45),
+                                  fontFamily: "Poppins-Bold",
+                                  letterSpacing: .6)),
+                          SizedBox(
+                            height: ScreenUtil.getInstance().setHeight(30),
+                          ),
+                          Text("Username",
+                              style: TextStyle(
+                                  fontFamily: "Poppins-Medium",
+                                  fontSize:
+                                      ScreenUtil.getInstance().setSp(26))),
+                          textform(),
+                          SizedBox(
+                            height: ScreenUtil.getInstance().setHeight(30),
+                          ),
+                          Text("PassWord",
+                              style: TextStyle(
+                                  fontFamily: "Poppins-Medium",
+                                  fontSize:
+                                      ScreenUtil.getInstance().setSp(26))),
+                          TextFormField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                hintText: "Password",
+                                hintStyle: TextStyle(
+                                    color: Colors.grey, fontSize: 12.0)),
+                          ),
+                          SizedBox(
+                            height: ScreenUtil.getInstance().setHeight(35),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                "Forgot Password?",
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontFamily: "Poppins-Medium",
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(28)),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
                   Row(
+                    key: logkey,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
@@ -147,12 +231,13 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  uname = form.etusername.text;
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (_) =>
-                                            StudentBottomNav(uname)),
+                                        builder: (_) => StudentBottomNav()),
                                   );
+                                  logkey.currentState.save();
+
+                                  print('$gg');
                                 },
                                 child: Center(
                                   child: Text("Student",

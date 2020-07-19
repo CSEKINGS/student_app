@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/common/login.dart';
 
 class FormCard extends StatelessWidget {
-  TextEditingController etusername = new TextEditingController();
+  String gg = '';
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -44,7 +44,10 @@ class FormCard extends StatelessWidget {
               decoration: InputDecoration(
                   hintText: "username",
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
-              controller: etusername,
+              onFieldSubmitted: (String value) {
+                gg = value;
+                print('$gg');
+              },
             ),
             SizedBox(
               height: ScreenUtil.getInstance().setHeight(30),

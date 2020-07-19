@@ -10,7 +10,7 @@ class _GradeState extends State<Grade> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Grade'),
+        child: Text('grade'),
       ),
     );
   }
