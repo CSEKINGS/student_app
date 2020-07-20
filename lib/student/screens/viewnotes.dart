@@ -10,7 +10,6 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
   List _searchResult = [];
-
   List _movieDetails = [];
   String path;
 
@@ -31,7 +30,7 @@ class _NotesState extends State<Notes> {
     String furl = (await ref.getDownloadURL()).toString();
 
     _launchURL() async {
-      var url = furl;
+      String url = furl;
       if (await canLaunch(url)) {
         await launch(url);
       } else {
@@ -81,7 +80,6 @@ class _NotesState extends State<Notes> {
                     trailing: IconButton(
                       icon: Icon(
                         Icons.close,
-                        color: Colors.white,
                       ),
                       onPressed: () {
                         controller.clear();
@@ -101,13 +99,15 @@ class _NotesState extends State<Notes> {
                           child: Card(
                             elevation: 5.0,
                             child: ListTile(
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.file_download,
+                              trailing: Expanded(
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.file_download,
+                                  ),
+                                  onPressed: () {
+                                    openURL(_searchResult[index]);
+                                  },
                                 ),
-                                onPressed: () {
-                                  openURL(_searchResult[index]);
-                                },
                               ),
                               leading: Icon(Icons.note),
                               title: Text(
