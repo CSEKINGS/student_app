@@ -1,10 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:student_app/common/widgets/formcard.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:student_app/common/login.dart';
-import 'dart:io';
 
 //class profile extends StatelessWidget {
 //  @override

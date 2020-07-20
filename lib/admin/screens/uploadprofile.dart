@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadProfile extends StatefulWidget {
   @override
@@ -17,10 +16,10 @@ class _UploadProfile extends State<UploadProfile> {
   String profileurl;
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker().getImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = image;
+      final _image = image;
       print('Image Path $_image');
     });
   }
@@ -243,46 +242,49 @@ class _UploadProfile extends State<UploadProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: new Container(
-          margin: EdgeInsets.all(20),
-          child: Form(
-            key: formkey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildname(),
-                buildrolno(),
-                buildregno(),
-                buildphno(),
-                builddob(),
-                buildbatch(),
-                buildemail(),
-                buildblood(),
-                builddept(),
-                buildaddr(),
-                RaisedButton(
-                  child: Text(
-                    'Profile',
-                    style: TextStyle(
-                      color: Colors.lightGreen,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(20),
+            child: Form(
+              key: formkey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildname(),
+                  buildrolno(),
+                  buildregno(),
+                  buildphno(),
+                  builddob(),
+                  buildbatch(),
+                  buildemail(),
+                  buildblood(),
+                  builddept(),
+                  buildaddr(),
+                  RaisedButton(
+                    child: Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Colors.lightGreen,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
+                    onPressed: () {
+                      getImage();
+                    },
                   ),
-                  onPressed: () {
-                    getImage();
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Submit',
-                      style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
-                  onPressed: () {
-                    formkey.currentState.save();
-                    upload(context);
-                  },
-                ),
-              ],
+                  RaisedButton(
+                    child: Text('Submit',
+                        style:
+                            TextStyle(color: Colors.blueAccent, fontSize: 16)),
+                    onPressed: () {
+                      formkey.currentState.save();
+                      upload(context);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/adminbottomnavbar.dart';
-import 'package:student_app/common/widgets/formcard.dart';
 import 'package:student_app/student/widgets/studentbottomnavbar.dart';
-import 'package:student_app/student/screens/profile.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,17 +13,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String uname;
   String gg;
-  Widget textform() {
-    return TextFormField(
-      decoration: InputDecoration(
-          hintText: "username",
-          hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
-      onSaved: (String value) {
-        gg = value;
-        print('$gg');
-      },
-    );
-  }
 
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
@@ -130,7 +117,16 @@ class _LoginPageState extends State<LoginPage> {
                                   fontFamily: "Poppins-Medium",
                                   fontSize:
                                       ScreenUtil.getInstance().setSp(26))),
-                          textform(),
+                          TextFormField(
+                            decoration: InputDecoration(
+                                hintText: "username",
+                                hintStyle: TextStyle(
+                                    color: Colors.grey, fontSize: 12.0)),
+                            onSaved: (String value) {
+                              gg = value;
+                              print('$gg');
+                            },
+                          ),
                           SizedBox(
                             height: ScreenUtil.getInstance().setHeight(30),
                           ),
