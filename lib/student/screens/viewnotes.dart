@@ -8,22 +8,25 @@ class Notes extends StatefulWidget {
 }
 
 class _NotesState extends State<Notes> {
-  List name;
+  TextEditingController controller = TextEditingController();
+  List _searchResult = [];
+
+  List _movieDetails = [];
   String path;
 
-  getName() {
+  getNotes() {
     final StorageReference storageRef =
         FirebaseStorage.instance.ref().child('notes');
     storageRef.listAll().then((result) {
       if (mounted) {
         setState(() {
-          name = result['items'].keys.toList();
+          _movieDetails = result['items'].keys.toList();
         });
       }
     });
   }
 
-  printUrl(String name) async {
+  openURL(String name) async {
     StorageReference ref = FirebaseStorage.instance.ref().child("notes/$name");
     String furl = (await ref.getDownloadURL()).toString();
 
@@ -42,27 +45,129 @@ class _NotesState extends State<Notes> {
   @override
   void initState() {
     super.initState();
-    getName();
+    getNotes();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: name == null ? 0 : name.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: ListTile(
-              trailing: Icon(Icons.file_download),
-              leading: Icon(Icons.picture_as_pdf),
-              title: Text(name[index]),
-              onTap: () {
-                printUrl(name[index]);
-              },
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: <Widget>[
+            Container(
+              color: Colors.white,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  elevation: 3.0,
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.blue,
+                    ),
+                    title: TextField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        hintText: 'Search',
+                        hintStyle: TextStyle(fontSize: 18.0),
+                        border: InputBorder.none,
+                      ),
+                      onChanged: onSearchTextChanged,
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        controller.clear();
+                        onSearchTextChanged('');
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ),
-          );
-        },
+            Expanded(
+              child: _searchResult.length != 0 || controller.text.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _searchResult.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          child: Card(
+                            elevation: 5.0,
+                            child: ListTile(
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.file_download,
+                                ),
+                                onPressed: () {
+                                  openURL(_searchResult[index]);
+                                },
+                              ),
+                              leading: Icon(Icons.note),
+                              title: Text(
+                                _searchResult[index],
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.lightBlue,
+                                blurRadius: 0.1,
+                                offset: Offset(0.0, 0.5),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      itemCount: _movieDetails.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 5.0,
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.file_download,
+                              ),
+                              onPressed: () {
+                                openURL(_movieDetails[index]);
+                              },
+                            ),
+                            leading: Icon(Icons.note),
+                            title: Text(
+                              _movieDetails[index],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    _movieDetails.forEach((movieDetail) {
+      if (movieDetail.toString().toLowerCase().contains(text.toLowerCase()))
+        _searchResult.add(movieDetail);
+    });
+
+    setState(() {});
   }
 }

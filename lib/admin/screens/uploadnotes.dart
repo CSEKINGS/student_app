@@ -17,8 +17,6 @@ class UploadNotes extends StatefulWidget {
 
 class UploadNotesState extends State<UploadNotes> {
   final databaseReference = Firestore.instance;
-
-  //
   String _path;
   Map<String, String> _paths;
   String _extension;
