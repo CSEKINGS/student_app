@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/adminbottomnavbar.dart';
 import 'package:student_app/student/widgets/studentbottomnavbar.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -13,6 +14,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String uname;
   String gg;
+  final TextEditingController Euname = TextEditingController();
+  final GlobalKey<FormState> logkey = GlobalKey<FormState>();
+  Future studentnavigate(BuildContext context) {
+    uname = Euname.text;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => StudentBottomNav()),
+    );
+  }
+//
 
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
@@ -39,7 +49,6 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.black26.withOpacity(.2),
         ),
       );
-  final GlobalKey<FormState> logkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
@@ -118,14 +127,11 @@ class _LoginPageState extends State<LoginPage> {
                                   fontSize:
                                       ScreenUtil.getInstance().setSp(26))),
                           TextFormField(
+                            controller: Euname,
                             decoration: InputDecoration(
                                 hintText: "username",
                                 hintStyle: TextStyle(
                                     color: Colors.grey, fontSize: 12.0)),
-                            onSaved: (String value) {
-                              gg = value;
-                              print('$gg');
-                            },
                           ),
                           SizedBox(
                             height: ScreenUtil.getInstance().setHeight(30),
@@ -164,7 +170,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
                   Row(
-                    key: logkey,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
@@ -227,13 +232,8 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (_) => StudentBottomNav()),
-                                  );
-                                  logkey.currentState.save();
-
-                                  print('$gg');
+                                  studentnavigate(context);
+                                  print('$uname');
                                 },
                                 child: Center(
                                   child: Text("Student",

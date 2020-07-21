@@ -14,12 +14,28 @@ class _UploadProfile extends State<UploadProfile> {
   String id, name, rollno, regno, email, phno, blood, batch, dept, addr, dobb;
   File _image;
   String profileurl;
+  final TextEditingController formcont = TextEditingController();
+  final TextEditingController formcont1 = TextEditingController();
+  final TextEditingController formcont2 = TextEditingController();
+  final TextEditingController formcont3 = TextEditingController();
+  final TextEditingController formcont4 = TextEditingController();
+  final TextEditingController formcont5 = TextEditingController();
+  final TextEditingController formcont6 = TextEditingController();
+  final TextEditingController formcont7 = TextEditingController();
+  final TextEditingController formcont8 = TextEditingController();
+  final TextEditingController formcont9 = TextEditingController();
+  final TextEditingController formcont10 = TextEditingController();
+  final TextEditingController formcont11 = TextEditingController();
+  final TextEditingController formcont12 = TextEditingController();
+  final TextEditingController formcont13 = TextEditingController();
+  final TextEditingController formcont14 = TextEditingController();
+  final TextEditingController formcont15 = TextEditingController();
 
   Future getImage() async {
-    var image = await ImagePicker().getImage(source: ImageSource.gallery);
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      final _image = image;
+      _image = image;
       print('Image Path $_image');
     });
   }
@@ -61,6 +77,16 @@ class _UploadProfile extends State<UploadProfile> {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Submitted Successfully'),
       ));
+      formcont.clear();
+      formcont1.clear();
+      formcont2.clear();
+      formcont3.clear();
+      formcont4.clear();
+      formcont5.clear();
+      formcont6.clear();
+      formcont7.clear();
+      formcont8.clear();
+      formcont9.clear();
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Invalid Details'),
@@ -71,6 +97,7 @@ class _UploadProfile extends State<UploadProfile> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   Widget buildname() {
     return TextFormField(
+      controller: formcont,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -94,6 +121,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildrolno() {
     return TextFormField(
+      controller: formcont9,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -117,6 +145,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildregno() {
     return TextFormField(
+      controller: formcont8,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -141,6 +170,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildemail() {
     return TextFormField(
+      controller: formcont7,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -168,6 +198,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildphno() {
     return TextFormField(
+      controller: formcont6,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -192,6 +223,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildblood() {
     return TextFormField(
+      controller: formcont5,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -214,6 +246,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildbatch() {
     return TextFormField(
+      controller: formcont4,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -238,6 +271,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget builddept() {
     return TextFormField(
+      controller: formcont3,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -260,6 +294,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildaddr() {
     return TextFormField(
+      controller: formcont2,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -283,6 +318,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget builddob() {
     return TextFormField(
+      controller: formcont1,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -349,7 +385,7 @@ class _UploadProfile extends State<UploadProfile> {
                   OutlineButton(
                     child: Text('Submit',
                         style:
-                        TextStyle(color: Colors.blueAccent, fontSize: 16)),
+                            TextStyle(color: Colors.blueAccent, fontSize: 16)),
                     onPressed: () {
                       formkey.currentState.save();
                       upload(context);

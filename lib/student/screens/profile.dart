@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:student_app/common/login.dart';
+//import 'package:student_app/common/login.dart';
 
 //class profile extends StatelessWidget {
 //  @override
@@ -66,8 +66,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  static LoginPage log = new LoginPage();
-  String jj = log.cc;
+//  static LoginPage log = new LoginPage();
+//  String jj = log.cc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +82,7 @@ class _ProfileState extends State<Profile> {
                     .collection('student')
                     .document('cse')
                     .collection('2017')
-                    .document('$jj')
+                    .document('jj')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
