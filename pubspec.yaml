@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^0.13.7
   url_launcher: ^5.5.0
   font_awesome_flutter: ^8.8.1
+  circular_profile_avatar: ^1.0.6
   image_picker:
 
 
