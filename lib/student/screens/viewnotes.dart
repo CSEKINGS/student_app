@@ -10,7 +10,7 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
   List _searchResult = [];
-  List _movieDetails = [];
+  List _notesList = [];
   String path;
 
   getNotes() {
@@ -19,7 +19,7 @@ class _NotesState extends State<Notes> {
     storageRef.listAll().then((result) {
       if (mounted) {
         setState(() {
-          _movieDetails = result['items'].keys.toList();
+          _notesList = result['items'].keys.toList();
         });
       }
     });
@@ -99,15 +99,13 @@ class _NotesState extends State<Notes> {
                           child: Card(
                             elevation: 5.0,
                             child: ListTile(
-                              trailing: Expanded(
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.file_download,
-                                  ),
-                                  onPressed: () {
-                                    openURL(_searchResult[index]);
-                                  },
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.file_download,
                                 ),
+                                onPressed: () {
+                                  openURL(_searchResult[index]);
+                                },
                               ),
                               leading: Icon(Icons.note),
                               title: Text(
@@ -128,22 +126,22 @@ class _NotesState extends State<Notes> {
                       },
                     )
                   : ListView.builder(
-                      itemCount: _movieDetails.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 5.0,
-                          child: ListTile(
-                            trailing: IconButton(
-                              icon: Icon(
-                                Icons.file_download,
-                              ),
-                              onPressed: () {
-                                openURL(_movieDetails[index]);
+                itemCount: _notesList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 5.0,
+                    child: ListTile(
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.file_download,
+                        ),
+                        onPressed: () {
+                          openURL(_notesList[index]);
                               },
                             ),
                             leading: Icon(Icons.note),
                             title: Text(
-                              _movieDetails[index],
+                              _notesList[index],
                             ),
                           ),
                         );
@@ -163,7 +161,7 @@ class _NotesState extends State<Notes> {
       return;
     }
 
-    _movieDetails.forEach((movieDetail) {
+    _notesList.forEach((movieDetail) {
       if (movieDetail.toString().toLowerCase().contains(text.toLowerCase()))
         _searchResult.add(movieDetail);
     });
