@@ -126,17 +126,17 @@ class _NotesState extends State<Notes> {
                       },
                     )
                   : ListView.builder(
-                itemCount: _notesList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 5.0,
-                    child: ListTile(
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.file_download,
-                        ),
-                        onPressed: () {
-                          openURL(_notesList[index]);
+                      itemCount: _notesList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 5.0,
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.file_download,
+                              ),
+                              onPressed: () {
+                                openURL(_notesList[index]);
                               },
                             ),
                             leading: Icon(Icons.note),
