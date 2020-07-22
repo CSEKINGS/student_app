@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class UploadProfile extends StatefulWidget {
   @override
@@ -33,11 +31,13 @@ class _UploadProfile extends State<UploadProfile> {
   final TextEditingController formcont14 = TextEditingController();
   final TextEditingController formcont15 = TextEditingController();
 
+  final picker = ImagePicker();
+
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = image;
+      _image = File(image.path);
     });
   }
 
@@ -65,15 +65,12 @@ class _UploadProfile extends State<UploadProfile> {
           FirebaseStorage.instance.ref().child('profile/$batch/$dept/$rollno');
       StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
       StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      var url = (await taskSnapshot.ref.getDownloadURL());
+      var url = await taskSnapshot.ref.getDownloadURL();
       profileurl = url.toString();
 
-      setState(() {
-        print("Profile Picture uploaded");
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Profile Picture Uploaded'),
-        ));
-      });
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Profile Picture Uploaded'),
+      ));
 
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Submitted Successfully'),
@@ -88,7 +85,10 @@ class _UploadProfile extends State<UploadProfile> {
       formcont7.clear();
       formcont8.clear();
       formcont9.clear();
-//      PaintingBinding.instance.imageCache.clear();
+      setState(() {
+        _image = null;
+      });
+      //      PaintingBinding.instance.imageCache.clear();
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Invalid Details'),
@@ -354,6 +354,34 @@ class _UploadProfile extends State<UploadProfile> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Align(
+                    alignment: Alignment.center,
+                    child: InkWell(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: CircleAvatar(
+                        radius: 47,
+                        backgroundColor: Color(0xff476cfb),
+                        child: ClipOval(
+                          child: new SizedBox(
+                            width: 90.0,
+                            height: 90.0,
+                            child: (_image != null)
+                                ? Image.file(
+                              _image,
+                              fit: BoxFit.fill,
+                            )
+                                : Image.asset(
+                              'assets/noimage.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
                   buildname(),
                   SizedBox(height: 10),
                   buildrolno(),
@@ -374,87 +402,6 @@ class _UploadProfile extends State<UploadProfile> {
                   SizedBox(height: 10),
                   buildaddr(),
                   SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: CircleAvatar(
-                          radius: 47,
-                          backgroundColor: Color(0xff476cfb),
-                          child: ClipOval(
-                            child: new SizedBox(
-                              width: 90.0,
-                              height: 90.0,
-                              child: (_image != null)
-                                  ? Image.file(
-                                      _image,
-                                      fit: BoxFit.fill,
-                                    )
-                                  : Image.asset(
-                                      'assets/noimage.png',
-                                      fit: BoxFit.fill,
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 60.0),
-                        child: IconButton(
-                          icon: Icon(
-                            FontAwesomeIcons.camera,
-                            size: 30.0,
-                          ),
-                          onPressed: () {
-                            getImage();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-//                  Row(
-//                    children: <Widget>[
-//                      Align(
-//                        alignment: Alignment.centerLeft,
-//                        child: CircleAvatar(
-//                          radius: 40,
-//                          backgroundColor: Color(0xff476cfb),
-//                          child: ClipOval(
-//                            child: new SizedBox(
-//                              width: 80.0,
-//                              height: 80.0,
-//                              child: (_image != null)
-//                                  ? Image.file(
-//                                      _image,
-//                                      fit: BoxFit.fill,
-//                                    )
-//                                  : Image.network(
-//                                      "https://images.unsplash.com/photo-1502164980785-f8aa41d53611?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-//                                      fit: BoxFit.fill,
-//                                    ),
-//                            ),
-//                          ),
-//                        ),
-//                      ),
-//                      SizedBox(width: 37),
-//                      Align(
-//                        alignment: Alignment.center,
-//                        child: OutlineButton(
-//                          splashColor: Colors.lightGreen,
-//                          child: Text(
-//                            'Profile',
-//                            style: TextStyle(
-//                                color: Colors.lightGreen, fontSize: 16),
-//                            textAlign: TextAlign.center,
-//                          ),
-//                          onPressed: () {
-//                            getImage();
-//                          },
-//                        ),
-//                      ),
-//                    ],
-//                  ),
                   OutlineButton(
                     child: Text('Submit',
                         style:
