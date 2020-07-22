@@ -14,8 +14,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String uname;
   String gg;
+  // ignore: non_constant_identifier_names
   final TextEditingController Euname = TextEditingController();
   final GlobalKey<FormState> logkey = GlobalKey<FormState>();
+  // ignore: missing_return
   Future studentnavigate(BuildContext context) {
     uname = Euname.text;
     Navigator.of(context).push(
