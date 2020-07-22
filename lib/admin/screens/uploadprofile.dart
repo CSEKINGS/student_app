@@ -235,6 +235,7 @@ class _UploadProfile extends State<UploadProfile> {
           filled: true,
           fillColor: Colors.white54),
       validator: (String value) {
+
         if (value.isEmpty) {
           return 'Blood Group Required';
         }
