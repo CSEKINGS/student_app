@@ -67,12 +67,10 @@ class _UploadProfile extends State<UploadProfile> {
         'Address': '$addr',
         'ProfileUrl': '$profileurl',
       });
-      setState(() {
-        print("Profile Picture uploaded");
+
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('Profile Picture Uploaded'),
         ));
-      });
 
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Submitted Successfully'),
@@ -235,7 +233,6 @@ class _UploadProfile extends State<UploadProfile> {
           filled: true,
           fillColor: Colors.white54),
       validator: (String value) {
-
         if (value.isEmpty) {
           return 'Blood Group Required';
         }
