@@ -2,26 +2,134 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/adminbottomnavbar.dart';
 import 'package:student_app/student/widgets/studentbottomnavbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
-  static _LoginPageState sd = new _LoginPageState();
-  String cc = sd.uname;
+//   static _LoginPageState sd = new _LoginPageState();
+//  String cc = sd._college;
+//  String dd=sd._dept;
+//  String bb=sd._batch;
+//  String rr=sd._rollno;
+
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname;
+  String _college, _dept, _batch, _rollno;
   String gg;
+  String uname;
+//  var userdocument=Firestore.instance.collection().document().collection().document().snapshot().data
+//  var info = new List();
+//  List<String> info = [];
+  // var c, d, b, r;
   // ignore: non_constant_identifier_names
   final TextEditingController Euname = TextEditingController();
   final GlobalKey<FormState> logkey = GlobalKey<FormState>();
   // ignore: missing_return
   Future studentnavigate(BuildContext context) {
-    uname = Euname.text;
+    // var info = <String>{};
+    uname =Euname.text;
+    // _college=(uname/10000000).truncate();
+   _college = uname.substring(0, 4);
+   _batch = uname.substring(4, 6);
+   _dept = uname.substring(6, 9);
+   _rollno = uname.substring(9, 12);
+   print('college $_college');
+   print('batch $_batch');
+   print('dept $_dept');
+   print('rollno $_rollno');
+if (_batch!=null) {
+  _batch='20'+_batch;
+}
+if(_dept=='101'){
+        _dept='AE';
+      }
+      if(_dept=='103'){
+        _dept='CIVIL';
+      }
+   if(_dept=='104'){
+        _dept='CSE';
+      }
+       if (_dept=='105') {
+        _dept='EEE';
+        
+      if (_dept=='106') {
+        _dept='ECE';
+        
+      }  
+     if (_dept=='107') {
+        _dept='EIE';
+        
+      }
+      }
+         if(_dept=='114'){
+        _dept='MECH';
+      }
+      if (_dept=='205') {
+        _dept='IT';
+        
+      }   
+      if (_dept=='121') {
+        _dept='BIOMEDICAL';
+        
+      }   if(_dept=='214'){
+        _dept='BIOTECH';
+      }
+      switch (_dept) {
+        case '101':{
+          // _dept=
+        }
+          break;
+          case '102':{
+
+          }
+          break;
+          case '103':{}
+          break;
+          case '104':{}
+          break;
+          case '105':{}
+          break;
+          case '106':{}
+          break;
+          case '107':{}
+          break;
+          case '112':{}
+          break;
+          case '113':{}
+          break;
+          case '114':{}
+          break;
+          case '120':{}
+          break;
+          case '121':{}
+          break;
+          case '184':{}
+          break;
+          case '185':{}
+          break;
+          case '203':{}
+          break;
+          case '205':{}
+          break;
+          case '212':{}
+          break;
+          case '214':{}
+          break;
+          case '216':{}
+          break;
+          case '219':{}
+          break;
+          case '220':{}
+          break;
+
+        default:{print('Invalid Department');}
+      }
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => StudentBottomNav()),
+      MaterialPageRoute(builder: (_) => StudentBottomNav(_college,_batch,_dept,_rollno)),
     );
   }
 //
@@ -235,6 +343,10 @@ class _LoginPageState extends State<LoginPage> {
                               child: InkWell(
                                 onTap: () {
                                   studentnavigate(context);
+                                  // print(c);
+                                  // print(b);
+                                  // print(d);
+                                  // print(r);
                                   print('$uname');
                                 },
                                 child: Center(

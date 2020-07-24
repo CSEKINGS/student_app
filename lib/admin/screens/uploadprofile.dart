@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +42,9 @@ class _UploadProfile extends State<UploadProfile> {
   Future upload(BuildContext context) async {
     if (formkey.currentState.validate()) {
       //      String fileName = basename(_image.path);
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child('profile/$batch/$dept/$rollno');
+      StorageReference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('profile/$batch/$dept/$rollno.jpg');
       StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
       StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
       var url = await taskSnapshot.ref.getDownloadURL();
@@ -68,9 +68,9 @@ class _UploadProfile extends State<UploadProfile> {
         'ProfileUrl': '$profileurl',
       });
 
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Profile Picture Uploaded'),
-        ));
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Profile Picture Uploaded'),
+      ));
 
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Submitted Successfully'),
@@ -85,8 +85,9 @@ class _UploadProfile extends State<UploadProfile> {
       formcont7.clear();
       formcont8.clear();
       formcont9.clear();
-      _image = null;
-//      PaintingBinding.instance.imageCache.clear();
+      setState(() {
+        _image = null;
+      });
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Invalid Details'),
@@ -95,6 +96,7 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   Widget buildname() {
     return TextFormField(
       controller: formcont,

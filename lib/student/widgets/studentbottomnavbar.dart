@@ -1,26 +1,54 @@
 import 'package:flutter/material.dart';
+// import 'package:http/io_client.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
 import 'package:student_app/student/screens/viewnotes.dart';
 
+
 class StudentBottomNav extends StatefulWidget {
+  String _college;
+  String _batch;
+  String _dept;
+  String _rollno;
+
+  StudentBottomNav(this._college,this._batch,this._dept,this._rollno);
+
   @override
-  _StudentBottomNavState createState() => _StudentBottomNavState();
+  _StudentBottomNavState createState() => _StudentBottomNavState(_college,_batch,_dept,_rollno);
 }
 
 class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
+  String _college;
+  String _batch;
+  String _dept;
+  String _rollno;
+  _StudentBottomNavState(this._college,this._batch,this._dept,this._rollno);
+  
+  //  static String rr,cc,dd,bb;
+
+@override
+
+  void initState()  {
+     print('820611'+'${widget._dept}'+'${widget._batch}'+'${widget._rollno}');
+    // TODO: implement initState
+    super.initState();
+    _children=  [
     Dashboard(),
     Grade(),
-    Profile(),
+    Profile(_college,_batch,_dept,_rollno),
     Notes(),
   ];
+  
+
+  }
+   List<Widget> _children; 
 
   void onTappedBar(int index) {
     setState(() {
       _currentIndex = index;
+    
     });
   }
 
@@ -31,6 +59,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: onTappedBar,
+      
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
