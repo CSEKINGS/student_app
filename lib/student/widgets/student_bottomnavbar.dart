@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
-import 'package:student_app/student/screens/viewnotes.dart';
+import 'package:student_app/student/screens/view_notes.dart';
 
 
 class StudentBottomNav extends StatefulWidget {

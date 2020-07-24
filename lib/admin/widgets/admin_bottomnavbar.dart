@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/admin/screens/attendanceentry.dart';
-import 'package:student_app/admin/screens/markentry.dart';
-import 'package:student_app/admin/screens/uploadnotes.dart';
-import 'package:student_app/admin/screens/uploadprofile.dart';
+import 'package:student_app/admin/screens/attendance_entry.dart';
+import 'package:student_app/admin/screens/mark_entry.dart';
+import 'package:student_app/admin/screens/upload_notes.dart';
+import 'package:student_app/admin/screens/upload_profile.dart';
 
 class AdminBottomNav extends StatefulWidget {
   @override
