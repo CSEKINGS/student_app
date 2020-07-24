@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
@@ -7,24 +9,98 @@ import 'package:student_app/student/widgets/student_bottomnavbar.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
-  static _LoginPageState sd = new _LoginPageState();
-  String cc = sd.uname;
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname,_college,_batch,_dept,_rollno;
-  String gg;
+  String uname,_batch,_dept,_regno;
+  String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
+  StreamSubscription sub;
+  Map data;
+  final db=Firestore.instance;
   // ignore: non_constant_identifier_names
   final TextEditingController Euname = TextEditingController();
   final GlobalKey<FormState> logkey = GlobalKey<FormState>();
-  // ignore: missing_return
-  Future studentnavigate(BuildContext context) {
-    uname = Euname.text;
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => StudentBottomNav(_college,_batch,_dept,_rollno)),
-    );
+  List ccil;
+
+
+void rrrr() {
+setState(() {
+  sub= db.collection('student').document(_dept).collection(_batch).document(_regno).snapshots().listen((event) {
+      data=event.data;
+                    name=data['Name'];
+                    rollno=data['Rollno'];
+                    regno=data['Regno'];
+                    email=data['Email'];
+                    phno=data['PhoneNo'];
+                    bloodgrp=data['BloodGroup'];
+                    batch=data['Batch'];
+                    department=data['Department'];
+                    address=data['Address'];
+                    profileurl=data['ProfileUrl'];
+                    dob=data['DOB'];
+      print ('initstate run successfully');    
+      print('$name');
+      print('$rollno');
+      print('$email');
+      print('$phno');
+      print('$bloodgrp');
+      print('$department');
+      print('$batch');
+      print('$address');
+      print(dob);
+    
+  });
+});
+  
+}
+
+  stream(){
+     uname = Euname.text;
+    _batch='20'+uname.substring(4,6);
+    _dept=uname.substring(6,9);
+    _regno=uname;
+     switch (_dept) {
+        case '101':{_dept='AE';}
+          break;
+          case '102':{_dept='AUTOMOBILE';}
+          break;
+          case '103':{_dept='CIVIL';}
+          break;
+          case '104':{_dept='CSE';}
+          break;
+          case '105':{_dept='EEE';}
+          break;
+          case '106':{_dept='ECE';}
+          break;
+          case '114':{_dept='MECH';}
+          break;
+          case '121':{_dept='BIOMEDICAL';}
+          break;
+         default:{print('Details');
+         }
+      }
+      print ('Switch run successfully');
   }
-//
+  Widget vldfrm(){
+    return   TextFormField(
+                            
+                            decoration: InputDecoration(
+                                hintText: "username",
+                                hintStyle: TextStyle(
+                                    color: Colors.grey, fontSize: 12.0)),
+                                    validator: (String value){
+                                if ((value.isEmpty)||(!RegExp(
+                r"^[0-9]{12}$") .hasMatch(value))) {
+          return 'Invalid Details';
+          }
+          else{
+            stream();
+            rrrr();          }
+          return null;
+                                     },
+                                     controller: Euname,
+                          );
+  }
 
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
@@ -51,7 +127,10 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.black26.withOpacity(.2),
         ),
       );
+      final _logkey = GlobalKey<FormState>();
+
   @override
+
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance =
@@ -94,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Container(
                     width: double.infinity,
-//    height: ScreenUtil.getInstance().setHeight(500),
+                    //    height: ScreenUtil.getInstance().setHeight(500),
                     padding: EdgeInsets.only(bottom: 1),
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -112,61 +191,58 @@ class _LoginPageState extends State<LoginPage> {
                     child: Padding(
                       padding:
                           EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Login",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil.getInstance().setSp(45),
-                                  fontFamily: "Poppins-Bold",
-                                  letterSpacing: .6)),
-                          SizedBox(
-                            height: ScreenUtil.getInstance().setHeight(30),
-                          ),
-                          Text("Username",
-                              style: TextStyle(
-                                  fontFamily: "Poppins-Medium",
-                                  fontSize:
-                                      ScreenUtil.getInstance().setSp(26))),
-                          TextFormField(
-                            controller: Euname,
-                            decoration: InputDecoration(
-                                hintText: "username",
-                                hintStyle: TextStyle(
-                                    color: Colors.grey, fontSize: 12.0)),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.getInstance().setHeight(30),
-                          ),
-                          Text("PassWord",
-                              style: TextStyle(
-                                  fontFamily: "Poppins-Medium",
-                                  fontSize:
-                                      ScreenUtil.getInstance().setSp(26))),
-                          TextFormField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                hintText: "Password",
-                                hintStyle: TextStyle(
-                                    color: Colors.grey, fontSize: 12.0)),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.getInstance().setHeight(35),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                "Forgot Password?",
+                      child: Form(
+                        key: _logkey,
+                                  child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("Login",
                                 style: TextStyle(
-                                    color: Colors.blue,
+                                    fontSize: ScreenUtil.getInstance().setSp(45),
+                                    fontFamily: "Poppins-Bold",
+                                    letterSpacing: .6)),
+                            SizedBox(
+                              height: ScreenUtil.getInstance().setHeight(30),
+                            ),
+                            Text("Username",
+                                style: TextStyle(
                                     fontFamily: "Poppins-Medium",
                                     fontSize:
-                                        ScreenUtil.getInstance().setSp(28)),
-                              )
-                            ],
-                          )
-                        ],
+                                        ScreenUtil.getInstance().setSp(26))),
+                          vldfrm(),
+                            SizedBox(
+                              height: ScreenUtil.getInstance().setHeight(30),
+                            ),
+                            Text("PassWord",
+                                style: TextStyle(
+                                    fontFamily: "Poppins-Medium",
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(26))),
+                            TextFormField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  hintText: "Password",
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0)),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil.getInstance().setHeight(35),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Text(
+                                  "Forgot Password?",
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontFamily: "Poppins-Medium",
+                                      fontSize:
+                                          ScreenUtil.getInstance().setSp(28)),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -206,7 +282,9 @@ class _LoginPageState extends State<LoginPage> {
                                           color: Colors.white,
                                           fontFamily: "Poppins-Bold",
                                           fontSize: 18,
-                                          letterSpacing: 1.0)),
+                                          letterSpacing: 1.0
+                                          )
+                                          ),
                                 ),
                               ),
                             ),
@@ -231,11 +309,17 @@ class _LoginPageState extends State<LoginPage> {
                                       blurRadius: 8.0)
                                 ]),
                             child: Material(
+
                               color: Colors.transparent,
                               child: InkWell(
+
                                 onTap: () {
-                                  studentnavigate(context);
-                                  print('$uname');
+                                  if(_logkey.currentState.validate()){
+                                     Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => StudentBottomNav(name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl)),
+    );
+                                  }
+
                                 },
                                 child: Center(
                                   child: Text("Student",

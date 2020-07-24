@@ -72,12 +72,13 @@ class _UploadProfile extends State<UploadProfile> {
           'Rollno': '$rollNo',
           'Regno': '$regNo',
           'Email': '$email',
-          'PhoneNo.': '$phoneNo',
+          'PhoneNo': '$phoneNo',
           'BloodGroup': '$blood',
           'Batch': '$batch',
           'Department': '$dept',
           'Address': '$address',
           'ProfileUrl': '$profileUrl',
+          'DOB':'$dob'
         });
 
         Scaffold.of(context).showSnackBar(SnackBar(
