@@ -12,7 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname;
+  String uname,_college,_batch,_dept,_rollno;
   String gg;
   // ignore: non_constant_identifier_names
   final TextEditingController Euname = TextEditingController();
@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   Future studentnavigate(BuildContext context) {
     uname = Euname.text;
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => StudentBottomNav()),
+      MaterialPageRoute(builder: (_) => StudentBottomNav(_college,_batch,_dept,_rollno)),
     );
   }
 //

@@ -44,12 +44,6 @@ dependencies:
   circular_profile_avatar: ^1.0.6
   image_picker:
 
-
-
-
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
