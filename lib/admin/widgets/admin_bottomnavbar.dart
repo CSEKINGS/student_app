@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/student/screens/dashboard.dart';
-import 'package:student_app/student/screens/grade.dart';
-import 'package:student_app/student/screens/profile.dart';
-import 'package:student_app/student/screens/viewnotes.dart';
+import 'package:student_app/admin/screens/attendance_entry.dart';
+import 'package:student_app/admin/screens/mark_entry.dart';
+import 'package:student_app/admin/screens/upload_notes.dart';
+import 'package:student_app/admin/screens/upload_profile.dart';
 
-class StudentBottomNav extends StatefulWidget {
+class AdminBottomNav extends StatefulWidget {
   @override
-  _StudentBottomNavState createState() => _StudentBottomNavState();
+  _AdminBottomNavState createState() => _AdminBottomNavState();
 }
 
-class _StudentBottomNavState extends State<StudentBottomNav> {
+class _AdminBottomNavState extends State<AdminBottomNav> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    Dashboard(),
-    Grade(),
-    Profile(),
-    Notes(),
+    AttendanceEntry(),
+    MarkEntry(),
+    UploadNotes(),
+    UploadProfile(),
   ];
 
   void onTappedBar(int index) {
@@ -34,20 +34,20 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Dashboard'),
+            icon: Icon(Icons.check_box),
+            title: Text('Attendance'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             title: Text('Grade'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text('Profile'),
+            icon: Icon(Icons.file_upload),
+            title: Text('Notes'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.file_download),
-            title: Text('Notes'),
+            icon: Icon(Icons.cloud_upload),
+            title: Text('Profile'),
           ),
         ],
       ),

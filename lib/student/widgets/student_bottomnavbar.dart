@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/admin/screens/attendanceentry.dart';
-import 'package:student_app/admin/screens/markentry.dart';
-import 'package:student_app/admin/screens/uploadnotes.dart';
-import 'package:student_app/admin/screens/uploadprofile.dart';
+import 'package:student_app/student/screens/dashboard.dart';
+import 'package:student_app/student/screens/grade.dart';
+import 'package:student_app/student/screens/profile.dart';
+import 'package:student_app/student/screens/view_notes.dart';
 
-class AdminBottomNav extends StatefulWidget {
+class StudentBottomNav extends StatefulWidget {
   @override
-  _AdminBottomNavState createState() => _AdminBottomNavState();
+  _StudentBottomNavState createState() => _StudentBottomNavState();
 }
 
-class _AdminBottomNavState extends State<AdminBottomNav> {
+class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    AttendanceEntry(),
-    MarkEntry(),
-    UploadNotes(),
-    UploadProfile(),
+    Dashboard(),
+    Grade(),
+    Profile(),
+    Notes(),
   ];
 
   void onTappedBar(int index) {
@@ -34,20 +34,20 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.check_box),
-            title: Text('Attendance'),
+            icon: Icon(Icons.home),
+            title: Text('Dashboard'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             title: Text('Grade'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.file_upload),
-            title: Text('Notes'),
+            icon: Icon(Icons.person),
+            title: Text('Profile'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.cloud_upload),
-            title: Text('Profile'),
+            icon: Icon(Icons.file_download),
+            title: Text('Notes'),
           ),
         ],
       ),

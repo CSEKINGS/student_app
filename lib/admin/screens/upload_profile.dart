@@ -11,25 +11,35 @@ class UploadProfile extends StatefulWidget {
 }
 
 class _UploadProfile extends State<UploadProfile> {
-  String id, name, rollno, regno, email, phno, blood, batch, dept, addr, dobb;
+  String id,
+      name,
+      rollNo,
+      regNo,
+      email,
+      phoneNo,
+      blood,
+      batch,
+      dept,
+      address,
+      dob;
   File _image;
-  String profileurl;
-  final TextEditingController formcont = TextEditingController();
-  final TextEditingController formcont1 = TextEditingController();
-  final TextEditingController formcont2 = TextEditingController();
-  final TextEditingController formcont3 = TextEditingController();
-  final TextEditingController formcont4 = TextEditingController();
-  final TextEditingController formcont5 = TextEditingController();
-  final TextEditingController formcont6 = TextEditingController();
-  final TextEditingController formcont7 = TextEditingController();
-  final TextEditingController formcont8 = TextEditingController();
-  final TextEditingController formcont9 = TextEditingController();
-  final TextEditingController formcont10 = TextEditingController();
-  final TextEditingController formcont11 = TextEditingController();
-  final TextEditingController formcont12 = TextEditingController();
-  final TextEditingController formcont13 = TextEditingController();
-  final TextEditingController formcont14 = TextEditingController();
-  final TextEditingController formcont15 = TextEditingController();
+  String profileUrl;
+  final TextEditingController formCont = TextEditingController();
+  final TextEditingController formCont1 = TextEditingController();
+  final TextEditingController formCont2 = TextEditingController();
+  final TextEditingController formCont3 = TextEditingController();
+  final TextEditingController formCont4 = TextEditingController();
+  final TextEditingController formCont5 = TextEditingController();
+  final TextEditingController formCont6 = TextEditingController();
+  final TextEditingController formCont7 = TextEditingController();
+  final TextEditingController formCont8 = TextEditingController();
+  final TextEditingController formCont9 = TextEditingController();
+  final TextEditingController formCont10 = TextEditingController();
+  final TextEditingController formCont11 = TextEditingController();
+  final TextEditingController formCont12 = TextEditingController();
+  final TextEditingController formCont13 = TextEditingController();
+  final TextEditingController formCont14 = TextEditingController();
+  final TextEditingController formCont15 = TextEditingController();
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -43,49 +53,57 @@ class _UploadProfile extends State<UploadProfile> {
   Future upload(BuildContext context) async {
     if (formkey.currentState.validate()) {
       //      String fileName = basename(_image.path);
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child('profile/$batch/$dept/$rollno');
-      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      var url = await taskSnapshot.ref.getDownloadURL();
-      profileurl = url.toString();
-      print('$profileurl');
-      DocumentReference ref = Firestore.instance
-          .collection('student')
-          .document('$dept')
-          .collection('$batch')
-          .document('$regno');
-      ref.setData({
-        'Name': '$name',
-        'Rollno': '$rollno',
-        'Regno': '$regno',
-        'Email': '$email',
-        'PhoneNo.': '$phno',
-        'BloodGroup': '$blood',
-        'Batch': '$batch',
-        'Department': '$dept',
-        'Address': '$addr',
-        'ProfileUrl': '$profileurl',
-      });
+      try {
+        StorageReference firebaseStorageRef = FirebaseStorage.instance
+            .ref()
+            .child('profile/$batch/$dept/$rollNo');
+        StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+        StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+        var url = await taskSnapshot.ref.getDownloadURL();
+        profileUrl = url.toString();
+        print('$profileUrl');
+        DocumentReference ref = Firestore.instance
+            .collection('student')
+            .document('$dept')
+            .collection('$batch')
+            .document('$regNo');
+        ref.setData({
+          'Name': '$name',
+          'Rollno': '$rollNo',
+          'Regno': '$regNo',
+          'Email': '$email',
+          'PhoneNo.': '$phoneNo',
+          'BloodGroup': '$blood',
+          'Batch': '$batch',
+          'Department': '$dept',
+          'Address': '$address',
+          'ProfileUrl': '$profileUrl',
+        });
 
         Scaffold.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
           content: Text('Profile Picture Uploaded'),
         ));
 
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Submitted Successfully'),
-      ));
-      formcont.clear();
-      formcont1.clear();
-      formcont2.clear();
-      formcont3.clear();
-      formcont4.clear();
-      formcont5.clear();
-      formcont6.clear();
-      formcont7.clear();
-      formcont8.clear();
-      formcont9.clear();
-      _image = null;
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('Submitted Successfully'),
+        ));
+        formCont.clear();
+        formCont1.clear();
+        formCont2.clear();
+        formCont3.clear();
+        formCont4.clear();
+        formCont5.clear();
+        formCont6.clear();
+        formCont7.clear();
+        formCont8.clear();
+        formCont9.clear();
+        _image = null;
+      } catch (e) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('Select a profile picture'),
+        ));
+      }
 //      PaintingBinding.instance.imageCache.clear();
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
@@ -97,7 +115,7 @@ class _UploadProfile extends State<UploadProfile> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   Widget buildname() {
     return TextFormField(
-      controller: formcont,
+      controller: formCont,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -121,7 +139,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildrolno() {
     return TextFormField(
-      controller: formcont9,
+      controller: formCont9,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -138,14 +156,14 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String value) {
-        rollno = value;
+        rollNo = value;
       },
     );
   }
 
   Widget buildregno() {
     return TextFormField(
-      controller: formcont8,
+      controller: formCont8,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -163,14 +181,14 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String value) {
-        regno = value;
+        regNo = value;
       },
     );
   }
 
   Widget buildemail() {
     return TextFormField(
-      controller: formcont7,
+      controller: formCont7,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -198,7 +216,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildphno() {
     return TextFormField(
-      controller: formcont6,
+      controller: formCont6,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -216,14 +234,14 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String value) {
-        phno = value;
+        phoneNo = value;
       },
     );
   }
 
   Widget buildblood() {
     return TextFormField(
-      controller: formcont5,
+      controller: formCont5,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -246,7 +264,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildbatch() {
     return TextFormField(
-      controller: formcont4,
+      controller: formCont4,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -271,7 +289,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget builddept() {
     return TextFormField(
-      controller: formcont3,
+      controller: formCont3,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -294,7 +312,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildaddr() {
     return TextFormField(
-      controller: formcont2,
+      controller: formCont2,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -311,14 +329,14 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String value) {
-        addr = value;
+        address = value;
       },
     );
   }
 
   Widget builddob() {
     return TextFormField(
-      controller: formcont1,
+      controller: formCont1,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -335,7 +353,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String value) {
-        dobb = value.toString();
+        dob = value.toString();
       },
     );
   }
@@ -412,12 +430,14 @@ class _UploadProfile extends State<UploadProfile> {
                   SizedBox(height: 10),
                   OutlineButton(
                     child: Text('Submit',
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 16)),
+                        style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontSize: 16,
+                        )),
                     onPressed: () {
                       formkey.currentState.save();
                       upload(context);
-                    },
+                    }, //onPressed
                   ),
                 ],
               ),
