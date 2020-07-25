@@ -11,42 +11,22 @@ class _AttendanceEntryState extends State<AttendanceEntry> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Attendance entry'),
-      ),
-      drawer: Container(
-        width: 210,
-        child: Drawer(
-          child: ListView(
+        child:Container(
+          child: Row(
             children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                 gradient: LinearGradient(colors: <Color>[
-                   Colors.lightBlue,
-                   Colors.lightBlueAccent
-                  ])
-                 ),
-                 child: Container(
-                   child: Column(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: <Widget>[
-                      Text('Header',style: TextStyle(fontSize: 20),),
-                      ],
-                   ),
-                 ),
-              ),
-             CustomView('Add class'),
-             CustomView('Add student'),
-             CustomView('Attendance'),
-             CustomView('Add year'),
-             CustomView('Add dep'),
-             CustomView('Delete students'),
-             CustomView('Delete class'),
-             CustomView('Delete department'),
-             CustomView('Delete year'),
-          ],
+              CustomView('Add class'),
+              CustomView('Add student'),
+              CustomView('Attendance'),
+              CustomView('Add year'),
+              CustomView('Add dep'),
+              CustomView('Delete students'),
+              CustomView('Delete class'),
+              CustomView('Delete department'),
+              CustomView('Delete year'),
+            ],
+          ),
         ),
-       ),
-      )
-    );
+      ),
+      );
   }
 }
