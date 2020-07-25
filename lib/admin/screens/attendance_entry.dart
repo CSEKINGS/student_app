@@ -10,7 +10,7 @@ class _AttendanceEntryState extends State<AttendanceEntry> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child:Container(
           child: Column(
             children: <Widget>[
