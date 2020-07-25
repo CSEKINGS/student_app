@@ -8,3 +8,6 @@ How to contribute:
 3. Create a pull request mentioning what you did.
 4. All requests will be accepted within 12 hrs.
 
+Issues:
+1. Make sure to test various devices before creating a ticket.
+2. Specify the log and device descriptions. Otherwise, issue will be closed.
