@@ -9,31 +9,33 @@ import 'package:student_app/student/screens/view_notes.dart';
 // ignore: must_be_immutable
 class StudentBottomNav extends StatefulWidget {
 String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
-  StudentBottomNav(this.name,this.rollno,this.regno,this.phno,this.dob,this.batch,this.email,this.bloodgrp,this.department,this.address,this.profileurl);
+List ccil;
+  StudentBottomNav(this.ccil);
   @override
-  _StudentBottomNavState createState() => _StudentBottomNavState(name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,this.profileurl);
+  _StudentBottomNavState createState() => _StudentBottomNavState(ccil);
 }
 
 class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
+  List ccil;
   // String _college;
   // String _batch;
   // String _dept;
   // String _rollno;
   String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
-  _StudentBottomNavState(this.name,this.rollno,this.regno,this.phno,this.dob,this.batch,this.email,this.bloodgrp,this.department,this.address,this.profileurl);
+  _StudentBottomNavState(this.ccil);
 
   //  static String rr,cc,dd,bb;
 
 @override
 
   void initState()  {
-     print('name'+name+regno);
-    super.initState();
+print('${ccil[0]}'+'######'+'${ccil[2]}');
+  super.initState();
     _children=  [
     Dashboard(),
     Grade(),
-    Profile(name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl),
+    Profile(ccil),
     Notes(),
   ];
   

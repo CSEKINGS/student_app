@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class Profile extends StatefulWidget {
 
   String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
-  Profile(this.name,this.rollno,this.regno,this.phno,this.dob,this.batch,this.email,this.bloodgrp,this.department,this.address,this.profileurl);
+  List ccil;
+  Profile(this.ccil);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -24,7 +25,7 @@ class _ProfileState extends State<Profile> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                   CircularProfileAvatar(
-          widget.profileurl,
+          widget.ccil[10],
           radius: 100,               
           backgroundColor: Colors.transparent, 
           borderWidth: 10,  
@@ -36,16 +37,16 @@ class _ProfileState extends State<Profile> {
           ),
                 Column(
                   children: <Widget>[
-                    Text('Name'+widget.name),
-                    Text('Register No:'+widget.regno),
-                Text('Roll No '+widget.rollno),
-                Text('Phone Number '+widget.phno),
-                Text('DOB '+widget.dob),
-                Text('Batch '+widget.batch),
-                Text('Email '+widget.email),
-                Text('BloodGroup '+widget.bloodgrp),
-                Text('Department '+widget.department),
-                Text('Address '+widget.address),
+                    Text('Name'+widget.ccil[0]),
+                    Text('Register No:'+widget.ccil[1]),
+                Text('Roll No '+widget.ccil[2]),
+                Text('Phone Number '+widget.ccil[3]),
+                Text('DOB '+widget.ccil[4]),
+                Text('Batch '+widget.ccil[5]),
+                Text('Email '+widget.ccil[6]),
+                Text('BloodGroup '+widget.ccil[7]),
+                Text('Department '+widget.ccil[8]),
+                Text('Address '+widget.ccil[9]),
                   ],
                 ),
                 

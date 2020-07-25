@@ -10,6 +10,12 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+// class Details {
+//   String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
+
+//   Details(this.name,this.rollno,this.regno,this.phno,this.dob,this.batch,this.email,this.bloodgrp,this.department,this.address,this.profileurl);
+  
+// }
 
 class _LoginPageState extends State<LoginPage> {
   String uname,_batch,_dept,_regno;
@@ -18,44 +24,19 @@ class _LoginPageState extends State<LoginPage> {
   Map data;
   final db=Firestore.instance;
   // ignore: non_constant_identifier_names
-  final TextEditingController Euname = TextEditingController();
-  final GlobalKey<FormState> logkey = GlobalKey<FormState>();
-  List ccil;
+  // final TextEditingController Euname = TextEditingController();
+  // final GlobalKey<FormState> logkey = GlobalKey<FormState>();
+  List<String> ccil=[];
+  // @override
+  // void initState() {    
+  //   ccil=[
+      
+  //   ];
+  // }
 
 
-void rrrr() {
-setState(() {
-  sub= db.collection('student').document(_dept).collection(_batch).document(_regno).snapshots().listen((event) {
-      data=event.data;
-                    name=data['Name'];
-                    rollno=data['Rollno'];
-                    regno=data['Regno'];
-                    email=data['Email'];
-                    phno=data['PhoneNo'];
-                    bloodgrp=data['BloodGroup'];
-                    batch=data['Batch'];
-                    department=data['Department'];
-                    address=data['Address'];
-                    profileurl=data['ProfileUrl'];
-                    dob=data['DOB'];
-      print ('initstate run successfully');    
-      print('$name');
-      print('$rollno');
-      print('$email');
-      print('$phno');
-      print('$bloodgrp');
-      print('$department');
-      print('$batch');
-      print('$address');
-      print(dob);
-    
-  });
-});
-  
-}
-
-  stream(){
-     uname = Euname.text;
+  stream() async {
+    // uname = Euname.text;
     _batch='20'+uname.substring(4,6);
     _dept=uname.substring(6,9);
     _regno=uname;
@@ -76,29 +57,64 @@ setState(() {
           break;
           case '121':{_dept='BIOMEDICAL';}
           break;
-         default:{print('Details');
-         }
+         default:{print('Details');}
       }
       print ('Switch run successfully');
+      setState(() async {
+        sub= await db.collection('student').document(_dept).collection(_batch).document(_regno).snapshots().listen((event) {
+      data=event.data;
+      ccil.add(data['Name']);
+      ccil.add(data['Rollno']);
+       ccil.add(data['Regno']);
+        ccil.add(data['PhoneNo']);
+         ccil.add(data['DOB']);
+          ccil.add(data['Batch']);
+           ccil.add(data['Email']);
+            ccil.add(data['BloodGroup']);
+             ccil.add(data['Department']);
+              ccil.add(data['Address']);
+               ccil.add(data['ProfileUrl']);
+                    // name=data['Name'];
+                    // rollno=data['Rollno'];
+                    // regno=data['Regno'];
+                    // email=data['Email'];
+                    // phno=data['PhoneNo'];
+                    // bloodgrp=data['BloodGroup'];
+                    // batch=data['Batch'];
+                    // department=data['Department'];
+                    // address=data['Address'];
+                    // profileurl=data['ProfileUrl'];
+                    // dob=data['DOB'];
+     
+  });
+   print ('state run successfully');    
+      print('${ccil[0]}');
+      print('${ccil[1]}');
+    
+      });
   }
   Widget vldfrm(){
     return   TextFormField(
-                            
+                            // controller: Euname,
                             decoration: InputDecoration(
                                 hintText: "username",
                                 hintStyle: TextStyle(
                                     color: Colors.grey, fontSize: 12.0)),
+                                   
                                     validator: (String value){
                                 if ((value.isEmpty)||(!RegExp(
                 r"^[0-9]{12}$") .hasMatch(value))) {
           return 'Invalid Details';
           }
-          else{
-            stream();
-            rrrr();          }
           return null;
                                      },
-                                     controller: Euname,
+                                     onSaved: (String input){
+                                       uname=input.toString();
+                                                   stream();
+                                        
+                                     },
+                                     
+                                     
                           );
   }
 
@@ -315,8 +331,9 @@ setState(() {
 
                                 onTap: () {
                                   if(_logkey.currentState.validate()){
+                                    _logkey.currentState.save();
                                      Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => StudentBottomNav(name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl)),
+      MaterialPageRoute(builder: (_) => StudentBottomNav(ccil)),
     );
                                   }
 
