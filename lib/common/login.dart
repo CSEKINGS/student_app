@@ -20,22 +20,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String uname,_batch,_dept,_regno;
   String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
-  StreamSubscription sub;
+  var sub;
   Map data;
   final db=Firestore.instance;
   // ignore: non_constant_identifier_names
   // final TextEditingController Euname = TextEditingController();
   // final GlobalKey<FormState> logkey = GlobalKey<FormState>();
-  List<String> ccil=[];
-  // @override
-  // void initState() {    
-  //   ccil=[
-      
-  //   ];
-  // }
-
-
-  stream() async {
+  var ccil=[];
+ 
+  Future stream() {
     // uname = Euname.text;
     _batch='20'+uname.substring(4,6);
     _dept=uname.substring(6,9);
@@ -60,8 +53,8 @@ class _LoginPageState extends State<LoginPage> {
          default:{print('Details');}
       }
       print ('Switch run successfully');
-      setState(() async {
-        sub= await db.collection('student').document(_dept).collection(_batch).document(_regno).snapshots().listen((event) {
+      setState(()  {
+      db.collection('student').document(_dept).collection(_batch).document(_regno).snapshots().listen((event) {
       data=event.data;
       ccil.add(data['Name']);
       ccil.add(data['Rollno']);
@@ -74,6 +67,10 @@ class _LoginPageState extends State<LoginPage> {
              ccil.add(data['Department']);
               ccil.add(data['Address']);
                ccil.add(data['ProfileUrl']);
+                 Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => StudentBottomNav(ccil)),
+    );
+
                     // name=data['Name'];
                     // rollno=data['Rollno'];
                     // regno=data['Regno'];
@@ -87,10 +84,8 @@ class _LoginPageState extends State<LoginPage> {
                     // dob=data['DOB'];
      
   });
+ 
    print ('state run successfully');    
-      print('${ccil[0]}');
-      print('${ccil[1]}');
-    
       });
   }
   Widget vldfrm(){
@@ -108,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
           }
           return null;
                                      },
-                                     onSaved: (String input){
+                                     onSaved: (String input) {
                                        uname=input.toString();
                                                    stream();
                                         
@@ -329,12 +324,12 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
 
-                                onTap: () {
+                                onTap: ()  {
                                   if(_logkey.currentState.validate()){
                                     _logkey.currentState.save();
-                                     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => StudentBottomNav(ccil)),
-    );
+       
+                                    
+      
                                   }
 
                                 },
