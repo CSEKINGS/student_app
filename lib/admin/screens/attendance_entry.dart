@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/admin/attendance/Designs.dart';
 
 class AttendanceEntry extends StatefulWidget {
   @override
@@ -9,9 +10,23 @@ class _AttendanceEntryState extends State<AttendanceEntry> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Attendance entry'),
+      body: SingleChildScrollView(
+        child:Container(
+          child: Column(
+            children: <Widget>[
+              CustomView('Add class'),
+              CustomView('Add student'),
+              CustomView('Attendance'),
+              CustomView('Add year'),
+              CustomView('Add dep'),
+              CustomView('Delete students'),
+              CustomView('Delete class'),
+              CustomView('Delete department'),
+              CustomView('Delete year'),
+            ],
+          ),
+        ),
       ),
-    );
+      );
   }
 }
