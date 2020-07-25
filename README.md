@@ -12,4 +12,4 @@ Issues:
 1. Make sure to test various devices before creating a ticket.
 2. Specify the log and device descriptions. Otherwise, issue will be closed.
 
-##Note: Only Android is supported now. 
+**Note: Only Android is supported now.**
