@@ -12,7 +12,7 @@ class _AttendanceEntryState extends State<AttendanceEntry> {
     return Scaffold(
       body: Center(
         child:Container(
-          child: Row(
+          child: Column(
             children: <Widget>[
               CustomView('Add class'),
               CustomView('Add student'),
