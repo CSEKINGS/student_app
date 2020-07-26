@@ -20,11 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _uname = TextEditingController();
   String bname;
   String initialname;
+  String pname;
+  var datasnapshot;
 
   stream() {
-    _batch = '20' + initialname.substring(4, 6);
-    _dept = initialname.substring(6, 9);
-    _regno = initialname;
+    _batch = '20' + uname.substring(4, 6);
+    _dept = uname.substring(6, 9);
+    _regno = uname;
     switch (_dept) {
       case '101':
         {
@@ -76,22 +78,27 @@ class _LoginPageState extends State<LoginPage> {
         .collection('student')
         .document(_dept)
         .collection(_batch)
-        .document(_regno)
-        .snapshots();
-        sub.listen((event) {
-      data = event.data;
-      details.add(data['Name']);
-      details.add(data['Rollno']);
-      details.add(data['Regno']);
-      details.add(data['PhoneNo']);
-      details.add(data['DOB']);
-      details.add(data['Batch']);
-      details.add(data['Email']);
-      details.add(data['BloodGroup']);
-      details.add(data['Department']);
-      details.add(data['Address']);
-      details.add(data['ProfileUrl']);
-    });
+        .document(_regno);
+     datasnapshot = sub.snapshots();
+    if (datasnapshot.hasData) {
+      datasnapshot.listen((event) {
+        data = event.data;
+        details.add(data['Name']);
+        details.add(data['Rollno']);
+        details.add(data['Regno']);
+        details.add(data['PhoneNo']);
+        details.add(data['DOB']);
+        details.add(data['Batch']);
+        details.add(data['Email']);
+        details.add(data['BloodGroup']);
+        details.add(data['Department']);
+        details.add(data['Address']);
+        details.add(data['ProfileUrl']);
+      });
+      print('data found');
+    } else {
+      print('not found');
+    }
 
     print('state run successfully');
   }
@@ -248,6 +255,9 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                                 return null;
                               },
+                              onSaved: (String input) {
+                                pname = input;
+                              },
                             ),
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(60),
@@ -322,10 +332,12 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
+                                  _logkey.currentState.save();
                                   stream();
-                                   if (_logkey.currentState.validate() && details.isNotEmpty) {
-      _logkey.currentState.save();
-    }
+                                  if (_logkey.currentState.validate() &&
+                                      details.isNotEmpty) {
+                                    // _logkey.currentState.save();
+                                  }
                                 },
                                 child: Center(
                                   child: Text("Student",
