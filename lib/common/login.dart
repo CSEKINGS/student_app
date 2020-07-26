@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,103 +13,148 @@ class LoginPage extends StatefulWidget {
 //   String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
 
 //   Details(this.name,this.rollno,this.regno,this.phno,this.dob,this.batch,this.email,this.bloodgrp,this.department,this.address,this.profileurl);
-  
+
 // }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname,_batch,_dept,_regno;
-  String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
+  String uname, _batch, _dept, _regno;
+  String name,
+      rollno,
+      regno,
+      phno,
+      dob,
+      batch,
+      email,
+      bloodgrp,
+      department,
+      address,
+      profileurl;
   var sub;
   Map data;
-  final db=Firestore.instance;
+  final db = Firestore.instance;
+
   // ignore: non_constant_identifier_names
   // final TextEditingController Euname = TextEditingController();
   // final GlobalKey<FormState> logkey = GlobalKey<FormState>();
-  var ccil=[];
- 
-  Future stream() {
-    // uname = Euname.text;
-    _batch='20'+uname.substring(4,6);
-    _dept=uname.substring(6,9);
-    _regno=uname;
-     switch (_dept) {
-        case '101':{_dept='AE';}
-          break;
-          case '102':{_dept='AUTOMOBILE';}
-          break;
-          case '103':{_dept='CIVIL';}
-          break;
-          case '104':{_dept='CSE';}
-          break;
-          case '105':{_dept='EEE';}
-          break;
-          case '106':{_dept='ECE';}
-          break;
-          case '114':{_dept='MECH';}
-          break;
-          case '121':{_dept='BIOMEDICAL';}
-          break;
-         default:{print('Details');}
-      }
-      print ('Switch run successfully');
-      setState(()  {
-      db.collection('student').document(_dept).collection(_batch).document(_regno).snapshots().listen((event) {
-      data=event.data;
-      ccil.add(data['Name']);
-      ccil.add(data['Rollno']);
-       ccil.add(data['Regno']);
-        ccil.add(data['PhoneNo']);
-         ccil.add(data['DOB']);
-          ccil.add(data['Batch']);
-           ccil.add(data['Email']);
-            ccil.add(data['BloodGroup']);
-             ccil.add(data['Department']);
-              ccil.add(data['Address']);
-               ccil.add(data['ProfileUrl']);
-                 Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => StudentBottomNav(ccil)),
-    );
+  var ccil = [];
 
-                    // name=data['Name'];
-                    // rollno=data['Rollno'];
-                    // regno=data['Regno'];
-                    // email=data['Email'];
-                    // phno=data['PhoneNo'];
-                    // bloodgrp=data['BloodGroup'];
-                    // batch=data['Batch'];
-                    // department=data['Department'];
-                    // address=data['Address'];
-                    // profileurl=data['ProfileUrl'];
-                    // dob=data['DOB'];
-     
-  });
- 
-   print ('state run successfully');    
+  stream() {
+    // uname = Euname.text;
+    _batch = '20' + uname.substring(4, 6);
+    _dept = uname.substring(6, 9);
+    _regno = uname;
+    switch (_dept) {
+      case '101':
+        {
+          _dept = 'AE';
+        }
+        break;
+      case '102':
+        {
+          _dept = 'AUTOMOBILE';
+        }
+        break;
+      case '103':
+        {
+          _dept = 'CIVIL';
+        }
+        break;
+      case '104':
+        {
+          _dept = 'CSE';
+        }
+        break;
+      case '105':
+        {
+          _dept = 'EEE';
+        }
+        break;
+      case '106':
+        {
+          _dept = 'ECE';
+        }
+        break;
+      case '114':
+        {
+          _dept = 'MECH';
+        }
+        break;
+      case '121':
+        {
+          _dept = 'BIOMEDICAL';
+        }
+        break;
+      default:
+        {
+          print('Details');
+        }
+    }
+    print('Switch run successfully');
+    setState(() {
+      db
+          .collection('student')
+          .document(_dept)
+          .collection(_batch)
+          .document(_regno)
+          .snapshots()
+          .listen((event) {
+        data = event.data;
+        ccil.add(data['Name']);
+        ccil.add(data['Rollno']);
+        ccil.add(data['Regno']);
+        ccil.add(data['PhoneNo']);
+        ccil.add(data['DOB']);
+        ccil.add(data['Batch']);
+        ccil.add(data['Email']);
+        ccil.add(data['BloodGroup']);
+        ccil.add(data['Department']);
+        ccil.add(data['Address']);
+        ccil.add(data['ProfileUrl']);
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => StudentBottomNav(ccil)),
+        );
+
+        // name=data['Name'];
+        // rollno=data['Rollno'];
+        // regno=data['Regno'];
+        // email=data['Email'];
+        // phno=data['PhoneNo'];
+        // bloodgrp=data['BloodGroup'];
+        // batch=data['Batch'];
+        // department=data['Department'];
+        // address=data['Address'];
+        // profileurl=data['ProfileUrl'];
+        // dob=data['DOB'];
       });
+
+      print('state run successfully');
+    });
   }
-  Widget vldfrm(){
-    return   TextFormField(
-                            // controller: Euname,
-                            decoration: InputDecoration(
-                                hintText: "username",
-                                hintStyle: TextStyle(
-                                    color: Colors.grey, fontSize: 12.0)),
-                                   
-                                    validator: (String value){
-                                if ((value.isEmpty)||(!RegExp(
-                r"^[0-9]{12}$") .hasMatch(value))) {
+
+  Widget vldfrm() {
+    return TextFormField(
+      // controller: Euname,
+      decoration: InputDecoration(
+          filled: true,
+//          enabledBorder:
+//              UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+          labelText: "Username",
+          hintStyle: TextStyle(
+              color: Colors.grey,
+              fontFamily: "Poppins-Medium",
+              fontSize: ScreenUtil.getInstance().setSp(26))),
+
+      validator: (String value) {
+        if ((value.isEmpty) || (!RegExp(r"^[0-9]{12}$").hasMatch(value))) {
           return 'Invalid Details';
-          }
-          return null;
-                                     },
-                                     onSaved: (String input) {
-                                       uname=input.toString();
-                                                   stream();
-                                        
-                                     },
-                                     
-                                     
-                          );
+        }
+        return null;
+      },
+      onSaved: (String input) {
+        uname = input.toString();
+        stream();
+      },
+    );
   }
 
   Widget radioButton(bool isSelected) => Container(
@@ -138,10 +182,9 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.black26.withOpacity(.2),
         ),
       );
-      final _logkey = GlobalKey<FormState>();
+  final _logkey = GlobalKey<FormState>();
 
   @override
-
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance =
@@ -204,54 +247,39 @@ class _LoginPageState extends State<LoginPage> {
                           EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                       child: Form(
                         key: _logkey,
-                                  child: Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text("Login",
                                 style: TextStyle(
-                                    fontSize: ScreenUtil.getInstance().setSp(45),
+                                    fontSize:
+                                    ScreenUtil.getInstance().setSp(45),
                                     fontFamily: "Poppins-Bold",
                                     letterSpacing: .6)),
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
-                            Text("Username",
-                                style: TextStyle(
-                                    fontFamily: "Poppins-Medium",
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(26))),
-                          vldfrm(),
+                            vldfrm(),
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
-                            Text("PassWord",
-                                style: TextStyle(
-                                    fontFamily: "Poppins-Medium",
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
                               obscureText: true,
                               decoration: InputDecoration(
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0)),
+                                filled: true,
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue)),
+                                labelText: "Password",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: "Poppins-Medium",
+                                  fontSize: ScreenUtil.getInstance().setSp(26),
+                                ),
+                              ),
                             ),
                             SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(35),
+                              height: ScreenUtil.getInstance().setHeight(60),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "Forgot Password?",
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontFamily: "Poppins-Medium",
-                                      fontSize:
-                                          ScreenUtil.getInstance().setSp(28)),
-                                )
-                              ],
-                            )
                           ],
                         ),
                       ),
@@ -293,9 +321,7 @@ class _LoginPageState extends State<LoginPage> {
                                           color: Colors.white,
                                           fontFamily: "Poppins-Bold",
                                           fontSize: 18,
-                                          letterSpacing: 1.0
-                                          )
-                                          ),
+                                          letterSpacing: 1.0)),
                                 ),
                               ),
                             ),
@@ -315,23 +341,18 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(6.0),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Color(0xFF6078ea).withOpacity(.3),
-                                      offset: Offset(0.0, 8.0),
-                                      blurRadius: 8.0)
+                                    color: Color(0xFF6078ea).withOpacity(.3),
+                                    offset: Offset(0.0, 8.0),
+                                    blurRadius: 8.0,
+                                  )
                                 ]),
                             child: Material(
-
                               color: Colors.transparent,
                               child: InkWell(
-
-                                onTap: ()  {
-                                  if(_logkey.currentState.validate()){
+                                onTap: () {
+                                  if (_logkey.currentState.validate()) {
                                     _logkey.currentState.save();
-       
-                                    
-      
                                   }
-
                                 },
                                 child: Center(
                                   child: Text("Student",
