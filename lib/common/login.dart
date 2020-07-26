@@ -175,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget validpass() {
     return TextFormField(
+      maxLength: 10,
       controller: _pass,
       onTap: () async {
         if (uname != null) {
@@ -307,11 +308,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             validuser(),
                             SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(30),
+                              height: ScreenUtil.getInstance().setHeight(20),
                             ),
                             validpass(),
                             SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(60),
+                              height: ScreenUtil.getInstance().setHeight(30),
                             ),
                           ],
                         ),
