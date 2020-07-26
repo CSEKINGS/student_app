@@ -19,27 +19,12 @@ class _LoginPageState extends State<LoginPage> {
   var details = [];
   TextEditingController _uname = TextEditingController();
   String bname;
-
-  Future<void> signin() async {
-    if (_logkey.currentState.validate()) {
-      _logkey.currentState.save();
-      try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
-        );
-      } catch (e) {
-        print(e);
-      }
-    }
-  }
+  String initialname;
 
   stream() {
-    bname = _uname.text;
-    _batch = '20' + bname.substring(4, 6);
-    _dept = bname.substring(6, 9);
-    _regno = bname;
+    _batch = '20' + initialname.substring(4, 6);
+    _dept = initialname.substring(6, 9);
+    _regno = initialname;
     switch (_dept) {
       case '101':
         {
@@ -87,32 +72,28 @@ class _LoginPageState extends State<LoginPage> {
         }
     }
     print('Switch run successfully');
-    setState(() {
-      reference
-          .collection('student')
-          .document(_dept)
-          .collection(_batch)
-          .document(_regno)
-          .snapshots()
-          .listen((event) {
-        data = event.data;
-        details.add(data['Name']);
-        details.add(data['Rollno']);
-        details.add(data['Regno']);
-        details.add(data['PhoneNo']);
-        details.add(data['DOB']);
-        details.add(data['Batch']);
-        details.add(data['Email']);
-        details.add(data['BloodGroup']);
-        details.add(data['Department']);
-        details.add(data['Address']);
-        details.add(data['ProfileUrl']);
-        email = data['Email'];
-        password = data['DOB'];
-      });
-
-      print('state run successfully');
+    sub = reference
+        .collection('student')
+        .document(_dept)
+        .collection(_batch)
+        .document(_regno)
+        .snapshots();
+        sub.listen((event) {
+      data = event.data;
+      details.add(data['Name']);
+      details.add(data['Rollno']);
+      details.add(data['Regno']);
+      details.add(data['PhoneNo']);
+      details.add(data['DOB']);
+      details.add(data['Batch']);
+      details.add(data['Email']);
+      details.add(data['BloodGroup']);
+      details.add(data['Department']);
+      details.add(data['Address']);
+      details.add(data['ProfileUrl']);
     });
+
+    print('state run successfully');
   }
 
   Widget vldfrm() {
@@ -127,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
               fontSize: ScreenUtil.getInstance().setSp(26))),
       validator: (String value) {
         if ((value.isEmpty) || (!RegExp(r"^[0-9]{12}$").hasMatch(value))) {
+          initialname = value;
           return 'Invalid Details';
         }
         return null;
@@ -259,6 +241,11 @@ class _LoginPageState extends State<LoginPage> {
                                 if (input != password) {
                                   return 'Password is incorrect';
                                 }
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          StudentBottomNav(details)),
+                                );
                                 return null;
                               },
                             ),
@@ -336,7 +323,9 @@ class _LoginPageState extends State<LoginPage> {
                               child: InkWell(
                                 onTap: () {
                                   stream();
-                                  signin();
+                                   if (_logkey.currentState.validate() && details.isNotEmpty) {
+      _logkey.currentState.save();
+    }
                                 },
                                 child: Center(
                                   child: Text("Student",
