@@ -21,6 +21,7 @@ class _AddClassState extends State<AddClass> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     getClass();

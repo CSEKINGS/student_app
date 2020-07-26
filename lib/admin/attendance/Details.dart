@@ -23,6 +23,7 @@ class _DetailsState extends State<Details> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     CollectionReference yearRef = obj.getDetailRef('year');

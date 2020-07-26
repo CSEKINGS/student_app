@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
@@ -10,107 +10,111 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
-// class Details {
-//   String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
-
-//   Details(this.name,this.rollno,this.regno,this.phno,this.dob,this.batch,this.email,this.bloodgrp,this.department,this.address,this.profileurl);
-  
-// }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname,_batch,_dept,_regno;
-  String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
+  String uname, _batch, _dept, _regno;
   var sub;
   Map data;
-  final db=Firestore.instance;
-  // ignore: non_constant_identifier_names
-  // final TextEditingController Euname = TextEditingController();
-  // final GlobalKey<FormState> logkey = GlobalKey<FormState>();
-  var ccil=[];
- 
-  Future stream() {
-    // uname = Euname.text;
-    _batch='20'+uname.substring(4,6);
-    _dept=uname.substring(6,9);
-    _regno=uname;
-     switch (_dept) {
-        case '101':{_dept='AE';}
-          break;
-          case '102':{_dept='AUTOMOBILE';}
-          break;
-          case '103':{_dept='CIVIL';}
-          break;
-          case '104':{_dept='CSE';}
-          break;
-          case '105':{_dept='EEE';}
-          break;
-          case '106':{_dept='ECE';}
-          break;
-          case '114':{_dept='MECH';}
-          break;
-          case '121':{_dept='BIOMEDICAL';}
-          break;
-         default:{print('Details');}
-      }
-      print ('Switch run successfully');
-      setState(()  {
-      db.collection('student').document(_dept).collection(_batch).document(_regno).snapshots().listen((event) {
-      data=event.data;
-      ccil.add(data['Name']);
-      ccil.add(data['Rollno']);
-       ccil.add(data['Regno']);
-        ccil.add(data['PhoneNo']);
-         ccil.add(data['DOB']);
-          ccil.add(data['Batch']);
-           ccil.add(data['Email']);
-            ccil.add(data['BloodGroup']);
-             ccil.add(data['Department']);
-              ccil.add(data['Address']);
-               ccil.add(data['ProfileUrl']);
-                 Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => StudentBottomNav(ccil)),
-    );
+  final reference = Firestore.instance;
+  var details = [];
+  String email;
+  void signin() {
 
-                    // name=data['Name'];
-                    // rollno=data['Rollno'];
-                    // regno=data['Regno'];
-                    // email=data['Email'];
-                    // phno=data['PhoneNo'];
-                    // bloodgrp=data['BloodGroup'];
-                    // batch=data['Batch'];
-                    // department=data['Department'];
-                    // address=data['Address'];
-                    // profileurl=data['ProfileUrl'];
-                    // dob=data['DOB'];
-     
-  });
- 
-   print ('state run successfully');    
-      });
   }
-  Widget vldfrm(){
-    return   TextFormField(
-                            // controller: Euname,
-                            decoration: InputDecoration(
-                                hintText: "username",
-                                hintStyle: TextStyle(
-                                    color: Colors.grey, fontSize: 12.0)),
-                                   
-                                    validator: (String value){
-                                if ((value.isEmpty)||(!RegExp(
-                r"^[0-9]{12}$") .hasMatch(value))) {
+
+  stream() {
+    _batch = '20' + uname.substring(4, 6);
+    _dept = uname.substring(6, 9);
+    _regno = uname;
+    switch (_dept) {
+      case '101':
+        {
+          _dept = 'AE';
+        }
+        break;
+      case '102':
+        {
+          _dept = 'AUTOMOBILE';
+        }
+        break;
+      case '103':
+        {
+          _dept = 'CIVIL';
+        }
+        break;
+      case '104':
+        {
+          _dept = 'CSE';
+        }
+        break;
+      case '105':
+        {
+          _dept = 'EEE';
+        }
+        break;
+      case '106':
+        {
+          _dept = 'ECE';
+        }
+        break;
+      case '114':
+        {
+          _dept = 'MECH';
+        }
+        break;
+      case '121':
+        {
+          _dept = 'BIOMEDICAL';
+        }
+        break;
+      default:
+        {
+          print('Details');
+        }
+    }
+    reference
+        .collection('student')
+        .document(_dept)
+        .collection(_batch)
+        .document(_regno)
+        .snapshots()
+        .listen((event) {
+      data = event.data;
+      details.add(data['Name']);
+      details.add(data['Rollno']);
+      details.add(data['Regno']);
+      details.add(data['PhoneNo']);
+      details.add(data['DOB']);
+      details.add(data['Batch']);
+      details.add(data['Email']);
+      details.add(data['BloodGroup']);
+      details.add(data['Department']);
+      details.add(data['Address']);
+      details.add(data['ProfileUrl']);
+      email = details[6];
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
+      );
+      print('state run successfully');
+    });
+  }
+
+  Widget validateform() {
+    return TextFormField(
+      decoration: InputDecoration(
+          hintText: "username",
+          hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+      validator: (String value) {
+        if ((value.isEmpty) || (!RegExp(r"^[0-9]{12}$").hasMatch(value))) {
           return 'Invalid Details';
-          }
-          return null;
-                                     },
-                                     onSaved: (String input) {
-                                       uname=input.toString();
-                                                   stream();
-                                        
-                                     },
-                                     
-                                     
-                          );
+        }
+        return null;
+      },
+      onSaved: (String input) {
+        uname = input.toString();
+        stream();
+      },
+    );
   }
 
   Widget radioButton(bool isSelected) => Container(
@@ -138,10 +142,9 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.black26.withOpacity(.2),
         ),
       );
-      final _logkey = GlobalKey<FormState>();
+  final _logkey = GlobalKey<FormState>();
 
   @override
-
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance =
@@ -184,7 +187,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Container(
                     width: double.infinity,
-                    //    height: ScreenUtil.getInstance().setHeight(500),
                     padding: EdgeInsets.only(bottom: 1),
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -204,12 +206,13 @@ class _LoginPageState extends State<LoginPage> {
                           EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                       child: Form(
                         key: _logkey,
-                                  child: Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text("Login",
                                 style: TextStyle(
-                                    fontSize: ScreenUtil.getInstance().setSp(45),
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(45),
                                     fontFamily: "Poppins-Bold",
                                     letterSpacing: .6)),
                             SizedBox(
@@ -220,7 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                                     fontFamily: "Poppins-Medium",
                                     fontSize:
                                         ScreenUtil.getInstance().setSp(26))),
-                          vldfrm(),
+                            validateform(),
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
@@ -293,9 +296,7 @@ class _LoginPageState extends State<LoginPage> {
                                           color: Colors.white,
                                           fontFamily: "Poppins-Bold",
                                           fontSize: 18,
-                                          letterSpacing: 1.0
-                                          )
-                                          ),
+                                          letterSpacing: 1.0)),
                                 ),
                               ),
                             ),
@@ -320,19 +321,9 @@ class _LoginPageState extends State<LoginPage> {
                                       blurRadius: 8.0)
                                 ]),
                             child: Material(
-
                               color: Colors.transparent,
                               child: InkWell(
-
-                                onTap: ()  {
-                                  if(_logkey.currentState.validate()){
-                                    _logkey.currentState.save();
-       
-                                    
-      
-                                  }
-
-                                },
+                                onTap: () {},
                                 child: Center(
                                   child: Text("Student",
                                       style: TextStyle(

@@ -20,6 +20,7 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     CollectionReference reference;

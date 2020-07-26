@@ -3,18 +3,15 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Profile extends StatefulWidget {
-
-  String name,rollno,regno,phno,dob,batch,email,bloodgrp,department,address,profileurl;
-  List ccil;
-  Profile(this.ccil);
+  List details;
+  Profile(this.details);
 
   @override
   _ProfileState createState() => _ProfileState();
 }
-class _ProfileState extends State<Profile> {
-  
-  @override
 
+class _ProfileState extends State<Profile> {
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -23,33 +20,31 @@ class _ProfileState extends State<Profile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                  CircularProfileAvatar(
-          widget.ccil[10],
-          radius: 100,               
-          backgroundColor: Colors.transparent, 
-          borderWidth: 10,  
-          borderColor: Colors.brown, 
-          cacheImage: true, 
-          onTap: () {
-            print('success');
-          }, 
-          ),
+                CircularProfileAvatar(
+                  widget.details[10],
+                  radius: 100,
+                  backgroundColor: Colors.transparent,
+                  borderWidth: 10,
+                  borderColor: Colors.brown,
+                  cacheImage: true,
+                  onTap: () {
+                    print('success');
+                  },
+                ),
                 Column(
                   children: <Widget>[
-                    Text('Name'+widget.ccil[0]),
-                    Text('Register No:'+widget.ccil[1]),
-                Text('Roll No '+widget.ccil[2]),
-                Text('Phone Number '+widget.ccil[3]),
-                Text('DOB '+widget.ccil[4]),
-                Text('Batch '+widget.ccil[5]),
-                Text('Email '+widget.ccil[6]),
-                Text('BloodGroup '+widget.ccil[7]),
-                Text('Department '+widget.ccil[8]),
-                Text('Address '+widget.ccil[9]),
+                    Text('Name' + widget.details[0]),
+                    Text('Register No:' + widget.details[1]),
+                    Text('Roll No ' + widget.details[2]),
+                    Text('Phone Number ' + widget.details[3]),
+                    Text('DOB ' + widget.details[4]),
+                    Text('Batch ' + widget.details[5]),
+                    Text('Email ' + widget.details[6]),
+                    Text('BloodGroup ' + widget.details[7]),
+                    Text('Department ' + widget.details[8]),
+                    Text('Address ' + widget.details[9]),
                   ],
                 ),
-                
-
               ],
             ),
           ),

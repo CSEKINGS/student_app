@@ -15,7 +15,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
     AttendanceEntry(),
     MarkEntry(),
     UploadNotes(),
-    UploadProfile(),
+ UploadProfile(),
   ];
 
   void onTappedBar(int index) {

@@ -21,6 +21,7 @@ class _AddStudentState extends State<AddStudent> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     CollectionReference clsRef=obj.getDetailRef2(widget.yer,widget.dep);

@@ -24,22 +24,6 @@ class _UploadProfile extends State<UploadProfile> {
       dob;
   File _image;
   String profileUrl;
-  final TextEditingController formCont = TextEditingController();
-  final TextEditingController formCont1 = TextEditingController();
-  final TextEditingController formCont2 = TextEditingController();
-  final TextEditingController formCont3 = TextEditingController();
-  final TextEditingController formCont4 = TextEditingController();
-  final TextEditingController formCont5 = TextEditingController();
-  final TextEditingController formCont6 = TextEditingController();
-  final TextEditingController formCont7 = TextEditingController();
-  final TextEditingController formCont8 = TextEditingController();
-  final TextEditingController formCont9 = TextEditingController();
-  final TextEditingController formCont10 = TextEditingController();
-  final TextEditingController formCont11 = TextEditingController();
-  final TextEditingController formCont12 = TextEditingController();
-  final TextEditingController formCont13 = TextEditingController();
-  final TextEditingController formCont14 = TextEditingController();
-  final TextEditingController formCont15 = TextEditingController();
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -52,7 +36,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Future upload(BuildContext context) async {
     if (formkey.currentState.validate()) {
-      //      String fileName = basename(_image.path);
       try {
         StorageReference firebaseStorageRef = FirebaseStorage.instance
             .ref()
@@ -78,7 +61,7 @@ class _UploadProfile extends State<UploadProfile> {
           'Department': '$dept',
           'Address': '$address',
           'ProfileUrl': '$profileUrl',
-          'DOB':'$dob'
+          'DOB': '$dob'
         });
 
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -89,23 +72,16 @@ class _UploadProfile extends State<UploadProfile> {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('Submitted Successfully'),
         ));
-        formCont.clear();
-        formCont1.clear();
-        formCont2.clear();
-        formCont3.clear();
-        formCont4.clear();
-        formCont5.clear();
-        formCont6.clear();
-        formCont7.clear();
-        formCont8.clear();
-        formCont9.clear();
-        _image = null;
+        formkey.currentState.reset();
+        setState(() {
+            _image = null;
+
+        });
       } catch (e) {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('Select a profile picture'),
         ));
       }
-//      PaintingBinding.instance.imageCache.clear();
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Invalid Details'),
@@ -116,7 +92,6 @@ class _UploadProfile extends State<UploadProfile> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   Widget buildname() {
     return TextFormField(
-      controller: formCont,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -140,7 +115,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildrolno() {
     return TextFormField(
-      controller: formCont9,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -164,7 +138,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildregno() {
     return TextFormField(
-      controller: formCont8,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -189,7 +162,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildemail() {
     return TextFormField(
-      controller: formCont7,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -217,7 +189,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildphno() {
     return TextFormField(
-      controller: formCont6,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -242,7 +213,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildblood() {
     return TextFormField(
-      controller: formCont5,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -265,7 +235,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildbatch() {
     return TextFormField(
-      controller: formCont4,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -290,7 +259,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget builddept() {
     return TextFormField(
-      controller: formCont3,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -313,7 +281,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildaddr() {
     return TextFormField(
-      controller: formCont2,
       decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
@@ -337,7 +304,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget builddob() {
     return TextFormField(
-      controller: formCont1,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -438,6 +404,7 @@ class _UploadProfile extends State<UploadProfile> {
                     onPressed: () {
                       formkey.currentState.save();
                       upload(context);
+                      
                     }, //onPressed
                   ),
                 ],
