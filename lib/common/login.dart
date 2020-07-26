@@ -20,7 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   String initialname;
   String pname;
   var datasnapshot;
-  formValidation() {
+
+  bool valid;
+
+  bool _passwordVisible;
+  Widget iconType;
+
+  formValidation(valid) {
     _batch = '20' + uname.substring(4, 6);
     _dept = uname.substring(6, 9);
     _regno = uname;
@@ -79,12 +85,24 @@ class _LoginPageState extends State<LoginPage> {
         .listen((event) {
       data = event.data;
 
-      if (data.isEmpty) {
-        print('not found');
-        return null;
+      if (data == null) {
+        setState(() {
+          iconType = Icon(
+            Icons.error,
+            color: Colors.red,
+          );
+        });
+        return false;
       } else {
         print('data found');
-        return 'found';
+
+        setState(() {
+          iconType = Icon(
+            Icons.check_circle,
+            color: Colors.green,
+          );
+        });
+        return true;
       }
     });
   }
@@ -120,21 +138,29 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget validuser() {
     return TextFormField(
-      controller: _uname,
-      decoration: InputDecoration(
-          filled: true,
-          labelText: "Username",
-          hintStyle: TextStyle(
-              color: Colors.grey,
-              fontFamily: "Poppins-Medium",
-              fontSize: ScreenUtil.getInstance().setSp(26))),
+      maxLength: 12,
       onChanged: (String input) {
         uname = input;
       },
+      controller: _uname,
+      decoration: InputDecoration(
+        filled: true,
+        prefixIcon: Icon(Icons.person),
+        suffixIcon: iconType,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue),
+        ),
+        labelText: "Username",
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontFamily: "Poppins-Medium",
+          fontSize: ScreenUtil.getInstance().setSp(26),
+        ),
+      ),
       validator: (String value) {
-        if ((value.isEmpty) &&
-            (!RegExp(r"^[0-9]{12}$").hasMatch(value)) &&
-            formValidation() != null) {
+        if ((value.isEmpty) ||
+            (!RegExp(r"^[0-9]{12}$").hasMatch(value)) ||
+            valid == false) {
           initialname = value;
           return 'Invalid Details';
         }
@@ -146,13 +172,32 @@ class _LoginPageState extends State<LoginPage> {
   Widget validpass() {
     return TextFormField(
       onTap: () async {
-        await formValidation();
+        if (uname != null) {
+          await formValidation(valid);
+        }
       },
-      obscureText: true,
+      obscureText: _passwordVisible,
       decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: Icon(
+            // Based on passwordVisible state choose the icon
+            _passwordVisible ? Icons.visibility : Icons.visibility_off,
+            color: Theme
+                .of(context)
+                .primaryColorDark,
+          ),
+          onPressed: () {
+            // Update the state i.e. toogle the state of passwordVisible variable
+            setState(() {
+              _passwordVisible = !_passwordVisible;
+            });
+          },
+        ),
+        prefixIcon: Icon(Icons.vpn_key),
         filled: true,
-        enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue),
+        ),
         labelText: "Password",
         hintStyle: TextStyle(
           color: Colors.grey,
@@ -164,20 +209,27 @@ class _LoginPageState extends State<LoginPage> {
         password = input;
       },
       validator: (String input) {
-        if (input != password) {
+        if (input != password || input.isEmpty) {
           return 'Password is incorrect';
         }
-
         return null;
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+    iconType = Icon(Icons.check_circle);
   }
 
   final _logkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil.getInstance()
+      ..init(context);
     ScreenUtil.instance =
         ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
     return new Scaffold(
@@ -327,10 +379,8 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  // _logkey.currentState.save();
                                   if (_logkey.currentState.validate()) {
                                     stream();
-                                    // _logkey.currentState.save();
                                   }
                                 },
                                 child: Center(
