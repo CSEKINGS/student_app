@@ -29,85 +29,84 @@ class _LoginPageState extends State<LoginPage> {
     try {
       _batch = '20' + uname.substring(4, 6);
       _dept = uname.substring(6, 9);
+      _regno = uname;
+      switch (_dept) {
+        case '101':
+          {
+            _dept = 'AE';
+          }
+          break;
+        case '102':
+          {
+            _dept = 'AUTOMOBILE';
+          }
+          break;
+        case '103':
+          {
+            _dept = 'CIVIL';
+          }
+          break;
+        case '104':
+          {
+            _dept = 'CSE';
+          }
+          break;
+        case '105':
+          {
+            _dept = 'EEE';
+          }
+          break;
+        case '106':
+          {
+            _dept = 'ECE';
+          }
+          break;
+        case '114':
+          {
+            _dept = 'MECH';
+          }
+          break;
+        case '121':
+          {
+            _dept = 'BIOMEDICAL';
+          }
+          break;
+      }
+      reference
+          .collection('student')
+          .document(_dept)
+          .collection(_batch)
+          .document(_regno)
+          .snapshots()
+          .listen((event) {
+        data = event.data;
+
+        if (data == null) {
+          setState(() {
+            iconType = Icon(
+              Icons.error,
+              color: Colors.red,
+            );
+          });
+          return false;
+        } else {
+          print('data found');
+
+          setState(() {
+            iconType = Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            );
+          });
+          return true;
+        }
+      });
     } catch (e) {
       snack.currentState.showSnackBar(SnackBar(
         duration: Duration(seconds: 1),
         content: Text('Bruh! Enter valid Username...smh '),
       ));
     }
-
-    _regno = uname;
-    switch (_dept) {
-      case '101':
-        {
-          _dept = 'AE';
-        }
-        break;
-      case '102':
-        {
-          _dept = 'AUTOMOBILE';
-        }
-        break;
-      case '103':
-        {
-          _dept = 'CIVIL';
-        }
-        break;
-      case '104':
-        {
-          _dept = 'CSE';
-        }
-        break;
-      case '105':
-        {
-          _dept = 'EEE';
-        }
-        break;
-      case '106':
-        {
-          _dept = 'ECE';
-        }
-        break;
-      case '114':
-        {
-          _dept = 'MECH';
-        }
-        break;
-      case '121':
-        {
-          _dept = 'BIOMEDICAL';
-        }
-        break;
-    }
-    reference
-        .collection('student')
-        .document(_dept)
-        .collection(_batch)
-        .document(_regno)
-        .snapshots()
-        .listen((event) {
-      data = event.data;
-
-      if (data == null) {
-        setState(() {
-          iconType = Icon(
-            Icons.error,
-            color: Colors.red,
-          );
-        });
-        return false;
-      } else {
-        print('data found');
-
-        setState(() {
-          iconType = Icon(
-            Icons.check_circle,
-            color: Colors.green,
-          );
-        });
-        return true;
-      }
-    });
   }
 
   stream() {
@@ -188,9 +187,7 @@ class _LoginPageState extends State<LoginPage> {
           icon: Icon(
             // Based on passwordVisible state choose the icon
             _passwordVisible ? Icons.visibility : Icons.visibility_off,
-            color: Theme
-                .of(context)
-                .primaryColorDark,
+            color: Theme.of(context).primaryColorDark,
           ),
           onPressed: () {
             // Update the state i.e. toogle the state of passwordVisible variable
