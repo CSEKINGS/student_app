@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'DbAndRefs.dart';
 
 // ignore: must_be_immutable
 class Attendance extends StatefulWidget {
   String yer, dep, text;
-
   Attendance(this.yer, this.dep, this.text);
 
   @override
@@ -21,6 +19,7 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     CollectionReference reference;
     if (widget.text == 'Delete students' ||
@@ -170,7 +169,7 @@ class _AttendanceState extends State<Attendance> {
                             : Colors.white,
                         child: ListTile(
                           title: new Text(item[index].name),
-                          subtitle: Text(item[index].age.toString()),
+                          subtitle: Text(item[index].age),
                           onTap: () {
                             setState(() {
                               item[index].isSelected = false;
@@ -211,6 +210,7 @@ class _AttendanceState extends State<Attendance> {
               onPressed: () {
                 if (widget.text == 'Delete students') {
                   _delete();
+                  _clearData();
                 } else if (widget.text == 'Attendance') {
                   _addAttendance();
                 } else if (widget.text == 'Delete department') {

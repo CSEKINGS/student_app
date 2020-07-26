@@ -6,24 +6,21 @@ import 'DbAndRefs.dart';
 import 'AddDetails.dart';
 
 // ignore: must_be_immutable
-class Details extends StatefulWidget {
+class GetDetails extends StatefulWidget {
   String text;
-  Details(this.text);
+  GetDetails(this.text);
   @override
-  _DetailsState createState() => _DetailsState();
+  _GetDetailsState createState() => _GetDetailsState();
 }
 
-class _DetailsState extends State<Details> {
-
+class _GetDetailsState extends State<GetDetails> {
   List<Contents> year = List();
   List<Contents> department = List();
   String yer, dep, cls;
   Dbref obj = new Dbref();
 
-
   @override
   void initState() {
-    // ignore: todo
     // TODO: implement initState
     super.initState();
     CollectionReference yearRef = obj.getDetailRef('year');
@@ -59,11 +56,10 @@ class _DetailsState extends State<Details> {
             },
             value: yer,
             items: year
-                .map((e) =>
-                DropdownMenuItem(
-                  child: Text(e.name),
-                  value: e.name,
-                ))
+                .map((e) => DropdownMenuItem(
+                      child: Text(e.name),
+                      value: e.name,
+                    ))
                 .toList(),
           ),
           DropdownButton(
@@ -75,11 +71,10 @@ class _DetailsState extends State<Details> {
             },
             value: dep,
             items: department
-                .map((e) =>
-                DropdownMenuItem(
-                  child: Text(e.name),
-                  value: e.name,
-                ))
+                .map((e) => DropdownMenuItem(
+                      child: Text(e.name),
+                      value: e.name,
+                    ))
                 .toList(),
           ),
           FlatButton(
@@ -90,31 +85,34 @@ class _DetailsState extends State<Details> {
               style: TextStyle(fontSize: 20.0),
             ),
             onPressed: () {
-              if (widget.text=='Attendance') {
+              if (widget.text == 'Attendance') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Attendance(yer, dep, widget.text)));
-              } else if (widget.text=='Add student') {
+                        builder: (context) =>
+                            Attendance(yer, dep, widget.text)));
+              } else if (widget.text == 'Add student') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => AddStudent(yer, dep)));
-              } else if (widget.text=='Add class') {
+              } else if (widget.text == 'Add class') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AddClass(yer, dep)));
-              } else if (widget.text=='Delete students') {
+                        builder: (context) => AddDetails(yer, dep)));
+              } else if (widget.text == 'Delete students') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Attendance(yer, dep, widget.text)));
-              } else if (widget.text=='Delete class') {
+                        builder: (context) =>
+                            Attendance(yer, dep, widget.text)));
+              } else if (widget.text == 'Delete class') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Attendance(yer, dep, widget.text)));
+                        builder: (context) =>
+                            Attendance(yer, dep, widget.text)));
               }
             },
           )

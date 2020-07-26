@@ -4,30 +4,28 @@ import 'DbAndRefs.dart';
 
 // ignore: must_be_immutable
 class AddStudent extends StatefulWidget {
-  String dep,yer;
-  AddStudent(this.yer,this.dep);
+  String dep, yer;
+  AddStudent(this.yer, this.dep);
 
   @override
   _AddStudentState createState() => _AddStudentState();
 }
 
 class _AddStudentState extends State<AddStudent> {
-
   TextEditingController eCtrl = new TextEditingController();
-  TextEditingController eCtrl1=new TextEditingController();
-  String name,age,cls;
-  Dbref obj=new Dbref();
-  List<Contents> classes=List();
+  TextEditingController eCtrl1 = new TextEditingController();
+  String name, age, cls;
+  Dbref obj = new Dbref();
+  List<Contents> classes = List();
 
   @override
   void initState() {
-    // ignore: todo
     // TODO: implement initState
     super.initState();
-    CollectionReference clsRef=obj.getDetailRef2(widget.yer,widget.dep);
+    CollectionReference clsRef = obj.getDetailRef2(widget.yer, widget.dep);
     clsRef.snapshots().listen((event) {
       setState(() {
-        for (int i=0; i<event.documents.length;i++){
+        for (int i = 0; i < event.documents.length; i++) {
           classes.add(Contents.fromSnapshot(event.documents[i]));
         }
       });
@@ -35,11 +33,8 @@ class _AddStudentState extends State<AddStudent> {
   }
 
   void save() {
-    CollectionReference ref=obj.getProfile(cls, widget.yer, widget.dep);
-    ref.add({
-      'name':eCtrl.value.text,
-      'age':eCtrl1.value.text.toString()
-    });
+    CollectionReference ref = obj.getProfile(cls, widget.yer, widget.dep);
+    ref.add({'name': eCtrl.value.text, 'age': eCtrl1.value.text.toString()});
   }
 
   @override
@@ -54,45 +49,45 @@ class _AddStudentState extends State<AddStudent> {
           width: 200,
           child: Column(
             children: <Widget>[
-
               new Text('Name:'),
               new TextField(
                 controller: eCtrl,
-                onSubmitted: (value){
+                onSubmitted: (value) {
                   setState(() {
-                    name=value;
+                    name = value;
                   });
                 },
               ),
-
               new Text('age:'),
               new TextField(
                 controller: eCtrl1,
-                onSubmitted: (value){
+                onSubmitted: (value) {
                   setState(() {
-                    age=value;
+                    age = value;
                   });
                 },
               ),
-
               new DropdownButton(
                 hint: Text('select class'),
-                onChanged: (name){
+                onChanged: (name) {
                   setState(() {
-                    cls=name;
+                    cls = name;
                   });
                 },
                 value: cls,
-                items: classes.map((e) => DropdownMenuItem(
-                  child: Text(e.name),
-                  value: e.name,
-                )).toList(),
+                items: classes
+                    .map((e) => DropdownMenuItem(
+                          child: Text(e.name),
+                          value: e.name,
+                        ))
+                    .toList(),
               ),
-
               new FlatButton(
                 child: Text('enter'),
-                onPressed: (){
-                  if(eCtrl.value.text!=null&&eCtrl1.value.text!=null&&cls!=null){
+                onPressed: () {
+                  if (eCtrl.value.text != null &&
+                      eCtrl1.value.text != null &&
+                      cls != null) {
                     save();
                     eCtrl.clear();
                     eCtrl1.clear();
