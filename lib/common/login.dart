@@ -13,8 +13,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String uname, _batch, _dept, _regno, email, password = '16-02-2000';
   Map data;
-  final reference = Firestore.instance;
-  var details = [];
+  var reference = Firestore.instance;
+  List details = [];
   TextEditingController _uname = TextEditingController();
   TextEditingController _pass = TextEditingController();
   String bname;
@@ -224,6 +224,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
     _passwordVisible = false;
     iconType = Icon(Icons.check_circle);
   }
