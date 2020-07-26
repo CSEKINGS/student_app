@@ -16,19 +16,26 @@ class _LoginPageState extends State<LoginPage> {
   final reference = Firestore.instance;
   var details = [];
   TextEditingController _uname = TextEditingController();
+  TextEditingController _pass = TextEditingController();
   String bname;
   String initialname;
   String pname;
   var datasnapshot;
-
   bool valid;
-
   bool _passwordVisible;
   Widget iconType;
 
   formValidation(valid) {
-    _batch = '20' + uname.substring(4, 6);
-    _dept = uname.substring(6, 9);
+    try {
+      _batch = '20' + uname.substring(4, 6);
+      _dept = uname.substring(6, 9);
+    } catch (e) {
+      snack.currentState.showSnackBar(SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text('Bruh! Enter valid Username...smh '),
+      ));
+    }
+
     _regno = uname;
     switch (_dept) {
       case '101':
@@ -71,10 +78,6 @@ class _LoginPageState extends State<LoginPage> {
           _dept = 'BIOMEDICAL';
         }
         break;
-      default:
-        {
-          print('Details');
-        }
     }
     reference
         .collection('student')
@@ -132,6 +135,8 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
       );
+      _pass.clear();
+      _uname.clear();
     });
     print('state run successfully');
   }
@@ -171,12 +176,13 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget validpass() {
     return TextFormField(
+      controller: _pass,
       onTap: () async {
         if (uname != null) {
           await formValidation(valid);
         }
       },
-      obscureText: _passwordVisible,
+      obscureText: !_passwordVisible,
       decoration: InputDecoration(
         suffixIcon: IconButton(
           icon: Icon(
@@ -225,6 +231,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   final _logkey = GlobalKey<FormState>();
+  final snack = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -232,7 +239,8 @@ class _LoginPageState extends State<LoginPage> {
       ..init(context);
     ScreenUtil.instance =
         ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
-    return new Scaffold(
+    return Scaffold(
+      key: snack,
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: true,
       body: Stack(
