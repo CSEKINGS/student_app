@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
@@ -13,7 +12,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String uname, _batch, _dept, _regno, email, password = '16-02-2000';
-  var sub;
   Map data;
   final reference = Firestore.instance;
   var details = [];
@@ -22,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   String initialname;
   String pname;
   var datasnapshot;
-  formvalidation() {
+  formValidation() {
     _batch = '20' + uname.substring(4, 6);
     _dept = uname.substring(6, 9);
     _regno = uname;
@@ -72,26 +70,34 @@ class _LoginPageState extends State<LoginPage> {
           print('Details');
         }
     }
-    sub = reference
+    reference
         .collection('student')
         .document(_dept)
         .collection(_batch)
         .document(_regno)
-        .snapshots();
-    sub.listen((event) {
+        .snapshots()
+        .listen((event) {
       data = event.data;
+
       if (data.isEmpty) {
-        print('data found');
+        print('not found');
         return null;
       } else {
-        print('not found');
-        return 'datanotfound';
+        print('data found');
+        return 'found';
       }
     });
   }
 
   stream() {
-    sub.listen((event) {
+    reference
+        .collection('student')
+        .document(_dept)
+        .collection(_batch)
+        .document(_regno)
+        .snapshots()
+        .listen((event) {
+      print('listened');
       data = event.data;
       details.add(data['Name']);
       details.add(data['Rollno']);
@@ -104,10 +110,10 @@ class _LoginPageState extends State<LoginPage> {
       details.add(data['Department']);
       details.add(data['Address']);
       details.add(data['ProfileUrl']);
+
       Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
       );
-      print('data found');
     });
     print('state run successfully');
   }
@@ -122,26 +128,26 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.grey,
               fontFamily: "Poppins-Medium",
               fontSize: ScreenUtil.getInstance().setSp(26))),
-      onFieldSubmitted: (String input) {
+      onChanged: (String input) {
         uname = input;
-        formvalidation();
       },
-
       validator: (String value) {
         if ((value.isEmpty) &&
             (!RegExp(r"^[0-9]{12}$").hasMatch(value)) &&
-                formvalidation() != null) {
+            formValidation() != null) {
           initialname = value;
           return 'Invalid Details';
         }
         return null;
       },
-      
     );
   }
 
   Widget validpass() {
     return TextFormField(
+      onTap: () async {
+        await formValidation();
+      },
       obscureText: true,
       decoration: InputDecoration(
         filled: true,
@@ -322,10 +328,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: InkWell(
                                 onTap: () {
                                   // _logkey.currentState.save();
-                            
                                   if (_logkey.currentState.validate()) {
                                     stream();
-
                                     // _logkey.currentState.save();
                                   }
                                 },
