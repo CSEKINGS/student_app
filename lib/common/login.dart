@@ -12,20 +12,34 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname, _batch, _dept, _regno;
+  String uname, _batch, _dept, _regno, email, password;
   var sub;
   Map data;
   final reference = Firestore.instance;
   var details = [];
-  String email;
-  void signin() {
+  TextEditingController _uname = TextEditingController();
+  String bname;
 
+  Future<void> signin() async {
+    if (_logkey.currentState.validate()) {
+      _logkey.currentState.save();
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
+        );
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   stream() {
-    _batch = '20' + uname.substring(4, 6);
-    _dept = uname.substring(6, 9);
-    _regno = uname;
+    bname = _uname.text;
+    _batch = '20' + bname.substring(4, 6);
+    _dept = bname.substring(6, 9);
+    _regno = bname;
     switch (_dept) {
       case '101':
         {
@@ -72,38 +86,45 @@ class _LoginPageState extends State<LoginPage> {
           print('Details');
         }
     }
-    reference
-        .collection('student')
-        .document(_dept)
-        .collection(_batch)
-        .document(_regno)
-        .snapshots()
-        .listen((event) {
-      data = event.data;
-      details.add(data['Name']);
-      details.add(data['Rollno']);
-      details.add(data['Regno']);
-      details.add(data['PhoneNo']);
-      details.add(data['DOB']);
-      details.add(data['Batch']);
-      details.add(data['Email']);
-      details.add(data['BloodGroup']);
-      details.add(data['Department']);
-      details.add(data['Address']);
-      details.add(data['ProfileUrl']);
-      email = details[6];
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
-      );
+    print('Switch run successfully');
+    setState(() {
+      reference
+          .collection('student')
+          .document(_dept)
+          .collection(_batch)
+          .document(_regno)
+          .snapshots()
+          .listen((event) {
+        data = event.data;
+        details.add(data['Name']);
+        details.add(data['Rollno']);
+        details.add(data['Regno']);
+        details.add(data['PhoneNo']);
+        details.add(data['DOB']);
+        details.add(data['Batch']);
+        details.add(data['Email']);
+        details.add(data['BloodGroup']);
+        details.add(data['Department']);
+        details.add(data['Address']);
+        details.add(data['ProfileUrl']);
+        email = data['Email'];
+        password = data['DOB'];
+      });
+
       print('state run successfully');
     });
   }
 
-  Widget validateform() {
+  Widget vldfrm() {
     return TextFormField(
+      controller: _uname,
       decoration: InputDecoration(
-          hintText: "username",
-          hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+          filled: true,
+          labelText: "Username",
+          hintStyle: TextStyle(
+              color: Colors.grey,
+              fontFamily: "Poppins-Medium",
+              fontSize: ScreenUtil.getInstance().setSp(26))),
       validator: (String value) {
         if ((value.isEmpty) || (!RegExp(r"^[0-9]{12}$").hasMatch(value))) {
           return 'Invalid Details';
@@ -112,7 +133,6 @@ class _LoginPageState extends State<LoginPage> {
       },
       onSaved: (String input) {
         uname = input.toString();
-        stream();
       },
     );
   }
@@ -218,43 +238,33 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
-                            Text("Username",
-                                style: TextStyle(
-                                    fontFamily: "Poppins-Medium",
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(26))),
-                            validateform(),
+                            vldfrm(),
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
-                            Text("PassWord",
-                                style: TextStyle(
-                                    fontFamily: "Poppins-Medium",
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(26))),
                             TextFormField(
                               obscureText: true,
                               decoration: InputDecoration(
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0)),
+                                filled: true,
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue)),
+                                labelText: "Password",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: "Poppins-Medium",
+                                  fontSize: ScreenUtil.getInstance().setSp(26),
+                                ),
+                              ),
+                              validator: (String input) {
+                                if (input != password) {
+                                  return 'Password is incorrect';
+                                }
+                                return null;
+                              },
                             ),
                             SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(35),
+                              height: ScreenUtil.getInstance().setHeight(60),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "Forgot Password?",
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontFamily: "Poppins-Medium",
-                                      fontSize:
-                                          ScreenUtil.getInstance().setSp(28)),
-                                )
-                              ],
-                            )
                           ],
                         ),
                       ),
@@ -316,14 +326,18 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(6.0),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Color(0xFF6078ea).withOpacity(.3),
-                                      offset: Offset(0.0, 8.0),
-                                      blurRadius: 8.0)
+                                    color: Color(0xFF6078ea).withOpacity(.3),
+                                    offset: Offset(0.0, 8.0),
+                                    blurRadius: 8.0,
+                                  )
                                 ]),
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  stream();
+                                  signin();
+                                },
                                 child: Center(
                                   child: Text("Student",
                                       style: TextStyle(
