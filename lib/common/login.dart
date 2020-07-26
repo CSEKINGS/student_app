@@ -20,8 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   String initialname;
   String pname;
   var datasnapshot;
-  bool valid;
-  formValidation(valid) {
+  formValidation() {
     _batch = '20' + uname.substring(4, 6);
     _dept = uname.substring(6, 9);
     _regno = uname;
@@ -82,10 +81,10 @@ class _LoginPageState extends State<LoginPage> {
 
       if (data.isEmpty) {
         print('not found');
-        return false;
+        return null;
       } else {
         print('data found');
-        return true;
+        return 'found';
       }
     });
   }
@@ -121,9 +120,6 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget validuser() {
     return TextFormField(
-      onChanged: (String input) {
-        uname = input;
-      },
       controller: _uname,
       decoration: InputDecoration(
           filled: true,
@@ -132,10 +128,14 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.grey,
               fontFamily: "Poppins-Medium",
               fontSize: ScreenUtil.getInstance().setSp(26))),
+      onChanged: (String input) {
+        uname = input;
+      },
       validator: (String value) {
-        if ((value.isEmpty) ||
-            (!RegExp(r"^[0-9]{12}$").hasMatch(value)) ||
-            (valid == false)) {
+        if ((value.isEmpty) &&
+            (!RegExp(r"^[0-9]{12}$").hasMatch(value)) &&
+            formValidation() != null) {
+          initialname = value;
           return 'Invalid Details';
         }
         return null;
@@ -145,8 +145,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget validpass() {
     return TextFormField(
-      onTap: () {
-        formValidation(valid);
+      onTap: () async {
+        await formValidation();
       },
       obscureText: true,
       decoration: InputDecoration(
@@ -164,9 +164,10 @@ class _LoginPageState extends State<LoginPage> {
         password = input;
       },
       validator: (String input) {
-        if (input != password || input.isEmpty) {
+        if (input != password) {
           return 'Password is incorrect';
         }
+
         return null;
       },
     );
@@ -326,8 +327,10 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
+                                  // _logkey.currentState.save();
                                   if (_logkey.currentState.validate()) {
                                     stream();
+                                    // _logkey.currentState.save();
                                   }
                                 },
                                 child: Center(
