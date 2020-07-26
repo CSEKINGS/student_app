@@ -12,7 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname, _batch, _dept, _regno, email, password;
+  String uname, _batch, _dept, _regno, email, password = '16-02-2000';
   var sub;
   Map data;
   final reference = Firestore.instance;
@@ -22,8 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   String initialname;
   String pname;
   var datasnapshot;
-
-  stream() {
+  formvalidation() {
     _batch = '20' + uname.substring(4, 6);
     _dept = uname.substring(6, 9);
     _regno = uname;
@@ -73,37 +72,47 @@ class _LoginPageState extends State<LoginPage> {
           print('Details');
         }
     }
-    print('Switch run successfully');
     sub = reference
         .collection('student')
         .document(_dept)
         .collection(_batch)
-        .document(_regno);
-     datasnapshot = sub.snapshots();
-    if (datasnapshot.hasData) {
-      datasnapshot.listen((event) {
-        data = event.data;
-        details.add(data['Name']);
-        details.add(data['Rollno']);
-        details.add(data['Regno']);
-        details.add(data['PhoneNo']);
-        details.add(data['DOB']);
-        details.add(data['Batch']);
-        details.add(data['Email']);
-        details.add(data['BloodGroup']);
-        details.add(data['Department']);
-        details.add(data['Address']);
-        details.add(data['ProfileUrl']);
-      });
-      print('data found');
-    } else {
-      print('not found');
-    }
+        .document(_regno)
+        .snapshots();
+    sub.listen((event) {
+      data = event.data;
+      if (data.isEmpty) {
+        print('data found');
+        return null;
+      } else {
+        print('not found');
+        return 'datanotfound';
+      }
+    });
+  }
 
+  stream() {
+    sub.listen((event) {
+      data = event.data;
+      details.add(data['Name']);
+      details.add(data['Rollno']);
+      details.add(data['Regno']);
+      details.add(data['PhoneNo']);
+      details.add(data['DOB']);
+      details.add(data['Batch']);
+      details.add(data['Email']);
+      details.add(data['BloodGroup']);
+      details.add(data['Department']);
+      details.add(data['Address']);
+      details.add(data['ProfileUrl']);
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
+      );
+      print('data found');
+    });
     print('state run successfully');
   }
 
-  Widget vldfrm() {
+  Widget validuser() {
     return TextFormField(
       controller: _uname,
       decoration: InputDecoration(
@@ -113,44 +122,51 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.grey,
               fontFamily: "Poppins-Medium",
               fontSize: ScreenUtil.getInstance().setSp(26))),
+      onFieldSubmitted: (String input) {
+        uname = input;
+        formvalidation();
+      },
+
       validator: (String value) {
-        if ((value.isEmpty) || (!RegExp(r"^[0-9]{12}$").hasMatch(value))) {
+        if ((value.isEmpty) &&
+            (!RegExp(r"^[0-9]{12}$").hasMatch(value)) &&
+                formvalidation() != null) {
           initialname = value;
           return 'Invalid Details';
         }
         return null;
       },
-      onSaved: (String input) {
-        uname = input.toString();
+      
+    );
+  }
+
+  Widget validpass() {
+    return TextFormField(
+      obscureText: true,
+      decoration: InputDecoration(
+        filled: true,
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+        labelText: "Password",
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontFamily: "Poppins-Medium",
+          fontSize: ScreenUtil.getInstance().setSp(26),
+        ),
+      ),
+      onFieldSubmitted: (String input) {
+        password = input;
+      },
+      validator: (String input) {
+        if (input != password) {
+          return 'Password is incorrect';
+        }
+
+        return null;
       },
     );
   }
 
-  Widget radioButton(bool isSelected) => Container(
-        width: 16.0,
-        height: 16.0,
-        padding: EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(width: 2.0, color: Colors.black)),
-        child: isSelected
-            ? Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.black),
-              )
-            : Container(),
-      );
-
-  Widget horizontalLine() => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Container(
-          width: ScreenUtil.getInstance().setWidth(120),
-          height: 1.0,
-          color: Colors.black26.withOpacity(.2),
-        ),
-      );
   final _logkey = GlobalKey<FormState>();
 
   @override
@@ -227,38 +243,11 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
-                            vldfrm(),
+                            validuser(),
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(30),
                             ),
-                            TextFormField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                filled: true,
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue)),
-                                labelText: "Password",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontFamily: "Poppins-Medium",
-                                  fontSize: ScreenUtil.getInstance().setSp(26),
-                                ),
-                              ),
-                              validator: (String input) {
-                                if (input != password) {
-                                  return 'Password is incorrect';
-                                }
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) =>
-                                          StudentBottomNav(details)),
-                                );
-                                return null;
-                              },
-                              onSaved: (String input) {
-                                pname = input;
-                              },
-                            ),
+                            validpass(),
                             SizedBox(
                               height: ScreenUtil.getInstance().setHeight(60),
                             ),
@@ -332,10 +321,11 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  _logkey.currentState.save();
-                                  stream();
-                                  if (_logkey.currentState.validate() &&
-                                      details.isNotEmpty) {
+                                  // _logkey.currentState.save();
+                            
+                                  if (_logkey.currentState.validate()) {
+                                    stream();
+
                                     // _logkey.currentState.save();
                                   }
                                 },
