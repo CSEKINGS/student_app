@@ -11,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname, _batch, _dept, _regno, email, password = '16-02-2000';
+  String uname, _batch, _dept, _regno, email, password;
   Map data;
   final reference = Firestore.instance;
   var details = [];
@@ -31,25 +31,6 @@ class _LoginPageState extends State<LoginPage> {
   Future processdata() async {
     _logkey.currentState.save();
     formValidation(valid);
-    // if (valid == true) {
-
-    // } else {
-
-    //   return Center(
-    //     child: AlertDialog(
-    //         title: Text('Title'),
-    //         content:
-    //             Container(width: 200, height: 200, color: Colors.transparent),
-    //         actions: <Widget>[
-    //           IconButton(
-    //             icon: Icon(Icons.error),
-    //             iconSize: 15,
-    //             onPressed: () {},
-    //             color: Colors.red,
-    //           ),
-    //         ]),
-    //   );
-    // }
   }
 
   Future formValidation(valid) async {
@@ -104,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
         .collection(_batch)
         .document(_regno)
         .snapshots()
-        .listen((event) {
+        .listen((event) async {
       data = event.data;
       if (data == null) {
         setState(() {
@@ -114,22 +95,19 @@ class _LoginPageState extends State<LoginPage> {
           );
         });
         return false;
-      } else if (pword != password) {
-        snack.currentState.showSnackBar(SnackBar(
-          duration: Duration(seconds: 1),
-          content: Text('Password is incorrect'),
-        ));
-        return false;
       } else {
-        print('data found');
-//        setState(() {
-//          iconType = Icon(
-//            Icons.check_circle,
-//            color: Colors.green,
-//          );
-//        });
-        stream();
-        return true;
+        password = await data['DOB'];
+        if (pword != password) {
+          snack.currentState.showSnackBar(SnackBar(
+            duration: Duration(seconds: 1),
+            content: Text('Password is incorrect'),
+          ));
+          return false;
+        } else {
+          print('data found');
+          await stream();
+          return true;
+        }
       }
     });
   }
