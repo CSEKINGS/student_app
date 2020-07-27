@@ -11,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String uname, _batch, _dept, _regno, email, password;
+  String _batch, _dept, _regno, password;
   Map data;
   final reference = Firestore.instance;
   var details = [];
@@ -19,7 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _pass = TextEditingController();
   String pword;
   String initialname;
-  var datasnapshot;
   bool valid;
   bool _passwordVisible;
   Widget iconType;
@@ -200,11 +199,6 @@ class _LoginPageState extends State<LoginPage> {
       onChanged: (String input) {
         passkey.currentState.validate();
       },
-      // onTap: () async {
-      //   if (uname != null) {
-      //     await formValidation(valid);
-      //   }
-      // },
       obscureText: !_passwordVisible,
       decoration: InputDecoration(
         suffixIcon: IconButton(
@@ -235,8 +229,6 @@ class _LoginPageState extends State<LoginPage> {
       onSaved: (String input) {
         pword = input;
       },
-      // (!RegExp(r"^(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])-[0-9]{4}$")
-      //       .hasMatch(input))
       validator: (String input) {
         if (!RegExp(r"^[0-9/-]{10}$").hasMatch(input)) {
           return 'Password is incorrect';
@@ -250,7 +242,6 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _passwordVisible = false;
-
     iconType = Icon(Icons.check_circle);
   }
 
