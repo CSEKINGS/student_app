@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   final snack = GlobalKey<ScaffoldState>();
   final ukey = GlobalKey<FormFieldState>();
   final passkey = GlobalKey<FormFieldState>();
+
   Future processdata() async {
     _logkey.currentState.save();
     formValidation(valid);
@@ -54,7 +53,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future formValidation(valid) async {
-    // try {
     _batch = '20' + initialname.substring(4, 6);
     _dept = initialname.substring(6, 9);
     _regno = initialname;
@@ -108,36 +106,32 @@ class _LoginPageState extends State<LoginPage> {
         .snapshots()
         .listen((event) {
       data = event.data;
-      if ((data == null) || (pword != password)) {
-        //     iconType = Icon(
-        //       Icons.error,
-        //       color: Colors.red,
-        //     );
-        //    _logkey.currentState.reset();
-        // initialname = null;
-        // pword = null;
-        // details = null;
+      if (data == null) {
+        setState(() {
+          iconType = Icon(
+            Icons.error,
+            color: Colors.red,
+          );
+        });
+        return false;
+      } else if (pword != password) {
         snack.currentState.showSnackBar(SnackBar(
           duration: Duration(seconds: 1),
-          content: Text('Bruh! Enter valid Username...smh '),
+          content: Text('Password is incorrect'),
         ));
         return false;
       } else {
         print('data found');
-        iconType = Icon(
-          Icons.check_circle,
-          color: Colors.green,
-        );
+//        setState(() {
+//          iconType = Icon(
+//            Icons.check_circle,
+//            color: Colors.green,
+//          );
+//        });
         stream();
         return true;
       }
     });
-    // } catch (e) {
-    //   snack.currentState.showSnackBar(SnackBar(
-    //     duration: Duration(seconds: 1),
-    //     content: Text('Bruh! Enter valid Username...smh '),
-    //   ));
-    // }
   }
 
   Future stream() async {
@@ -168,6 +162,8 @@ class _LoginPageState extends State<LoginPage> {
     });
     _pass.clear();
     _uname.clear();
+    iconType = Icon(Icons.check_circle);
+
     print('state run successfully');
   }
 
@@ -198,16 +194,20 @@ class _LoginPageState extends State<LoginPage> {
       },
       validator: (String input) {
         if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
-          iconType = Icon(
-            Icons.error,
-            color: Colors.red,
-          );
+          setState(() {
+            iconType = Icon(
+              Icons.error,
+              color: Colors.red,
+            );
+          });
           return 'Invalid Details';
         } else {
-          iconType = Icon(
-            Icons.check_circle,
-            color: Colors.green,
-          );
+          setState(() {
+            iconType = Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            );
+          });
         }
         return null;
       },
@@ -272,7 +272,13 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _passwordVisible = false;
+
     iconType = Icon(Icons.check_circle);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
