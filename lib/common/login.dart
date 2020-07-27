@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,103 +15,91 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String uname, _batch, _dept, _regno, email, password = '16-02-2000';
   Map data;
-  var reference = Firestore.instance;
-  List details = [];
+  final reference = Firestore.instance;
+  var details = [];
   TextEditingController _uname = TextEditingController();
   TextEditingController _pass = TextEditingController();
-  String bname;
+  String pword;
   String initialname;
-  String pname;
   var datasnapshot;
   bool valid;
   bool _passwordVisible;
   Widget iconType;
+  final _logkey = GlobalKey<FormState>();
+  final snack = GlobalKey<ScaffoldState>();
+  final ukey = GlobalKey<FormFieldState>();
+  final passkey = GlobalKey<FormFieldState>();
+  Future processdata() async {
+    _logkey.currentState.save();
+    formValidation(valid);
+    // if (valid == true) {
 
-  formValidation(valid) {
-    try {
-      _batch = '20' + uname.substring(4, 6);
-      _dept = uname.substring(6, 9);
-      _regno = uname;
-      switch (_dept) {
-        case '101':
-          {
-            _dept = 'AE';
-          }
-          break;
-        case '102':
-          {
-            _dept = 'AUTOMOBILE';
-          }
-          break;
-        case '103':
-          {
-            _dept = 'CIVIL';
-          }
-          break;
-        case '104':
-          {
-            _dept = 'CSE';
-          }
-          break;
-        case '105':
-          {
-            _dept = 'EEE';
-          }
-          break;
-        case '106':
-          {
-            _dept = 'ECE';
-          }
-          break;
-        case '114':
-          {
-            _dept = 'MECH';
-          }
-          break;
-        case '121':
-          {
-            _dept = 'BIOMEDICAL';
-          }
-          break;
-      }
-      reference
-          .collection('student')
-          .document(_dept)
-          .collection(_batch)
-          .document(_regno)
-          .snapshots()
-          .listen((event) {
-        data = event.data;
+    // } else {
 
-        if (data == null) {
-          setState(() {
-            iconType = Icon(
-              Icons.error,
-              color: Colors.red,
-            );
-          });
-          return false;
-        } else {
-          print('data found');
-
-          setState(() {
-            iconType = Icon(
-              Icons.check_circle,
-              color: Colors.green,
-            );
-          });
-          return true;
-        }
-      });
-    } catch (e) {
-      snack.currentState.showSnackBar(SnackBar(
-        duration: Duration(seconds: 1),
-        content: Text('Bruh! Enter valid Username...smh '),
-      ));
-    }
+    //   return Center(
+    //     child: AlertDialog(
+    //         title: Text('Title'),
+    //         content:
+    //             Container(width: 200, height: 200, color: Colors.transparent),
+    //         actions: <Widget>[
+    //           IconButton(
+    //             icon: Icon(Icons.error),
+    //             iconSize: 15,
+    //             onPressed: () {},
+    //             color: Colors.red,
+    //           ),
+    //         ]),
+    //   );
+    // }
   }
 
-  stream() {
+  Future formValidation(valid) async {
+    // try {
+    _batch = '20' + initialname.substring(4, 6);
+    _dept = initialname.substring(6, 9);
+    _regno = initialname;
+    switch (_dept) {
+      case '101':
+        {
+          _dept = 'AE';
+        }
+        break;
+      case '102':
+        {
+          _dept = 'AUTOMOBILE';
+        }
+        break;
+      case '103':
+        {
+          _dept = 'CIVIL';
+        }
+        break;
+      case '104':
+        {
+          _dept = 'CSE';
+        }
+        break;
+      case '105':
+        {
+          _dept = 'EEE';
+        }
+        break;
+      case '106':
+        {
+          _dept = 'ECE';
+        }
+        break;
+      case '114':
+        {
+          _dept = 'MECH';
+        }
+        break;
+      case '121':
+        {
+          _dept = 'BIOMEDICAL';
+        }
+        break;
+    }
     reference
         .collection('student')
         .document(_dept)
@@ -117,6 +107,48 @@ class _LoginPageState extends State<LoginPage> {
         .document(_regno)
         .snapshots()
         .listen((event) {
+      data = event.data;
+      if ((data == null) || (pword != password)) {
+        //     iconType = Icon(
+        //       Icons.error,
+        //       color: Colors.red,
+        //     );
+        //    _logkey.currentState.reset();
+        // initialname = null;
+        // pword = null;
+        // details = null;
+        snack.currentState.showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text('Bruh! Enter valid Username...smh '),
+        ));
+        return false;
+      } else {
+        print('data found');
+        iconType = Icon(
+          Icons.check_circle,
+          color: Colors.green,
+        );
+        stream();
+        return true;
+      }
+    });
+    // } catch (e) {
+    //   snack.currentState.showSnackBar(SnackBar(
+    //     duration: Duration(seconds: 1),
+    //     content: Text('Bruh! Enter valid Username...smh '),
+    //   ));
+    // }
+  }
+
+  Future stream() async {
+    // ignore: await_only_futures
+    await reference
+        .collection('student')
+        .document(_dept)
+        .collection(_batch)
+        .document(_regno)
+        .snapshots()
+        .listen((event) async {
       print('listened');
       data = event.data;
       details.add(data['Name']);
@@ -130,21 +162,21 @@ class _LoginPageState extends State<LoginPage> {
       details.add(data['Department']);
       details.add(data['Address']);
       details.add(data['ProfileUrl']);
-
-      Navigator.of(context).push(
+      await Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
       );
-      _pass.clear();
-      _uname.clear();
     });
+    _pass.clear();
+    _uname.clear();
     print('state run successfully');
   }
 
   Widget validuser() {
     return TextFormField(
+      key: ukey,
       maxLength: 12,
       onChanged: (String input) {
-        uname = input;
+        ukey.currentState.validate();
       },
       controller: _uname,
       decoration: InputDecoration(
@@ -161,12 +193,21 @@ class _LoginPageState extends State<LoginPage> {
           fontSize: ScreenUtil.getInstance().setSp(26),
         ),
       ),
-      validator: (String value) {
-        if ((value.isEmpty) ||
-            (!RegExp(r"^[0-9]{12}$").hasMatch(value)) ||
-            valid == false) {
-          initialname = value;
+      onSaved: (String input) {
+        initialname = input;
+      },
+      validator: (String input) {
+        if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
+          iconType = Icon(
+            Icons.error,
+            color: Colors.red,
+          );
           return 'Invalid Details';
+        } else {
+          iconType = Icon(
+            Icons.check_circle,
+            color: Colors.green,
+          );
         }
         return null;
       },
@@ -175,13 +216,17 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget validpass() {
     return TextFormField(
-      maxLength: 10,
+      key: passkey,
       controller: _pass,
-      onTap: () async {
-        if (uname != null) {
-          await formValidation(valid);
-        }
+      maxLength: 10,
+      onChanged: (String input) {
+        passkey.currentState.validate();
       },
+      // onTap: () async {
+      //   if (uname != null) {
+      //     await formValidation(valid);
+      //   }
+      // },
       obscureText: !_passwordVisible,
       decoration: InputDecoration(
         suffixIcon: IconButton(
@@ -209,11 +254,13 @@ class _LoginPageState extends State<LoginPage> {
           fontSize: ScreenUtil.getInstance().setSp(26),
         ),
       ),
-      onFieldSubmitted: (String input) {
-        password = input;
+      onSaved: (String input) {
+        pword = input;
       },
+      // (!RegExp(r"^(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])-[0-9]{4}$")
+      //       .hasMatch(input))
       validator: (String input) {
-        if (input != password || input.isEmpty) {
+        if (!RegExp(r"^[0-9/-]{10}$").hasMatch(input)) {
           return 'Password is incorrect';
         }
         return null;
@@ -224,13 +271,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-
     _passwordVisible = false;
     iconType = Icon(Icons.check_circle);
   }
-
-  final _logkey = GlobalKey<FormState>();
-  final snack = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -309,11 +352,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             validuser(),
                             SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(20),
+                              height: ScreenUtil.getInstance().setHeight(30),
                             ),
                             validpass(),
                             SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(30),
+                              height: ScreenUtil.getInstance().setHeight(60),
                             ),
                           ],
                         ),
@@ -384,9 +427,11 @@ class _LoginPageState extends State<LoginPage> {
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                onTap: () {
-                                  if (_logkey.currentState.validate()) {
-                                    stream();
+                                onTap: () async {
+                                  if (ukey.currentState.validate()) {
+                                    if (passkey.currentState.validate()) {
+                                      processdata();
+                                    }
                                   }
                                 },
                                 child: Center(
