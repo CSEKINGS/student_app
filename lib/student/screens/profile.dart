@@ -32,22 +32,36 @@ class _ProfileState extends State<Profile> {
                   },
                 ),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text('Name' + widget.details[0]),
-                    Text('Register No:' + widget.details[1]),
-                    Text('Roll No ' + widget.details[2]),
-                    Text('Phone Number ' + widget.details[3]),
-                    Text('DOB ' + widget.details[4]),
-                    Text('Batch ' + widget.details[5]),
-                    Text('Email ' + widget.details[6]),
-                    Text('BloodGroup ' + widget.details[7]),
-                    Text('Department ' + widget.details[8]),
-                    Text('Address ' + widget.details[9]),
+                    profileCardView('Name : ' + widget.details[0]),
+                    profileCardView('Register no : ' +
+                        widget.details[1].toString().toUpperCase()),
+                    profileCardView('Phone number : ' + widget.details[3]),
+                    profileCardView('DOB : ' + widget.details[4]),
+                    profileCardView('Batch : ' + widget.details[5]),
+                    profileCardView('Email : ' + widget.details[6]),
+                    profileCardView('Blood group : ' + widget.details[7]),
+                    profileCardView('Department : ' + widget.details[8]),
+                    profileCardView('Address : ' + widget.details[9]),
                   ],
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Card profileCardView(String detailsText) {
+    return Card(
+      elevation: .8,
+      child: Padding(
+        padding: const EdgeInsets.all(23.0),
+        child: Text(
+          detailsText,
+          style: TextStyle(fontSize: 16.0),
         ),
       ),
     );
