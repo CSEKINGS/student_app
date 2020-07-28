@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
@@ -265,10 +266,6 @@ class _LoginPageState extends State<LoginPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: Image.asset("assets/image_01.png"),
-              ),
               Expanded(
                 child: Container(),
               ),
@@ -279,18 +276,16 @@ class _LoginPageState extends State<LoginPage> {
             child: Padding(
               padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Image.asset(
-                        "assets/collage_logo.png",
-                        width: ScreenUtil.getInstance().setWidth(150),
-                        height: ScreenUtil.getInstance().setHeight(150),
-                      ),
-                    ],
+                  SizedBox(
+                    height: ScreenUtil.getInstance().setHeight(50),
+                  ),
+                  Flexible(
+                    child: Image.asset("assets/image_01.png"),
                   ),
                   SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(180),
+                    height: ScreenUtil.getInstance().setHeight(50),
                   ),
                   Container(
                     width: double.infinity,
@@ -310,7 +305,7 @@ class _LoginPageState extends State<LoginPage> {
                         ]),
                     child: Padding(
                       padding:
-                          EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                      EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                       child: Form(
                         key: _logkey,
                         child: Column(
@@ -319,7 +314,7 @@ class _LoginPageState extends State<LoginPage> {
                             Text("Login",
                                 style: TextStyle(
                                     fontSize:
-                                        ScreenUtil.getInstance().setSp(45),
+                                    ScreenUtil.getInstance().setSp(45),
                                     fontFamily: "Poppins-Bold",
                                     letterSpacing: .6)),
                             SizedBox(
