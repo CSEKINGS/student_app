@@ -10,6 +10,7 @@ class _GradeState extends State<Grade> {
   String url = 'https://coe1.annauniv.edu/home/';
   bool isLoading = true;
   final _key = UniqueKey();
+  WebViewController _controller;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -19,7 +20,14 @@ class _GradeState extends State<Grade> {
               key: _key,
               initialUrl: this.url,
               javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (finish) {
+              onWebViewCreated: (controller) {
+                _controller = controller;
+              },
+              onPageFinished: (url) {
+                _controller.evaluateJavascript(
+                  "document.getElementsByClassName('box')[0].style.display='none';" +
+                      "document.getElementsById('footer')[0].style.display='none';",
+                );
                 setState(() {
                   isLoading = false;
                 });
