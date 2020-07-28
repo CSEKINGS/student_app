@@ -305,7 +305,7 @@ class _LoginPageState extends State<LoginPage> {
                         ]),
                     child: Padding(
                       padding:
-                      EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                          EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                       child: Form(
                         key: _logkey,
                         child: Column(
@@ -314,7 +314,7 @@ class _LoginPageState extends State<LoginPage> {
                             Text("Login",
                                 style: TextStyle(
                                     fontSize:
-                                    ScreenUtil.getInstance().setSp(45),
+                                        ScreenUtil.getInstance().setSp(45),
                                     fontFamily: "Poppins-Bold",
                                     letterSpacing: .6)),
                             SizedBox(
