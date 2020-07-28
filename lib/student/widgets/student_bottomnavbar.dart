@@ -22,19 +22,27 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   Future<bool> _onBackPressed() {
     return showDialog(
           context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit an App'),
+          builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            title: Text(
+              'Do you want to logout?',
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
             actions: <Widget>[
-              new GestureDetector(
-                onTap: () => Navigator.of(context).pop(false),
-                child: Text("NO"),
+              CloseButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                color: Colors.red,
               ),
               SizedBox(height: 16),
-              new GestureDetector(
-                onTap: () => Navigator.of(context).pop(true),
-                child: Text("YES"),
+              IconButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.green,
+                ),
               ),
+              SizedBox(width: 16),
             ],
           ),
         ) ??
