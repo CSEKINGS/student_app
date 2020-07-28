@@ -44,6 +44,7 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   circular_profile_avatar: ^1.0.6
   image_picker: ^0.6.7+4
+  webview_flutter: ^0.3.22+1
 
 dev_dependencies:
   flutter_test:
