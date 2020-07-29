@@ -18,7 +18,9 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
   List details;
   Future<List> getList;
+  var storeValue;
   Future<SharedPreferences> _preference = SharedPreferences.getInstance();
+
   _StudentBottomNavState(this.details);
 
   Future<void> sharedStore() async {
@@ -26,9 +28,17 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
     setState(() {
       getList =
           preference.setStringList('details', details).then((bool success) {
+        sharedGet();
         return getList;
       });
     });
+  }
+
+  Future<void> sharedGet() async {
+    final SharedPreferences preference = await _preference;
+    storeValue = preference.getStringList('details');
+    print(storeValue);
+    return storeValue;
   }
 
   Future<bool> _onBackPressed() {
@@ -64,7 +74,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   @override
   void initState() {
     super.initState();
-    print(sharedStore());
+    sharedStore();
 
     _children = [
       Dashboard(),
