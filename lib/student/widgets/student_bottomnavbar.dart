@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
@@ -16,8 +17,19 @@ class StudentBottomNav extends StatefulWidget {
 class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
   List details;
-
+  List getlist;
+  SharedPreferences preference;
   _StudentBottomNavState(this.details);
+
+  Future<bool> sharedstore() async {
+    return await preference.setStringList('details', details);
+  }
+
+  List<String> sharedget() {
+    getlist = preference.getStringList('details');
+   
+    return getlist;
+  }
 
   Future<bool> _onBackPressed() {
     return showDialog(
@@ -52,6 +64,12 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   @override
   void initState() {
     super.initState();
+    sharedstore();
+    sharedget();
+    if (getlist.isNotEmpty) {
+      print(getlist);
+    }
+
     _children = [
       Dashboard(),
       Grade(details),

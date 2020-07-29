@@ -39,7 +39,7 @@ class _UploadProfile extends State<UploadProfile> {
       try {
         StorageReference firebaseStorageRef = FirebaseStorage.instance
             .ref()
-            .child('profile/$batch/$dept/$rollNo');
+            .child('profile/$batch/$dept/$regNo');
         StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
         StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
         var url = await taskSnapshot.ref.getDownloadURL();
@@ -47,7 +47,7 @@ class _UploadProfile extends State<UploadProfile> {
         print('$profileUrl');
         DocumentReference ref = Firestore.instance
             .collection('student')
-            .document('$dept')
+            .document('$dept')//college,student,department,year,class(a,b)
             .collection('$batch')
             .document('$regNo');
         ref.setData({

@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -16,17 +17,20 @@ class _LoginPageState extends State<LoginPage> {
   Map data;
   final reference = Firestore.instance;
   var details = [];
-  TextEditingController _uname = TextEditingController();
-  TextEditingController _pass = TextEditingController();
+  // TextEditingController _uname = TextEditingController();
+  // TextEditingController _pass = TextEditingController();
   String pword;
   String initialname;
   bool valid;
   bool _passwordVisible;
   Widget iconType;
+  // bool checkUserSP, checkPwordSP;
+
   final _logkey = GlobalKey<FormState>();
   final snack = GlobalKey<ScaffoldState>();
   final ukey = GlobalKey<FormFieldState>();
   final passkey = GlobalKey<FormFieldState>();
+  // String userid, passcode;
 
   Future processdata() async {
     _logkey.currentState.save();
@@ -138,8 +142,9 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
       );
     });
-    _pass.clear();
-    _uname.clear();
+    //_user.clear();
+    //_pass.clear();
+
     iconType = Icon(Icons.check_circle);
 
     print('state run successfully');
@@ -149,10 +154,11 @@ class _LoginPageState extends State<LoginPage> {
     return TextFormField(
       key: ukey,
       maxLength: 12,
+      // controller: _uname,
+      initialValue: 'userid',
       onChanged: (String input) {
         ukey.currentState.validate();
       },
-      controller: _uname,
       decoration: InputDecoration(
         filled: true,
         prefixIcon: Icon(Icons.person),
@@ -195,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget validpass() {
     return TextFormField(
       key: passkey,
-      controller: _pass,
+      // controller: _pass,
       maxLength: 10,
       onChanged: (String input) {
         passkey.currentState.validate();
@@ -244,6 +250,11 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _passwordVisible = false;
     iconType = Icon(Icons.check_circle);
+    //   getValueFromSP();
+    //   if (checkUserSP == false && checkPwordSP == false) {
+    //     userid = 'usernamehere';
+    //     passcode = 'passwordhere';
+    //   }
   }
 
   @override
