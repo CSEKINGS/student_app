@@ -35,7 +35,7 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   Future upload(BuildContext context) async {
-    if (formkey.currentState.validate()) {
+    if (formKey.currentState.validate()) {
       try {
         StorageReference firebaseStorageRef = FirebaseStorage.instance
             .ref()
@@ -52,8 +52,8 @@ class _UploadProfile extends State<UploadProfile> {
             .document('$regNo');
         ref.setData({
           'Name': '$name',
-          'Rollno': '$rollNo',
-          'Regno': '$regNo',
+          'RollNo': '$rollNo',
+          'RegNo': '$regNo',
           'Email': '$email',
           'PhoneNo': '$phoneNo',
           'BloodGroup': '$blood',
@@ -72,10 +72,9 @@ class _UploadProfile extends State<UploadProfile> {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('Submitted Successfully'),
         ));
-        formkey.currentState.reset();
+        formKey.currentState.reset();
         setState(() {
-            _image = null;
-
+          _image = null;
         });
       } catch (e) {
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -89,8 +88,9 @@ class _UploadProfile extends State<UploadProfile> {
     }
   }
 
-  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  Widget buildname() {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  Widget buildName() {
     return TextFormField(
       decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -325,8 +325,7 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  Widget Uprofile() {
+  Widget viewProfile() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -369,13 +368,13 @@ class _UploadProfile extends State<UploadProfile> {
           child: Container(
             margin: EdgeInsets.all(20),
             child: Form(
-              key: formkey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Uprofile(),
+                  viewProfile(),
                   SizedBox(height: 10),
-                  buildname(),
+                  buildName(),
                   SizedBox(height: 10),
                   buildrolno(),
                   SizedBox(height: 10),
@@ -402,9 +401,8 @@ class _UploadProfile extends State<UploadProfile> {
                           fontSize: 16,
                         )),
                     onPressed: () {
-                      formkey.currentState.save();
+                      formKey.currentState.save();
                       upload(context);
-                      
                     }, //onPressed
                   ),
                 ],
