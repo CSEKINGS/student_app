@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -16,7 +15,8 @@ class _LoginPageState extends State<LoginPage> {
   String _batch, _dept, _regno, password;
   Map data;
   final reference = Firestore.instance;
-  var details = [];
+  List<String> details = [];
+
   // TextEditingController _uname = TextEditingController();
   // TextEditingController _pass = TextEditingController();
   String pword;
@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   bool valid;
   bool _passwordVisible;
   Widget iconType;
+
   // bool checkUserSP, checkPwordSP;
 
   final _logkey = GlobalKey<FormState>();

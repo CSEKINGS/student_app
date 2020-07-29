@@ -17,18 +17,18 @@ class StudentBottomNav extends StatefulWidget {
 class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
   List details;
-  List getlist;
-  SharedPreferences preference;
+  Future<List> getList;
+  Future<SharedPreferences> _preference = SharedPreferences.getInstance();
   _StudentBottomNavState(this.details);
 
-  Future<bool> sharedstore() async {
-    return await preference.setStringList('details', details);
-  }
-
-  List<String> sharedget() {
-    getlist = preference.getStringList('details');
-   
-    return getlist;
+  Future<void> sharedStore() async {
+    final SharedPreferences preference = await _preference;
+    setState(() {
+      getList =
+          preference.setStringList('details', details).then((bool success) {
+        return getList;
+      });
+    });
   }
 
   Future<bool> _onBackPressed() {
@@ -64,11 +64,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   @override
   void initState() {
     super.initState();
-    sharedstore();
-    sharedget();
-    if (getlist.isNotEmpty) {
-      print(getlist);
-    }
+    print(sharedStore());
 
     _children = [
       Dashboard(),
