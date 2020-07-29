@@ -54,7 +54,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
     super.initState();
     _children = [
       Dashboard(),
-      Grade(),
+      Grade(details),
       Profile(details),
       Notes(),
     ];

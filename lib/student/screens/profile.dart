@@ -35,8 +35,9 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     profileCardView('Name : ' + widget.details[0]),
-                    profileCardView('Register no : ' +
+                    profileCardView('Roll no : ' +
                         widget.details[1].toString().toUpperCase()),
+                    profileCardView('Register no : ' + widget.details[2]),
                     profileCardView('Phone number : ' + widget.details[3]),
                     profileCardView('DOB : ' + widget.details[4]),
                     profileCardView('Batch : ' + widget.details[5]),
