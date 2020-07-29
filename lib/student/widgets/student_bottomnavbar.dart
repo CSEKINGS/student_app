@@ -27,7 +27,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Text(
-              'Do you want to logout?',
+              'Do you want to logout..?',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
             actions: <Widget>[
