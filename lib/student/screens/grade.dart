@@ -17,6 +17,13 @@ class _GradeState extends State<Grade> {
   WebViewController _controller;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('grade openeeed');
+  }
+
+  @override
   Widget build(BuildContext context) => SafeArea(
         child: Scaffold(
           body: Stack(
@@ -41,7 +48,6 @@ class _GradeState extends State<Grade> {
                   setState(() {
                     isLoading = false;
                   });
-                  print(widget.details[4]);
                 },
               ),
               isLoading
@@ -56,9 +62,7 @@ class _GradeState extends State<Grade> {
               Icons.arrow_back,
               color: Colors.white,
             ),
-            onPressed: () {
-              _controller.goBack();
-            },
+            onPressed: () {},
           ),
         ),
       );
