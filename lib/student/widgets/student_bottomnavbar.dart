@@ -16,6 +16,7 @@ class StudentBottomNav extends StatefulWidget {
 class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
   List details;
+  Widget currentScreen;
 
   _StudentBottomNavState(this.details);
 
@@ -79,7 +80,10 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        body: _children[_currentIndex],
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _children,
+        ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           onTap: onTappedBar,
