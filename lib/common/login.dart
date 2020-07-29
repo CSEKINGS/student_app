@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();

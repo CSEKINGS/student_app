@@ -1,9 +1,9 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Profile extends StatefulWidget {
-  final List details;
-
+  List details;
   Profile(this.details);
 
   @override
