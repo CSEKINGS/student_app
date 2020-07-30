@@ -27,6 +27,48 @@ class _process_dataState extends State<process_data> {
 
     _batch = '20' + widget._regno.substring(4, 6);
     _dept = widget._regno.substring(6, 9);
+    switch (_dept) {
+      case '101':
+        {
+          _dept = 'AE';
+        }
+        break;
+      case '102':
+        {
+          _dept = 'AUTOMOBILE';
+        }
+        break;
+      case '103':
+        {
+          _dept = 'CIVIL';
+        }
+        break;
+      case '104':
+        {
+          _dept = 'CSE';
+        }
+        break;
+      case '105':
+        {
+          _dept = 'EEE';
+        }
+        break;
+      case '106':
+        {
+          _dept = 'ECE';
+        }
+        break;
+      case '114':
+        {
+          _dept = 'MECH';
+        }
+        break;
+      case '121':
+        {
+          _dept = 'BIOMEDICAL';
+        }
+        break;
+    }
     // ignore: await_only_futures
     await reference
         .collection('student')
