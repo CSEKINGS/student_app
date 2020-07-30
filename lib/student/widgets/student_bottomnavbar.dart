@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
@@ -27,7 +28,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Text(
-              'Do you want to logout..?',
+              'Do you want to exit..?',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
             actions: <Widget>[
@@ -37,7 +38,9 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
               ),
               SizedBox(height: 16),
               IconButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () async {
+                  SystemNavigator.pop();
+                },
                 icon: Icon(
                   Icons.check,
                   color: Colors.green,

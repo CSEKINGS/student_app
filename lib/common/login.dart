@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
-import 'package:student_app/student/widgets/student_bottomnavbar.dart';
 import 'package:student_app/common/process_data.dart';
 
 // ignore: must_be_immutable
@@ -112,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
         } else {
           print('data found');
           await Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => process_data(_regno)),
+            MaterialPageRoute(builder: (_) => ProcessData(_regno)),
           );
           return true;
         }

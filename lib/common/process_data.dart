@@ -3,27 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
 
-class process_data extends StatefulWidget {
-  String _regno;
-  process_data(this._regno);
+class ProcessData extends StatefulWidget {
+  final String _regno;
+
+  ProcessData(this._regno);
+
   @override
-  _process_dataState createState() => _process_dataState();
+  _ProcessDataState createState() => _ProcessDataState();
 }
 
 // ignore: camel_case_types
-class _process_dataState extends State<process_data> {
+class _ProcessDataState extends State<ProcessData> {
   final reference = Firestore.instance;
 
   String _batch, _dept;
+
   // Future<String> storeuser;
 
   List details = [];
   Future<SharedPreferences> _preference = SharedPreferences.getInstance();
-  Future<void> sharedStore() async {}
 
   Future<List> stream() async {
     final SharedPreferences preference = await _preference;
-     await preference.setString('username', widget._regno);
+    await preference.setString('username', widget._regno);
 
     _batch = '20' + widget._regno.substring(4, 6);
     _dept = widget._regno.substring(6, 9);
