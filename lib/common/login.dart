@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
+import 'package:student_app/common/process_data.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -110,45 +111,13 @@ class _LoginPageState extends State<LoginPage> {
           return false;
         } else {
           print('data found');
-          await stream();
+          await Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => process_data(_regno)),
+          );
           return true;
         }
       }
     });
-  }
-
-  Future stream() async {
-    // ignore: await_only_futures
-    await reference
-        .collection('student')
-        .document(_dept)
-        .collection(_batch)
-        .document(_regno)
-        .snapshots()
-        .listen((event) async {
-      print('listened');
-      data = event.data;
-      details.add(data['Name']);
-      details.add(data['Rollno']);
-      details.add(data['Regno']);
-      details.add(data['PhoneNo']);
-      details.add(data['DOB']);
-      details.add(data['Batch']);
-      details.add(data['Email']);
-      details.add(data['BloodGroup']);
-      details.add(data['Department']);
-      details.add(data['Address']);
-      details.add(data['ProfileUrl']);
-      await Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
-      );
-    });
-    //_user.clear();
-    //_pass.clear();
-
-    iconType = Icon(Icons.check_circle);
-
-    print('state run successfully');
   }
 
   Widget validuser() {
@@ -156,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
       key: ukey,
       maxLength: 12,
       // controller: _uname,
-      initialValue: 'userid',
+      // initialValue: 'userid',
       onChanged: (String input) {
         ukey.currentState.validate();
       },
