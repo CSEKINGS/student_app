@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
@@ -18,27 +17,8 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   List details;
   Future<List> getList;
   var storeValue;
-  Future<SharedPreferences> _preference = SharedPreferences.getInstance();
 
   _StudentBottomNavState(this.details);
-
-  Future<void> sharedStore() async {
-    final SharedPreferences preference = await _preference;
-    setState(() {
-      getList =
-          preference.setStringList('details', details).then((bool success) {
-        sharedGet();
-        return getList;
-      });
-    });
-  }
-
-  Future<void> sharedGet() async {
-    final SharedPreferences preference = await _preference;
-    storeValue = preference.getStringList('details');
-    print(storeValue);
-    return storeValue;
-  }
 
   Future<bool> _onBackPressed() {
     return showDialog(
@@ -73,7 +53,6 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   @override
   void initState() {
     super.initState();
-    sharedStore();
 
     _children = [
       Dashboard(),
