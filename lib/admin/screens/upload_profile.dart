@@ -1,7 +1,8 @@
 import 'dart:io';
-
+import 'package:student_app/admin/attendance/DbAndRefs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,6 +26,11 @@ class _UploadProfile extends State<UploadProfile> {
   File _image;
   String profileUrl;
   final picker = ImagePicker();
+  final reference = Firestore.instance;
+  String dep, yer, cls;
+  List<Contents> year = List();
+  List<Contents> department = List();
+  Dbref obj = new Dbref();
 
   Future getImage() async {
     var image = await picker.getImage(source: ImageSource.gallery);
@@ -37,9 +43,8 @@ class _UploadProfile extends State<UploadProfile> {
   Future upload(BuildContext context) async {
     if (formkey.currentState.validate()) {
       try {
-        StorageReference firebaseStorageRef = FirebaseStorage.instance
-            .ref()
-            .child('profile/$batch/$dept/$regNo');
+        StorageReference firebaseStorageRef =
+            FirebaseStorage.instance.ref().child('profile/$batch/$dept/$regNo');
         StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
         StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
         var url = await taskSnapshot.ref.getDownloadURL();
@@ -47,7 +52,7 @@ class _UploadProfile extends State<UploadProfile> {
         print('$profileUrl');
         DocumentReference ref = Firestore.instance
             .collection('student')
-            .document('$dept')//college,student,department,year,class(a,b)
+            .document('$dept') //college,student,department,year,class(a,b)
             .collection('$batch')
             .document('$regNo');
         ref.setData({
@@ -74,8 +79,7 @@ class _UploadProfile extends State<UploadProfile> {
         ));
         formkey.currentState.reset();
         setState(() {
-            _image = null;
-
+          _image = null;
         });
       } catch (e) {
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -234,48 +238,38 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   Widget buildbatch() {
-    return TextFormField(
-      keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
-          labelText: 'Batch',
-          hintText: 'Ex: 2017',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
-      maxLength: 04,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Batch Required';
-        }
-        return null;
+    return DropdownButton(
+      hint: Text('select year'),
+      onChanged: (String name) {
+        setState(() {
+          batch = name;
+        });
       },
-      onSaved: (String value) {
-        batch = value;
-      },
+      value: batch,
+      items: year
+          .map((e) => DropdownMenuItem(
+                child: Text(e.name),
+                value: e.name,
+              ))
+          .toList(),
     );
   }
 
   Widget builddept() {
-    return TextFormField(
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
-          labelText: 'Department',
-          hintText: 'Ex: CSE',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Department Required';
-        }
-        return null;
+    return DropdownButton(
+      hint: Text('select department'),
+      onChanged: (name) {
+        setState(() {
+          dept = name;
+        });
       },
-      onSaved: (String value) {
-        dept = value.toUpperCase();
-      },
+      value: dept,
+      items: department
+          .map((e) => DropdownMenuItem(
+                child: Text(e.name),
+                value: e.name,
+              ))
+          .toList(),
     );
   }
 
@@ -362,6 +356,28 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    CollectionReference yearRef = obj.getDetailRef('year');
+    CollectionReference depRef = obj.getDetailRef('department');
+    yearRef.snapshots().listen((event) {
+      setState(() {
+        for (int i = 0; i < event.documents.length; i++) {
+          year.add(Contents.fromSnapshot(event.documents[i]));
+        }
+      });
+    });
+    depRef.snapshots().listen((event) {
+      setState(() {
+        for (int i = 0; i < event.documents.length; i++) {
+          department.add(Contents.fromSnapshot(event.documents[i]));
+        }
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -391,7 +407,20 @@ class _UploadProfile extends State<UploadProfile> {
                   SizedBox(height: 10),
                   buildblood(),
                   SizedBox(height: 10),
-                  builddept(),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          'data',
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 100),
+                      Container(child: builddept()),
+                    ],
+                  ),
                   SizedBox(height: 10),
                   buildaddr(),
                   SizedBox(height: 10),
@@ -404,7 +433,6 @@ class _UploadProfile extends State<UploadProfile> {
                     onPressed: () {
                       formkey.currentState.save();
                       upload(context);
-                      
                     }, //onPressed
                   ),
                 ],
