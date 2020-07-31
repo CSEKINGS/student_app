@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_app/admin/screens/classes.dart';
+// import 'package:student_app/admin/screens/classes.dart';
 
 class UploadProfile extends StatefulWidget {
   @override
@@ -13,6 +13,7 @@ class UploadProfile extends StatefulWidget {
 }
 
 class _UploadProfile extends State<UploadProfile> {
+  // _UploadProfile();
   String id,
       name,
       rollNo,
@@ -25,12 +26,17 @@ class _UploadProfile extends State<UploadProfile> {
       address,
       dob;
   File _image;
+  String cls;
+  // static String cls;
+  // getclass getff = getclass(cls);
   String profileUrl;
   final picker = ImagePicker();
   final reference = Firestore.instance;
-  String dep, yer, cls;
+  String dep, yer;
   List<Contents> year = List();
   List<Contents> department = List();
+  List<Contents> classes = List();
+
   Dbref obj = new Dbref();
 
   Future getImage() async {
@@ -67,7 +73,8 @@ class _UploadProfile extends State<UploadProfile> {
           'Department': '$dept',
           'Address': '$address',
           'ProfileUrl': '$profileUrl',
-          'DOB': '$dob'
+          'DOB': '$dob',
+          'Class': '$cls'
         });
 
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -321,6 +328,54 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
+  initiateclass() {
+    CollectionReference reference;
+    reference = obj.getDetailRef2(batch, dept);
+    reference.snapshots().listen((event) {
+      classes.clear();
+      setState(() {
+        for (int i = 0; i < event.documents.length; i++) {
+          classes.add(Contents.fromSnapshot(event.documents[i]));
+        }
+      });
+    });
+  }
+
+  // classes(String batch, String dept) {}
+  Widget getclasses(batch, dept) {
+    initiateclass();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          child: Text(
+            'CLASS',
+            style: TextStyle(
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        Container(
+          child: DropdownButton(
+            hint: Text('select class'),
+            onChanged: (name) {
+              setState(() {
+                cls = name;
+              });
+            },
+            value: cls,
+            items: classes
+                .map((e) => DropdownMenuItem(
+                      child: Text(e.name),
+                      value: e.name,
+                    ))
+                .toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
   // ignore: non_constant_identifier_names
   Widget Uprofile() {
     return Row(
@@ -436,7 +491,7 @@ class _UploadProfile extends State<UploadProfile> {
                     ],
                   ),
                   (dept != null && batch != null)
-                      ? classes(batch, dept)
+                      ? getclasses(batch, dept)
                       : Container(),
                   SizedBox(height: 10),
                   buildaddr(),
