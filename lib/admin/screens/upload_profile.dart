@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:student_app/admin/screens/classes.dart';
 
 class UploadProfile extends StatefulWidget {
   @override
@@ -421,6 +422,9 @@ class _UploadProfile extends State<UploadProfile> {
                       Container(child: builddept()),
                     ],
                   ),
+                  (year != null && batch != null)
+                      ? classes(batch, dept)
+                      : Container(),
                   SizedBox(height: 10),
                   buildaddr(),
                   SizedBox(height: 10),

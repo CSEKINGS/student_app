@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:student_app/admin/attendance/DbAndRefs.dart';
 
 class classes extends StatefulWidget {
+  String batch, dept;
+  classes(this.batch, this.dept);
   @override
   _classesState createState() => _classesState();
 }
@@ -16,7 +18,7 @@ class _classesState extends State<classes> {
     // TODO: implement initState
     super.initState();
     CollectionReference reference;
-    reference = obj.getDetailRef2(widget.yer, widget.dep);
+    reference = obj.getDetailRef2(widget.batch, widget.dept);
     reference.snapshots().listen((event) {
       setState(() {
         for (int i = 0; i < event.documents.length; i++) {
