@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'Operations.dart';
+
+import 'AddDetails.dart';
 import 'AddStd.dart';
 import 'DbAndRefs.dart';
-import 'AddDetails.dart';
+import 'Operations.dart';
 
 // ignore: must_be_immutable
 class GetDetails extends StatefulWidget {
   String text;
+
   GetDetails(this.text);
+
   @override
   _GetDetailsState createState() => _GetDetailsState();
 }
@@ -21,7 +24,6 @@ class _GetDetailsState extends State<GetDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     CollectionReference yearRef = obj.getDetailRef('year');
     CollectionReference depRef = obj.getDetailRef('department');

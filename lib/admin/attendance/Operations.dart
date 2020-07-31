@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'DbAndRefs.dart';
 
 // ignore: must_be_immutable
@@ -19,7 +20,6 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     CollectionReference reference;
     if (widget.text == 'Delete students' ||
