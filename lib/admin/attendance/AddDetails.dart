@@ -93,7 +93,7 @@ class _AddDetailsState extends State<AddDetails> {
                   itemCount: classes.length,
                   itemBuilder: (context, int index) => Container(
                           child: ListTile(
-                            title: new Text(classes[index].name.toString()),
+                        title: new Text(classes[index].name.toString()),
                       ))),
             ],
           ),
