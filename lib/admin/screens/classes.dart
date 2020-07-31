@@ -30,20 +30,35 @@ class _classesState extends State<classes> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-      hint: Text('select class'),
-      onChanged: (name) {
-        setState(() {
-          cls = name;
-        });
-      },
-      value: cls,
-      items: classes
-          .map((e) => DropdownMenuItem(
-                child: Text(e.name),
-                value: e.name,
-              ))
-          .toList(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          child: Text(
+            'CLASS',
+            style: TextStyle(
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        Container(
+          child: DropdownButton(
+            hint: Text('select class'),
+            onChanged: (name) {
+              setState(() {
+                cls = name;
+              });
+            },
+            value: cls,
+            items: classes
+                .map((e) => DropdownMenuItem(
+                      child: Text(e.name),
+                      value: e.name,
+                    ))
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 }

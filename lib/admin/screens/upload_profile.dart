@@ -244,6 +244,7 @@ class _UploadProfile extends State<UploadProfile> {
       onChanged: (String name) {
         setState(() {
           batch = name;
+          print(dept);
         });
       },
       value: batch,
@@ -402,27 +403,39 @@ class _UploadProfile extends State<UploadProfile> {
                   SizedBox(height: 10),
                   builddob(),
                   SizedBox(height: 10),
-                  buildbatch(),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            'BATCH',
+                            style: TextStyle(
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        buildbatch()
+                      ]),
                   SizedBox(height: 10),
                   buildemail(),
                   SizedBox(height: 10),
                   buildblood(),
                   SizedBox(height: 10),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         child: Text(
-                          'data',
+                          'DEPARTMENT',
                           style: TextStyle(
-                            color: Colors.green,
+                            color: Colors.black87,
                           ),
                         ),
                       ),
-                      SizedBox(width: 100),
                       Container(child: builddept()),
                     ],
                   ),
-                  (year != null && batch != null)
+                  (dept != null && batch != null)
                       ? classes(batch, dept)
                       : Container(),
                   SizedBox(height: 10),
