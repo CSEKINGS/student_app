@@ -17,7 +17,7 @@ class Item {
   String key;
   Item(this.name, this.rollNo);
   Item.fromSnapshot(DocumentSnapshot snapshot)
-      : name = snapshot.data['name'],
+      : name = snapshot.data['Name'],
         rollNo = snapshot.data['Rollno'].toString(),
         key = snapshot.documentID;
 }
