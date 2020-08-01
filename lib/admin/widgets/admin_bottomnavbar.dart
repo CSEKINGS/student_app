@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/admin/attendance/Dialog.dart';
 import 'package:student_app/admin/screens/attendance_entry.dart';
 import 'package:student_app/admin/screens/mark_entry.dart';
 import 'package:student_app/admin/screens/upload_notes.dart';
@@ -12,10 +13,10 @@ class AdminBottomNav extends StatefulWidget {
 class _AdminBottomNavState extends State<AdminBottomNav> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    AttendanceEntry(),
+    DialogBox(),
     MarkEntry(),
     UploadNotes(),
- UploadProfile(),
+    UploadProfile(),
   ];
 
   void onTappedBar(int index) {
