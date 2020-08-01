@@ -12,17 +12,17 @@ class Contents {
 
 class Item {
   String name;
-  String age;
+  String rollNo;
   bool isSelected = false;
   String key;
-  Item(this.name, this.age);
+  Item(this.name, this.rollNo);
   Item.fromSnapshot(DocumentSnapshot snapshot)
       : name = snapshot.data['name'],
-        age = snapshot.data['age'].toString(),
+        rollNo = snapshot.data['Rollno'].toString(),
         key = snapshot.documentID;
 }
 
-class Dbref {
+class DbRef {
   CollectionReference getProfile(String cls, String yer, String dep) {
     return (Firestore.instance.collection('collage/student/$dep/$yer/$cls'));
   }

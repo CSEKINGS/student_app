@@ -16,7 +16,7 @@ class _AttendanceState extends State<Attendance> {
   String cls;
   List<Contents> classes = List();
   List<Item> item = List();
-  Dbref obj = new Dbref();
+  DbRef obj = new DbRef();
 
   @override
   void initState() {
@@ -169,7 +169,7 @@ class _AttendanceState extends State<Attendance> {
                             : Colors.white,
                         child: ListTile(
                           title: new Text(item[index].name),
-                          subtitle: Text(item[index].age),
+                          subtitle: Text(item[index].rollNo),
                           onTap: () {
                             setState(() {
                               item[index].isSelected = false;

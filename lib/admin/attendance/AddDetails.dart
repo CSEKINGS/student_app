@@ -16,7 +16,7 @@ class _AddDetailsState extends State<AddDetails> {
   List<Contents> classes = [];
   TextEditingController eCtrl = new TextEditingController();
   String name;
-  Dbref obj = new Dbref();
+  DbRef obj = new DbRef();
 
   @override
   void initState() {
