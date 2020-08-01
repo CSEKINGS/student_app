@@ -28,7 +28,7 @@ class DbRef {
   }
 
   CollectionReference placeAttendance(String cls, String yer, String dep) {
-    var datetime = new DateTime.now().toString();
+    var datetime = DateTime.now().toString();
     var dateParse = DateTime.parse(datetime);
     var date = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
     var hour = "${dateParse.hour}";

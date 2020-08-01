@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'AddDetails.dart';
 import 'DbAndRefs.dart';
 import 'Operations.dart';
 
-// ignore: must_be_immutable
 class GetDetails extends StatefulWidget {
-  String text;
+  final String text;
+
   GetDetails(this.text);
+
   @override
   _GetDetailsState createState() => _GetDetailsState();
 }
@@ -16,7 +18,7 @@ class _GetDetailsState extends State<GetDetails> {
   List<Contents> year = List();
   List<Contents> department = List();
   String yer, dep, cls;
-  DbRef obj = new DbRef();
+  DbRef obj = DbRef();
 
   @override
   void initState() {

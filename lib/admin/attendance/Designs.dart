@@ -1,7 +1,8 @@
-import 'Operations.dart';
 import 'package:flutter/material.dart';
+
 import 'AddDetails.dart';
 import 'GetDetails.dart';
+import 'Operations.dart';
 
 // ignore: must_be_immutable
 class CustomView extends StatefulWidget {
@@ -83,7 +84,7 @@ class _CustomViewState extends State<CustomView> {
                 ),
               ),
             ),
-            k ? GetDetails(widget.text) : new Container(),
+            k ? GetDetails(widget.text) : Container(),
           ],
         ),
       ),

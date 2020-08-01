@@ -85,11 +85,11 @@ class UploadNotesState extends State<UploadNotes> {
       children.add(tile);
     });
 
-    return new MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: new Scaffold(
+      home: Scaffold(
         key: _scaffoldKey,
-        body: new Container(
+        body: Container(
           padding: EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +102,7 @@ class UploadNotesState extends State<UploadNotes> {
               ),
               OutlineButton(
                 onPressed: () => openFileExplorer(),
-                child: new Text("Open file picker"),
+                child: Text("Open file picker"),
               ),
               SizedBox(
                 height: 20.0,

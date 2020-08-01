@@ -19,7 +19,6 @@ class _GradeState extends State<Grade> {
   @override
   void initState() {
     super.initState();
-    print('grade openeeed');
   }
 
   @override
@@ -55,13 +54,6 @@ class _GradeState extends State<Grade> {
                     )
                   : Stack(),
             ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {},
           ),
         ),
       );

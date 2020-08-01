@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'DbAndRefs.dart';
 
-// ignore: must_be_immutable
 class Attendance extends StatefulWidget {
-  String yer, dep, text;
+  final String yer, dep, text;
+
   Attendance(this.yer, this.dep, this.text);
 
   @override
@@ -15,7 +16,7 @@ class _AttendanceState extends State<Attendance> {
   String cls;
   List<Contents> classes = List();
   List<Item> item = List();
-  DbRef obj = new DbRef();
+  DbRef obj = DbRef();
 
   @override
   void initState() {
@@ -129,12 +130,12 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Selections'),
       ),
-      body: new SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             (widget.text == 'Delete students' || widget.text == 'Attendance')
@@ -167,7 +168,7 @@ class _AttendanceState extends State<Attendance> {
                             ? Colors.lightBlueAccent
                             : Colors.white,
                         child: ListTile(
-                          title: new Text(item[index].name),
+                          title: Text(item[index].name),
                           subtitle: Text(item[index].rollNo),
                           onTap: () {
                             setState(() {
@@ -191,7 +192,7 @@ class _AttendanceState extends State<Attendance> {
                             ? Colors.lightBlueAccent
                             : Colors.white,
                         child: ListTile(
-                          title: new Text(classes[index].name),
+                          title: Text(classes[index].name),
                           onTap: () {
                             setState(() {
                               classes[index].isSelected = false;

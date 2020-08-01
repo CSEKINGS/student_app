@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:student_app/admin/attendance/DbAndRefs.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:student_app/admin/attendance/DbAndRefs.dart';
 // import 'package:student_app/admin/screens/classes.dart';
 
 class UploadProfile extends StatefulWidget {
@@ -27,6 +28,7 @@ class _UploadProfile extends State<UploadProfile> {
       dob;
   File _image;
   String cls;
+
   // static String cls;
   // getclass getff = getclass(cls);
   String profileUrl;
@@ -37,7 +39,7 @@ class _UploadProfile extends State<UploadProfile> {
   List<Contents> department = List();
   List<Contents> classes = List();
 
-  DbRef obj = new DbRef();
+  DbRef obj = DbRef();
 
   Future getImage() async {
     var image = await picker.getImage(source: ImageSource.gallery);
@@ -393,7 +395,7 @@ class _UploadProfile extends State<UploadProfile> {
               radius: 70,
               backgroundColor: Color(0xff476cfb),
               child: ClipOval(
-                child: new SizedBox(
+                child: SizedBox(
                   width: 137.0,
                   height: 137.0,
                   child: (_image != null)

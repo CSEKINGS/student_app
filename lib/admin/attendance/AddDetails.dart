@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'DbAndRefs.dart';
 
-// ignore: must_be_immutable
 class AddDetails extends StatefulWidget {
-  String yer, dep;
+  final String yer, dep;
+
   AddDetails(this.yer, this.dep);
 
   @override
@@ -13,9 +14,9 @@ class AddDetails extends StatefulWidget {
 
 class _AddDetailsState extends State<AddDetails> {
   List<Contents> classes = [];
-  TextEditingController eCtrl = new TextEditingController();
+  TextEditingController eCtrl = TextEditingController();
   String name;
-  DbRef obj = new DbRef();
+  DbRef obj = DbRef();
 
   @override
   void initState() {
@@ -69,33 +70,34 @@ class _AddDetailsState extends State<AddDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('add class'),
+      appBar: AppBar(
+        title: Text('add class'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            TextField(
+              controller: eCtrl,
+              onSubmitted: (text) {
+                addClassname(text.toString());
+                eCtrl.clear();
+                clearData();
+                setState(() {});
+              },
+            ),
+            ListView.builder(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                padding: EdgeInsets.all(10),
+                itemCount: classes.length,
+                itemBuilder: (context, int index) => Container(
+                        child: ListTile(
+                      title: Text(classes[index].name.toString()),
+                    ))),
+          ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              new TextField(
-                controller: eCtrl,
-                onSubmitted: (text) {
-                  addClassname(text.toString());
-                  eCtrl.clear();
-                  clearData();
-                  setState(() {});
-                },
-              ),
-              new ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(10),
-                  itemCount: classes.length,
-                  itemBuilder: (context, int index) => Container(
-                          child: ListTile(
-                            title: new Text(classes[index].name.toString()),
-                      ))),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
