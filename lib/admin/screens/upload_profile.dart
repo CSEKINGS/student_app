@@ -499,6 +499,7 @@ class _UploadProfile extends State<UploadProfile> {
                   buildaddr(),
                   SizedBox(height: 10),
                   OutlineButton(
+                    splashColor: Colors.blue,
                     child: Text('Submit',
                         style: TextStyle(
                           color: Colors.blueAccent,
