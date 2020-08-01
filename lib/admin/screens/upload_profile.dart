@@ -58,9 +58,11 @@ class _UploadProfile extends State<UploadProfile> {
         profileUrl = url.toString();
         print('$profileUrl');
         DocumentReference ref = Firestore.instance
-            .collection('student')
-            .document('$dept') //college,student,department,year,class(a,b)
-            .collection('$batch')
+            .collection('college')
+            .document('student')
+            .collection('$dept')
+            .document('$batch')
+            .collection('$cls')
             .document('$regNo');
         ref.setData({
           'Name': '$name',
