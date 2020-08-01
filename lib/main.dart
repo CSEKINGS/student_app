@@ -6,8 +6,12 @@ import 'package:student_app/common/process_data.dart';
 String initScreen;
 
 Future<void> main() async {
+  // ignore: invalid_use_of_visible_for_testing_member
+  SharedPreferences.setMockInitialValues({});
   WidgetsFlutterBinding.ensureInitialized();
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
+
   initScreen = prefs.getString('username');
 
   runApp(MyApp());
