@@ -12,7 +12,6 @@ class ProcessData extends StatefulWidget {
   _ProcessDataState createState() => _ProcessDataState();
 }
 
-// ignore: camel_case_types
 class _ProcessDataState extends State<ProcessData> {
   final reference = Firestore.instance;
 
@@ -71,8 +70,8 @@ class _ProcessDataState extends State<ProcessData> {
         }
         break;
     }
-    // ignore: await_only_futures
-    await reference
+
+    reference
         .collection('student')
         .document(_dept)
         .collection(_batch)

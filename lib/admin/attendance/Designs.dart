@@ -4,9 +4,9 @@ import 'AddDetails.dart';
 import 'GetDetails.dart';
 import 'Operations.dart';
 
-// ignore: must_be_immutable
 class CustomView extends StatefulWidget {
-  String text;
+  final String text;
+
   CustomView(this.text);
 
   @override
