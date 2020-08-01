@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'DbAndRefs.dart';
 
 // ignore: must_be_immutable
@@ -63,7 +62,7 @@ class _AddDetailsState extends State<AddDetails> {
       addRef = obj.getDetailRef(yer);
     }
     addRef.add({
-      'name': name,
+      'name': name.toUpperCase(),
     });
   }
 
@@ -93,7 +92,7 @@ class _AddDetailsState extends State<AddDetails> {
                   itemCount: classes.length,
                   itemBuilder: (context, int index) => Container(
                           child: ListTile(
-                        title: new Text(classes[index].name.toString()),
+                            title: new Text(classes[index].name.toString()),
                       ))),
             ],
           ),
