@@ -6,7 +6,6 @@ import 'Operations.dart';
 
 class CustomView extends StatefulWidget {
   final String text;
-
   CustomView(this.text);
 
   @override
