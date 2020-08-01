@@ -16,7 +16,7 @@ class _AddStudentState extends State<AddStudent> {
   TextEditingController eCtrl = new TextEditingController();
   TextEditingController eCtrl1 = new TextEditingController();
   String name, age, cls;
-  Dbref obj = new Dbref();
+  DbRef obj = new DbRef();
   List<Contents> classes = List();
 
   @override

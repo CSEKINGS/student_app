@@ -37,7 +37,7 @@ class _UploadProfile extends State<UploadProfile> {
   List<Contents> department = List();
   List<Contents> classes = List();
 
-  Dbref obj = new Dbref();
+  DbRef obj = new DbRef();
 
   Future getImage() async {
     var image = await picker.getImage(source: ImageSource.gallery);
