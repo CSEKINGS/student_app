@@ -40,7 +40,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            title: Text('Grade'),
+            title: Text('Add'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.file_upload),
