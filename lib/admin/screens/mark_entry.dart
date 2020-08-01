@@ -16,7 +16,6 @@ class _MarkEntryState extends State<MarkEntry> {
             child: Column(
               children: <Widget>[
                 CustomView('Add class'),
-                CustomView('Add student'),
                 CustomView('Add year'),
                 CustomView('Add dep'),
                 CustomView('Delete students'),

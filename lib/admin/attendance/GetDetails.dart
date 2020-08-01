@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'AddDetails.dart';
-import 'AddStd.dart';
 import 'DbAndRefs.dart';
 import 'Operations.dart';
 
@@ -90,11 +89,6 @@ class _GetDetailsState extends State<GetDetails> {
                     MaterialPageRoute(
                         builder: (context) =>
                             Attendance(yer, dep, widget.text)));
-              } else if (widget.text == 'Add student') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddStudent(yer, dep)));
               } else if (widget.text == 'Add class') {
                 Navigator.push(
                     context,

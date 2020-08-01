@@ -30,10 +30,6 @@ class _CustomViewState extends State<CustomView> {
                   setState(() {
                     k = !k;
                   });
-                } else if (widget.text == 'Add student') {
-                  setState(() {
-                    k = !k;
-                  });
                 } else if (widget.text == 'Attendance') {
                   setState(() {
                     k = !k;
