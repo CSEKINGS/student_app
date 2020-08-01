@@ -39,7 +39,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            title: Text('Add'),
+            title: Text('Upgrade'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.file_upload),
