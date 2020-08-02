@@ -5,14 +5,14 @@ import 'package:student_app/common/onboarding_screen.dart';
 import 'package:student_app/common/process_data.dart';
 
 String initScreen;
-int onboard = 0;
+int onboard;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  onboard = prefs.getInt("initScreen");
-  await prefs.setInt("initScreen", 1);
+  onboard = prefs.getInt("onboard");
+  await prefs.setInt("onboard", 1);
 
   initScreen = prefs.getString('username');
 
