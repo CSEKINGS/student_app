@@ -12,14 +12,23 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: OutlineButton(
-        onPressed: () async {
-          final SharedPreferences preference = await _preference;
-          await preference.setString('username', null);
-          SystemNavigator.pop();
-        },
-        child: Text('Logout'),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Center(
+              child: OutlineButton(
+                onPressed: () async {
+                  final SharedPreferences preference = await _preference;
+                  await preference.setString('username', null);
+                  SystemNavigator.pop();
+                },
+                child: Text('Logout'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

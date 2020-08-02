@@ -133,13 +133,17 @@ class _NotesState extends State<Notes> {
                           child: ListTile(
                             trailing: IconButton(
                               icon: Icon(
-                                Icons.file_download,
+                                Icons.arrow_downward,
+                                color: Colors.green,
                               ),
                               onPressed: () {
                                 openURL(_notesList[index]);
                               },
                             ),
-                            leading: Icon(Icons.note),
+                            leading: Icon(
+                              Icons.insert_drive_file,
+                              color: Colors.deepOrange,
+                            ),
                             title: Text(
                               _notesList[index],
                             ),
