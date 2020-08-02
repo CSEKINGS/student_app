@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/common/login.dart';
+import 'package:student_app/common/onboarding_screen.dart';
 import 'package:student_app/common/process_data.dart';
 
 String initScreen;
+int onboard = 0;
 
 Future<void> main() async {
-  // ignore: invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues({});
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  onboard = prefs.getInt("initScreen");
+  await prefs.setInt("initScreen", 1);
 
   initScreen = prefs.getString('username');
 
@@ -18,7 +20,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -33,11 +34,17 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.lightBlue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: initScreen == '' || initScreen == null ? "first" : "/",
-      routes: {
-        '/': (context) => ProcessData(initScreen),
-        "first": (context) => LoginPage(),
-      },
+      home: route(),
     );
+  }
+}
+
+Widget route() {
+  if (onboard == 0 || onboard == null) {
+    return OnBoardingPage();
+  } else if (initScreen == '' || initScreen == null) {
+    return LoginPage();
+  } else {
+    return ProcessData(initScreen);
   }
 }
