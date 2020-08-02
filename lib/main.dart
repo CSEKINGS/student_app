@@ -5,14 +5,14 @@ import 'package:student_app/common/onboarding_screen.dart';
 import 'package:student_app/common/process_data.dart';
 
 String initScreen;
-int onboard;
+int onBoard;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  onboard = prefs.getInt("onboard");
-  await prefs.setInt("onboard", 1);
+  onBoard = prefs.getInt("onBoard");
+  await prefs.setInt("onBoard", 1);
 
   initScreen = prefs.getString('username');
 
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 Widget route() {
-  if (onboard == 0 || onboard == null) {
+  if (onBoard == 0 || onBoard == null) {
     return OnBoardingPage();
   } else if (initScreen == '' || initScreen == null) {
     return LoginPage();
