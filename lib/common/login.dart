@@ -1,16 +1,65 @@
+import 'dart:math';
+import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:';
 import 'package:student_app/common/process_data.dart';
+import 'theme.dart' as Theme;
+
+// void main() => runApp(new MyApp());
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return new MaterialApp(
+//       title: 'TheGorgeousLogin',
+//       theme: new ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: new LoginPage(),
+//     );
+//   }
+// }
 
 class LoginPage extends StatefulWidget {
+  LoginPage({Key key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginPageState createState() => new _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  final FocusNode myFocusNodeEmailLogin = FocusNode();
+  final FocusNode myFocusNodePasswordLogin = FocusNode();
+
+  final FocusNode myFocusNodePassword = FocusNode();
+  final FocusNode myFocusNodeEmail = FocusNode();
+  final FocusNode myFocusNodeName = FocusNode();
+
+  TextEditingController loginEmailController = new TextEditingController();
+  TextEditingController loginPasswordController = new TextEditingController();
+
+  bool _obscureTextLogin = true;
+  bool _obscureTextSignup = true;
+
+//  bool _obscureTextSignupConfirm = true;
+
+  TextEditingController signupEmailController = new TextEditingController();
+  TextEditingController signupNameController = new TextEditingController();
+  TextEditingController signupPasswordController = new TextEditingController();
+  TextEditingController signupConfirmPasswordController =
+      new TextEditingController();
+
+  PageController _pageController;
+
+  Color left = Colors.black;
+  Color right = Colors.white;
+
   String _batch, _dept, _regno, password;
   Map data;
   final reference = Firestore.instance;
@@ -33,7 +82,10 @@ class _LoginPageState extends State<LoginPage> {
   // String userid, passcode;
 
   Future processdata() async {
-    _logkey.currentState.save();
+    ukey.currentState.save();
+
+    passkey.currentState.save();
+
     formValidation(valid);
   }
 
@@ -92,17 +144,17 @@ class _LoginPageState extends State<LoginPage> {
         .listen((event) async {
       data = event.data;
       if (data == null) {
-        setState(() {
-          iconType = Icon(
-            Icons.error,
-            color: Colors.red,
-          );
-        });
+        // setState(() {
+        //   iconType = Icon(
+        //     Icons.error,
+        //     color: Colors.red,
+        //   );
+        // });
         return false;
       } else {
         password = await data['DOB'];
         if (pword != password) {
-          snack.currentState.showSnackBar(SnackBar(
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
             duration: Duration(seconds: 1),
             content: Text('Password is incorrect'),
           ));
@@ -118,279 +170,442 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Widget validuser() {
-    return TextFormField(
-      key: ukey,
-      maxLength: 12,
-      // controller: _uname,
-      // initialValue: 'userid',
-      onChanged: (String input) {
-        ukey.currentState.validate();
-      },
-      decoration: InputDecoration(
-        filled: true,
-        prefixIcon: Icon(Icons.person),
-        suffixIcon: iconType,
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-        ),
-        labelText: "Username",
-        hintStyle: TextStyle(
-          color: Colors.grey,
-          fontFamily: "Poppins-Medium",
-          fontSize: ScreenUtil.getInstance().setSp(26),
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      key: _scaffoldKey,
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        // ignore: missing_return
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height >= 775.0
+                ? MediaQuery.of(context).size.height
+                : 775.0,
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [
+                    Theme.Colors.loginGradientStart,
+                    Theme.Colors.loginGradientEnd
+                  ],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 1.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 75.0),
+                  child: new Image(
+                      width: 250.0,
+                      height: 191.0,
+                      fit: BoxFit.fill,
+                      image: new AssetImage('assets/image_02.png')),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: _buildMenuBar(context),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: (i) {
+                      if (i == 0) {
+                        setState(() {
+                          right = Colors.white;
+                          left = Colors.black;
+                        });
+                      } else if (i == 1) {
+                        setState(() {
+                          right = Colors.black;
+                          left = Colors.white;
+                        });
+                      }
+                    },
+                    children: <Widget>[
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints.expand(),
+                        child: _buildSignIn(context),
+                      ),
+                      new ConstrainedBox(
+                        constraints: const BoxConstraints.expand(),
+                        child: _buildSignUp(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-      onSaved: (String input) {
-        initialname = input;
-      },
-      validator: (String input) {
-        if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
-          setState(() {
-            iconType = Icon(
-              Icons.error,
-              color: Colors.red,
-            );
-          });
-          return 'Invalid Details';
-        } else {
-          setState(() {
-            iconType = Icon(
-              Icons.check_circle,
-              color: Colors.green,
-            );
-          });
-        }
-        return null;
-      },
     );
   }
 
-  Widget validpass() {
-    return TextFormField(
-      key: passkey,
-      // controller: _pass,
-      maxLength: 10,
-      onChanged: (String input) {
-        passkey.currentState.validate();
-      },
-      obscureText: !_passwordVisible,
-      decoration: InputDecoration(
-        suffixIcon: IconButton(
-          icon: Icon(
-            // Based on passwordVisible state choose the icon
-            _passwordVisible ? Icons.visibility : Icons.visibility_off,
-            color: Theme.of(context).primaryColorDark,
-          ),
-          onPressed: () {
-            // Update the state i.e. toogle the state of passwordVisible variable
-            setState(() {
-              _passwordVisible = !_passwordVisible;
-            });
-          },
-        ),
-        prefixIcon: Icon(Icons.vpn_key),
-        filled: true,
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-        ),
-        labelText: "Password",
-        hintStyle: TextStyle(
-          color: Colors.grey,
-          fontFamily: "Poppins-Medium",
-          fontSize: ScreenUtil.getInstance().setSp(26),
-        ),
-      ),
-      onSaved: (String input) {
-        pword = input;
-      },
-      validator: (String input) {
-        if (!RegExp(r"^[0-9/-]{10}$").hasMatch(input)) {
-          return 'Password is incorrect';
-        }
-        return null;
-      },
-    );
+  // void validcheck() {
+  //   ukey.currentState.validate();
+  // }
+
+  @override
+  void dispose() {
+    loginEmailController.dispose();
+    myFocusNodePassword.dispose();
+    myFocusNodeEmail.dispose();
+    myFocusNodeName.dispose();
+    _pageController?.dispose();
+    super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _passwordVisible = false;
-    iconType = Icon(Icons.check_circle);
-    //   getValueFromSP();
-    //   if (checkUserSP == false && checkPwordSP == false) {
-    //     userid = 'usernamehere';
-    //     passcode = 'passwordhere';
-    //   }
+    // loginEmailController.addListener(validcheck);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    _pageController = PageController();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void showInSnackBar(String value) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    _scaffoldKey.currentState?.removeCurrentSnackBar();
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(
+        value,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+        ),
+      ),
+      backgroundColor: Colors.blue,
+      duration: Duration(seconds: 3),
+    ));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
-    return Scaffold(
-      key: snack,
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomPadding: true,
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                child: Container(),
+  Widget _buildMenuBar(BuildContext context) {
+    return Container(
+      width: 300.0,
+      height: 50.0,
+      decoration: BoxDecoration(
+        color: Color(0x552B2B2B),
+        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+      ),
+      child: CustomPaint(
+        painter: TabIndicationPainter(pageController: _pageController),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Expanded(
+              child: FlatButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onPressed: _onSignInButtonPress,
+                child: Text(
+                  "Existing",
+                  style: TextStyle(
+                    color: left,
+                    fontSize: 16.0,
+                  ),
+                ),
               ),
-              Expanded(child: Image.asset("assets/image_02.png"))
-            ],
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(50),
+            ),
+            //Container(height: 33.0, width: 1.0, color: Colors.white),
+            Expanded(
+              child: FlatButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onPressed: _onSignUpButtonPress,
+                child: Text(
+                  "New",
+                  style: TextStyle(
+                    color: right,
+                    fontSize: 16.0,
                   ),
-                  Flexible(
-                    child: Image.asset("assets/image_01.png"),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(50),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 1),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0.0, 15.0),
-                              blurRadius: 15.0),
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0.0, -10.0),
-                              blurRadius: 10.0),
-                        ]),
-                    child: Padding(
-                      padding:
-                          EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-                      child: Form(
-                        key: _logkey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Login",
-                                style: TextStyle(
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(45),
-                                    fontFamily: "Poppins-Bold",
-                                    letterSpacing: .6)),
-                            SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(30),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignIn(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 23.0),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.topCenter,
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Card(
+                elevation: 2.0,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Container(
+                  width: 300.0,
+                  height: 250.0,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            maxLength: 12,
+                            key: ukey,
+                            focusNode: myFocusNodeEmailLogin,
+                            // controller: loginEmailController,
+                            keyboardType: TextInputType.emailAddress,
+                            onFieldSubmitted: (value) {
+                              ukey.currentState.validate();
+                            },
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Colors.black,
+                                size: 22.0,
+                              ),
+                              hintText: "Email Address",
+                              hintStyle: TextStyle(fontSize: 17.0),
                             ),
-                            validuser(),
-                            SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(30),
-                            ),
-                            validpass(),
-                            SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(60),
-                            ),
-                          ],
+                            validator: (String input) {
+                              if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
+                                // setState(() {
+                                //   iconType = Icon(
+                                //     Icons.error,
+                                //     color: Colors.red,
+                                //   );
+                                // });
+                                return 'Invalid Details';
+                              }
+                              return null;
+                            },
+                            onSaved: (String input) {
+                              initialname = input;
+                            },
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: InkWell(
-                          child: Container(
-                            width: ScreenUtil.getInstance().setWidth(330),
-                            height: ScreenUtil.getInstance().setHeight(100),
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(colors: [
-                                  Color(0xFF17ead9),
-                                  Color(0xFF6078ea),
-                                ]),
-                                borderRadius: BorderRadius.circular(6.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color(0xFF6078ea).withOpacity(.3),
-                                      offset: Offset(0.0, 8.0),
-                                      blurRadius: 8.0)
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (_) => AdminBottomNav()),
-                                  );
-                                },
-                                child: Center(
-                                  child: Text("Admin",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Poppins-Bold",
-                                          fontSize: 18,
-                                          letterSpacing: 1.0)),
+                        Container(
+                          width: 250.0,
+                          height: 1.0,
+                          color: Colors.grey[400],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            key: passkey,
+                            focusNode: myFocusNodePasswordLogin,
+                            // controller: loginPasswordController,
+                            onFieldSubmitted: (String input) {
+                              passkey.currentState.validate();
+                            },
+                            maxLength: 10,
+                            obscureText: _obscureTextLogin,
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                FontAwesomeIcons.lock,
+                                size: 22.0,
+                                color: Colors.black,
+                              ),
+                              hintText: "Password",
+                              hintStyle: TextStyle(fontSize: 17.0),
+                              suffixIcon: GestureDetector(
+                                onTap: _toggleLogin,
+                                child: Icon(
+                                  _obscureTextLogin
+                                      ? FontAwesomeIcons.eye
+                                      : FontAwesomeIcons.eyeSlash,
+                                  size: 15.0,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
+                            onSaved: (String input) {
+                              pword = input.toString();
+                            },
+                            validator: (String input) {
+                              if (!RegExp(r"^[0-9/-]{10}$").hasMatch(input)) {
+                                return 'Password is incorrect';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 220.0),
+                decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Theme.Colors.loginGradientStart,
+                      offset: Offset(1.0, 6.0),
+                      blurRadius: 20.0,
+                    ),
+                    BoxShadow(
+                      color: Theme.Colors.loginGradientEnd,
+                      offset: Offset(1.0, 6.0),
+                      blurRadius: 20.0,
+                    ),
+                  ],
+                  gradient: LinearGradient(
+                      colors: [
+                        Theme.Colors.loginGradientEnd,
+                        Theme.Colors.loginGradientStart
+                      ],
+                      begin: const FractionalOffset(0.2, 0.2),
+                      end: const FractionalOffset(1.0, 1.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp),
+                ),
+                child: MaterialButton(
+                    highlightColor: Colors.transparent,
+                    splashColor: Theme.Colors.loginGradientEnd,
+                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 42.0),
+                      child: Text(
+                        "LOGIN",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (ukey.currentState.validate()) {
+                        if (passkey.currentState.validate()) {
+                          processdata();
+                        }
+                      }
+                      // showInSnackBar("Login button pressed");
+                    }),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSignUp(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 23.0),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.topCenter,
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Card(
+                elevation: 2.0,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Container(
+                  width: 300.0,
+                  height: 270.0,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                        child: TextField(
+                          focusNode: myFocusNodeName,
+                          controller: signupNameController,
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.words,
+                          style: TextStyle(fontSize: 16.0, color: Colors.black),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(
+                              FontAwesomeIcons.user,
+                              color: Colors.black,
+                            ),
+                            hintText: "Key",
+                            hintStyle: TextStyle(fontSize: 16.0),
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: InkWell(
-                          child: Container(
-                            width: ScreenUtil.getInstance().setWidth(330),
-                            height: ScreenUtil.getInstance().setHeight(100),
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(colors: [
-                                  Color(0xFF17ead9),
-                                  Color(0xFF6078ea)
-                                ]),
-                                borderRadius: BorderRadius.circular(6.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xFF6078ea).withOpacity(.3),
-                                    offset: Offset(0.0, 8.0),
-                                    blurRadius: 8.0,
-                                  )
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () async {
-                                  if (ukey.currentState.validate()) {
-                                    if (passkey.currentState.validate()) {
-                                      processdata();
-                                    }
-                                  }
-                                },
-                                child: Center(
-                                  child: Text("Student",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Poppins-Bold",
-                                          fontSize: 18,
-                                          letterSpacing: 1.0)),
-                                ),
+                      Container(
+                        width: 250.0,
+                        height: 1.0,
+                        color: Colors.grey[400],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                        child: TextField(
+                          focusNode: myFocusNodeEmail,
+                          controller: signupEmailController,
+                          keyboardType: TextInputType.emailAddress,
+                          style: TextStyle(fontSize: 16.0, color: Colors.black),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Colors.black,
+                            ),
+                            hintText: "Email Address",
+                            hintStyle: TextStyle(fontSize: 16.0),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 250.0,
+                        height: 1.0,
+                        color: Colors.grey[400],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                        child: TextField(
+                          focusNode: myFocusNodePassword,
+                          controller: signupPasswordController,
+                          obscureText: _obscureTextSignup,
+                          style: TextStyle(fontSize: 16.0, color: Colors.black),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(
+                              FontAwesomeIcons.lock,
+                              color: Colors.black,
+                            ),
+                            hintText: "Password",
+                            hintStyle: TextStyle(fontSize: 16.0),
+                            suffixIcon: GestureDetector(
+                              onTap: _toggleSignup,
+                              child: Icon(
+                                _obscureTextSignup
+                                    ? FontAwesomeIcons.eye
+                                    : FontAwesomeIcons.eyeSlash,
+                                size: 15.0,
+                                color: Colors.black,
                               ),
                             ),
                           ),
@@ -398,12 +613,138 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
-          )
+              Container(
+                margin: EdgeInsets.only(top: 260.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Theme.Colors.loginGradientStart,
+                      offset: Offset(1.0, 6.0),
+                      blurRadius: 20.0,
+                    ),
+                    BoxShadow(
+                      color: Theme.Colors.loginGradientEnd,
+                      offset: Offset(1.0, 6.0),
+                      blurRadius: 20.0,
+                    ),
+                  ],
+                  gradient: LinearGradient(
+                      colors: [
+                        Theme.Colors.loginGradientEnd,
+                        Theme.Colors.loginGradientStart
+                      ],
+                      begin: FractionalOffset(0.2, 0.2),
+                      end: FractionalOffset(1.0, 1.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp),
+                ),
+                child: MaterialButton(
+                    highlightColor: Colors.transparent,
+                    splashColor: Theme.Colors.loginGradientEnd,
+                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 42.0),
+                      child: Text(
+                        "SIGN UP",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => AdminBottomNav()),
+                      );
+                      // showInSnackBar("SignUp button pressed");
+                    }),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
+
+  void _onSignInButtonPress() {
+    _pageController.animateToPage(0,
+        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+  }
+
+  void _onSignUpButtonPress() {
+    _pageController?.animateToPage(1,
+        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+  }
+
+  void _toggleLogin() {
+    setState(() {
+      _obscureTextLogin = !_obscureTextLogin;
+    });
+  }
+
+  void _toggleSignup() {
+    setState(() {
+      _obscureTextSignup = !_obscureTextSignup;
+    });
+  }
+
+//  void _toggleSignupConfirm() {
+//    setState(() {
+//      _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
+//    });
+//  }
+}
+
+class TabIndicationPainter extends CustomPainter {
+  Paint painter;
+  final double dxTarget;
+  final double dxEntry;
+  final double radius;
+  final double dy;
+
+  final PageController pageController;
+
+  TabIndicationPainter(
+      {this.dxTarget = 125.0,
+      this.dxEntry = 25.0,
+      this.radius = 21.0,
+      this.dy = 25.0,
+      this.pageController})
+      : super(repaint: pageController) {
+    painter = new Paint()
+      ..color = Color(0xFFFFFFFF)
+      ..style = PaintingStyle.fill;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final pos = pageController.position;
+    double fullExtent =
+        (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
+
+    double pageOffset = pos.extentBefore / fullExtent;
+
+    bool left2right = dxEntry < dxTarget;
+    Offset entry = new Offset(left2right ? dxEntry : dxTarget, dy);
+    Offset target = new Offset(left2right ? dxTarget : dxEntry, dy);
+
+    Path path = new Path();
+    path.addArc(
+        new Rect.fromCircle(center: entry, radius: radius), 0.5 * pi, 1 * pi);
+    path.addRect(
+        new Rect.fromLTRB(entry.dx, dy - radius, target.dx, dy + radius));
+    path.addArc(
+        new Rect.fromCircle(center: target, radius: radius), 1.5 * pi, 1 * pi);
+
+    canvas.translate(size.width * pageOffset, 0.0);
+    canvas.drawShadow(path, Color(0xFFfbab66), 3.0, true);
+    canvas.drawPath(path, painter);
+  }
+
+  @override
+  bool shouldRepaint(TabIndicationPainter oldDelegate) => true;
 }
