@@ -1,3 +1,4 @@
+// import 'dart:html';
 import 'dart:math';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,6 +29,14 @@ class LoginPage extends StatefulWidget {
 
   @override
   _LoginPageState createState() => new _LoginPageState();
+}
+
+class users {
+  String name, key;
+  users(this.name);
+  users.fromSnapshot(DocumentSnapshot snapshot)
+      : name = snapshot.data['name'],
+        key = snapshot.documentID;
 }
 
 class _LoginPageState extends State<LoginPage>
@@ -70,16 +79,18 @@ class _LoginPageState extends State<LoginPage>
   String pword;
   String initialname;
   bool valid;
-  bool _passwordVisible;
+  // bool _passwordVisible;
   Widget iconType;
 
   // bool checkUserSP, checkPwordSP;
 
-  final _logkey = GlobalKey<FormState>();
+  // final _logkey = GlobalKey<FormState>();
   final snack = GlobalKey<ScaffoldState>();
   final ukey = GlobalKey<FormFieldState>();
   final passkey = GlobalKey<FormFieldState>();
   // String userid, passcode;
+
+  auth() {}
 
   Future processdata() async {
     ukey.currentState.save();
@@ -265,6 +276,7 @@ class _LoginPageState extends State<LoginPage>
   @override
   void initState() {
     super.initState();
+    processkey();
     // loginEmailController.addListener(validcheck);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -310,7 +322,7 @@ class _LoginPageState extends State<LoginPage>
                 highlightColor: Colors.transparent,
                 onPressed: _onSignInButtonPress,
                 child: Text(
-                  "Existing",
+                  "Student",
                   style: TextStyle(
                     color: left,
                     fontSize: 16.0,
@@ -325,7 +337,7 @@ class _LoginPageState extends State<LoginPage>
                 highlightColor: Colors.transparent,
                 onPressed: _onSignUpButtonPress,
                 child: Text(
-                  "New",
+                  "Staff",
                   style: TextStyle(
                     color: right,
                     fontSize: 16.0,
@@ -339,6 +351,7 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
+  // final cardkey = new GlobalKey<State>();
   Widget _buildSignIn(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
@@ -349,6 +362,7 @@ class _LoginPageState extends State<LoginPage>
             overflow: Overflow.visible,
             children: <Widget>[
               Card(
+                // key:cardkey,
                 elevation: 2.0,
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -381,7 +395,7 @@ class _LoginPageState extends State<LoginPage>
                                 color: Colors.black,
                                 size: 22.0,
                               ),
-                              hintText: "Email Address",
+                              hintText: "Register No.",
                               hintStyle: TextStyle(fontSize: 17.0),
                             ),
                             validator: (String input) {
@@ -513,7 +527,26 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
+  final adminuserkey = GlobalKey<FormFieldState>();
+  final adminpasskey = GlobalKey<FormFieldState>();
+  final adminkey = GlobalKey<FormFieldState>();
+  String givenkey;
+  List<users> keys1 = [];
+  processkey() {
+    CollectionReference collref = Firestore.instance.collection('key');
+    setState(() {
+      collref.snapshots().listen((event) {
+        for (int i = 0; i < event.documents.length; i++) {
+          keys1.add(users.fromSnapshot(event.documents[i]));
+        }
+      });
+    });
+
+    print(keys1);
+  }
+
   Widget _buildSignUp(BuildContext context) {
+    //signup
     return Container(
       padding: EdgeInsets.only(top: 23.0),
       child: Column(
@@ -531,87 +564,129 @@ class _LoginPageState extends State<LoginPage>
                 child: Container(
                   width: 300.0,
                   height: 270.0,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: myFocusNodeName,
-                          controller: signupNameController,
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.words,
-                          style: TextStyle(fontSize: 16.0, color: Colors.black),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.user,
-                              color: Colors.black,
-                            ),
-                            hintText: "Key",
-                            hintStyle: TextStyle(fontSize: 16.0),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: myFocusNodeEmail,
-                          controller: signupEmailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(fontSize: 16.0, color: Colors.black),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Colors.black,
-                            ),
-                            hintText: "Email Address",
-                            hintStyle: TextStyle(fontSize: 16.0),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: myFocusNodePassword,
-                          controller: signupPasswordController,
-                          obscureText: _obscureTextSignup,
-                          style: TextStyle(fontSize: 16.0, color: Colors.black),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.lock,
-                              color: Colors.black,
-                            ),
-                            hintText: "Password",
-                            hintStyle: TextStyle(fontSize: 16.0),
-                            suffixIcon: GestureDetector(
-                              onTap: _toggleSignup,
-                              child: Icon(
-                                _obscureTextSignup
-                                    ? FontAwesomeIcons.eye
-                                    : FontAwesomeIcons.eyeSlash,
-                                size: 15.0,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            key: adminkey,
+                            //key form field
+                            focusNode: myFocusNodeName,
+                            controller: signupNameController,
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.words,
+                            onSaved: (input) async {
+                              print(keys1);
+                              givenkey = input;
+                            },
+                            // onFieldSubmitted: (input) {
+                            //   givenkey = input.toString();
+                            //   adminkey.currentState.validate();
+                            // },
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                FontAwesomeIcons.user,
                                 color: Colors.black,
+                              ),
+                              hintText: "Key",
+                              hintStyle: TextStyle(fontSize: 16.0),
+                            ),
+                            validator: (String input) {
+                              if (keys1.contains(givenkey)) {
+                                return null;
+                              } else {
+                                return 'null';
+                              }
+                              // return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                          width: 250.0,
+                          height: 1.0,
+                          color: Colors.grey[400],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            key: adminuserkey,
+                            //EmailAdress field
+                            focusNode: myFocusNodeEmail,
+                            controller: signupEmailController,
+                            onSaved: (input) {},
+                            // onFieldSubmitted: (String input) {
+                            //   adminuserkey.currentState.validate();
+                            // },
+                            keyboardType: TextInputType.emailAddress,
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Colors.black,
+                              ),
+                              hintText: "Email Address",
+                              hintStyle: TextStyle(fontSize: 16.0),
+                            ),
+                            validator: (String input) {
+                              if (input.isEmpty) {
+                                return 'Email Required';
+                              }
+                              if (!RegExp(
+                                      r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                  .hasMatch(input)) {
+                                return 'Valid Email Required';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                          width: 250.0,
+                          height: 1.0,
+                          color: Colors.grey[400],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            key: adminpasskey,
+                            //PasswordField
+                            focusNode: myFocusNodePassword,
+                            controller: signupPasswordController,
+                            obscureText: _obscureTextSignup,
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                FontAwesomeIcons.lock,
+                                color: Colors.black,
+                              ),
+                              hintText: "Password",
+                              hintStyle: TextStyle(fontSize: 16.0),
+                              suffixIcon: GestureDetector(
+                                onTap: _toggleSignup,
+                                child: Icon(
+                                  _obscureTextSignup
+                                      ? FontAwesomeIcons.eye
+                                      : FontAwesomeIcons.eyeSlash,
+                                  size: 15.0,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -642,6 +717,7 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
+                    //Button field
                     highlightColor: Colors.transparent,
                     splashColor: Theme.Colors.loginGradientEnd,
                     //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
@@ -649,7 +725,7 @@ class _LoginPageState extends State<LoginPage>
                       padding: EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 42.0),
                       child: Text(
-                        "SIGN UP",
+                        "Login",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 25.0,
@@ -657,9 +733,15 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => AdminBottomNav()),
-                      );
+                      adminkey.currentState.save();
+                      if (adminkey.currentState.validate()) {
+                        if (adminuserkey.currentState.validate()) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => AdminBottomNav()),
+                          );
+                        }
+                      }
+
                       // showInSnackBar("SignUp button pressed");
                     }),
               ),
