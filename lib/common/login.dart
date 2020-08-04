@@ -1,5 +1,7 @@
 // import 'dart:html';
+import 'dart:io';
 import 'dart:math';
+import 'package:student_app/admin/attendance/DbAndRefs.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +33,13 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => new _LoginPageState();
 }
 
-class users {
-  String name, key;
-  users(this.name);
-  users.fromSnapshot(DocumentSnapshot snapshot)
-      : name = snapshot.data['name'],
-        key = snapshot.documentID;
-}
+// class users {
+//   String name, key;
+//   users(this.name);
+//   users.fromSnapshot(DocumentSnapshot snapshot)
+//       : name = snapshot.data['name'],
+//         key = snapshot.documentID;
+// }
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
@@ -531,13 +533,13 @@ class _LoginPageState extends State<LoginPage>
   final adminpasskey = GlobalKey<FormFieldState>();
   final adminkey = GlobalKey<FormFieldState>();
   String givenkey;
-  List<users> keys1 = [];
+  List<Contents> keys1 = [];
   processkey() {
     CollectionReference collref = Firestore.instance.collection('key');
     setState(() {
       collref.snapshots().listen((event) {
         for (int i = 0; i < event.documents.length; i++) {
-          keys1.add(users.fromSnapshot(event.documents[i]));
+          keys1.add(Contents.fromSnapshot(event.documents[i]));
         }
       });
     });
