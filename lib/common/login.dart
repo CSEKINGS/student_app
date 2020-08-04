@@ -1,12 +1,14 @@
 // import 'dart:html';
-import 'dart:io';
+import 'dart:async';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_app/admin/attendance/DbAndRefs.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:student_app/common/admin_auth.dart';
 // import 'package:';
 import 'package:student_app/common/process_data.dart';
 import 'theme.dart' as Theme;
@@ -96,9 +98,7 @@ class _LoginPageState extends State<LoginPage>
 
   Future processdata() async {
     ukey.currentState.save();
-
     passkey.currentState.save();
-
     formValidation(valid);
   }
 
@@ -300,7 +300,7 @@ class _LoginPageState extends State<LoginPage>
           fontSize: 16.0,
         ),
       ),
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.red,
       duration: Duration(seconds: 3),
     ));
   }
@@ -532,20 +532,52 @@ class _LoginPageState extends State<LoginPage>
   final adminuserkey = GlobalKey<FormFieldState>();
   final adminpasskey = GlobalKey<FormFieldState>();
   final adminkey = GlobalKey<FormFieldState>();
-  String givenkey;
+  String givenkey, givenuser, givenpass;
   List<Contents> keys1 = List();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   processkey() {
     CollectionReference collref = Firestore.instance.collection('key');
-      collref.snapshots().listen((event) {
-        setState(() {
-          for (int i = 0; i < event.documents.length; i++) {
-            keys1.add(Contents.fromSnapshot(event.documents[i]));
+    collref.snapshots().listen((event) {
+      setState(() {
+        for (int i = 0; i < event.documents.length; i++) {
+          keys1.add(Contents.fromSnapshot(event.documents[i]));
 //            print(event.documents[i].data['name']);
-          }
-          print(keys1[1].name);
-        });
+        }
+        print(keys1[0].name);
+      });
     });
+  }
 
+  validatekey() {
+    for (int i = 0; i < keys1.length; i++) {
+      if (keys1[i].name == givenkey) {
+        admin_auth();
+        break;
+      } else {
+        showInSnackBar('invalid key');
+      }
+    }
+  }
+
+  // ignore: non_constant_identifier_names
+  admin_auth() async {
+    FirebaseUser user;
+    try {
+      user = (await _auth.signInWithEmailAndPassword(
+              email: givenuser, password: givenpass))
+          .user;
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      if (user != null) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => AdminBottomNav()),
+        );
+        // print(true);
+      } else {
+        showInSnackBar('invalid user');
+      }
+    }
   }
 
   Widget _buildSignUp(BuildContext context) {
@@ -581,7 +613,6 @@ class _LoginPageState extends State<LoginPage>
                             keyboardType: TextInputType.text,
                             textCapitalization: TextCapitalization.words,
                             onSaved: (input) async {
-                              print(keys1);
                               givenkey = input;
                             },
                             // onFieldSubmitted: (input) {
@@ -600,11 +631,10 @@ class _LoginPageState extends State<LoginPage>
                               hintStyle: TextStyle(fontSize: 16.0),
                             ),
                             validator: (String input) {
-                              if (keys1.contains(givenkey)) {
-                                return null;
-                              } else {
-                                return 'null';
+                              if (input.length < 5) {
+                                return 'key length must be greater than 5';
                               }
+                              return null;
                               // return null;
                             },
                           ),
@@ -622,7 +652,9 @@ class _LoginPageState extends State<LoginPage>
                             //EmailAdress field
                             focusNode: myFocusNodeEmail,
                             controller: signupEmailController,
-                            onSaved: (input) {},
+                            onSaved: (input) {
+                              givenuser = input.toString();
+                            },
                             // onFieldSubmitted: (String input) {
                             //   adminuserkey.currentState.validate();
                             // },
@@ -667,6 +699,9 @@ class _LoginPageState extends State<LoginPage>
                             obscureText: _obscureTextSignup,
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
+                            onSaved: (input) {
+                              givenpass = input.toString();
+                            },
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
@@ -720,6 +755,7 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
+
                     //Button field
                     highlightColor: Colors.transparent,
                     splashColor: Theme.Colors.loginGradientEnd,
@@ -735,13 +771,14 @@ class _LoginPageState extends State<LoginPage>
                         ),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      await processkey();
                       adminkey.currentState.save();
+                      adminuserkey.currentState.save();
+                      adminpasskey.currentState.save();
                       if (adminkey.currentState.validate()) {
                         if (adminuserkey.currentState.validate()) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => AdminBottomNav()),
-                          );
+                          await validatekey();
                         }
                       }
 
