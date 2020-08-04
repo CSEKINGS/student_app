@@ -533,17 +533,19 @@ class _LoginPageState extends State<LoginPage>
   final adminpasskey = GlobalKey<FormFieldState>();
   final adminkey = GlobalKey<FormFieldState>();
   String givenkey;
-  List<Contents> keys1 = [];
+  List<Contents> keys1 = List();
   processkey() {
     CollectionReference collref = Firestore.instance.collection('key');
-    setState(() {
       collref.snapshots().listen((event) {
-        for (int i = 0; i < event.documents.length; i++) {
-          keys1.add(Contents.fromSnapshot(event.documents[i]));
-        }
-      });
+        setState(() {
+          for (int i = 0; i < event.documents.length; i++) {
+            keys1.add(Contents.fromSnapshot(event.documents[i]));
+//            print(event.documents[i].data['name']);
+          }
+          print(keys1[1].name);
+        });
     });
-    print(keys1);
+
   }
 
   Widget _buildSignUp(BuildContext context) {
