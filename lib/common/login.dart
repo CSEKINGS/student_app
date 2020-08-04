@@ -1,5 +1,4 @@
 // import 'dart:html';
-import 'dart:io';
 import 'dart:math';
 import 'package:student_app/admin/attendance/DbAndRefs.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
@@ -543,7 +542,6 @@ class _LoginPageState extends State<LoginPage>
         }
       });
     });
-
     print(keys1);
   }
 
@@ -735,14 +733,17 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () {
-                      adminkey.currentState.save();
-                      if (adminkey.currentState.validate()) {
-                        if (adminuserkey.currentState.validate()) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => AdminBottomNav()),
-                          );
-                        }
-                      }
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => AdminBottomNav()),
+                      );
+//                      adminkey.currentState.save();
+//                      if (adminkey.currentState.validate()) {
+//                        if (adminuserkey.currentState.validate()) {
+//                          Navigator.of(context).push(
+//                            MaterialPageRoute(builder: (_) => AdminBottomNav()),
+//                          );
+//                        }
+//                      }
 
                       // showInSnackBar("SignUp button pressed");
                     }),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'GetDetails.dart';
 
+// ignore: must_be_immutable
 class DialogBox extends StatefulWidget {
+  String text;
+  DialogBox(this.text);
   @override
   _DialogBoxState createState() => _DialogBoxState();
 }
@@ -10,13 +13,11 @@ class _DialogBoxState extends State<DialogBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15)
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: Text('Details'),
       content: Container(
         height: 145,
-        child: GetDetails('Attendance'),
+        child: GetDetails(widget.text),
       ),
     );
   }
