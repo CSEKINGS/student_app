@@ -11,17 +11,21 @@ class _MarkEntryState extends State<MarkEntry> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body:GridView.count(
+        body: GridView.count(
           crossAxisCount: 2,
-            children: <Widget>[
-              CustomView('Add class'),
-              CustomView('Add year'),
-              CustomView('Add dep'),
-              CustomView('Delete students'),
-              CustomView('Delete class'),
-              CustomView('Delete department'),
-              CustomView('Delete year'),
-            ],
+          childAspectRatio: 4 / 3,
+          padding: EdgeInsets.all(8),
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          children: <Widget>[
+            CustomView('Add class'),
+            CustomView('Add year'),
+            CustomView('Add dep'),
+            CustomView('Delete students'),
+            CustomView('Delete class'),
+            CustomView('Delete department'),
+            CustomView('Delete year'),
+          ],
         ),
       ),
     );

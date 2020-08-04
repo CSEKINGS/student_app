@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'AddDetails.dart';
 import 'DbAndRefs.dart';
 import 'Operations.dart';
