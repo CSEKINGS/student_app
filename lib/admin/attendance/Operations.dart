@@ -85,7 +85,8 @@ class _AttendanceState extends State<Attendance> {
   void _addAttendance() {
     CollectionReference ref1 = obj.placeAttendance(cls, widget.yer, widget.dep);
     for (int i = 0; i < item.length; i++) {
-      ref1.add({
+      ref1.document(item[i].key).setData({
+        'Roll-no': item[i].rollNo,
         'name': item[i].name,
         'attendance': item[i].isSelected ? 'present' : 'absent'
       });

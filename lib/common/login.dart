@@ -562,7 +562,7 @@ class _LoginPageState extends State<LoginPage>
           keys1.add(Contents.fromSnapshot(event.documents[i]));
 //            print(event.documents[i].data['name']);
         }
-        print(keys1[0].name);
+//        print(keys1[0].name);
       });
     });
   }
