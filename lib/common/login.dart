@@ -148,23 +148,17 @@ class _LoginPageState extends State<LoginPage>
         }
         break;
     }
-    reference
-        .collection('student')
-        .document(_dept)
-        .collection(_batch)
-        .document(_regno)
-        .snapshots()
-        .listen((event) async {
+    var reff = reference
+        .collection('collage')
+        .document('student') //college,student,dept,batch,class,regno
+        .collection(_dept)
+        .document(_batch)
+        // .collection('103')
+        // .document(_regno)
+        .snapshots();
+    reff.listen((event) async {
       data = event.data;
-      if (data == null) {
-        // setState(() {
-        //   iconType = Icon(
-        //     Icons.error,
-        //     color: Colors.red,
-        //   );
-        // });
-        return false;
-      } else {
+      if (event.data[_regno] == _regno) {
         password = await data['DOB'];
         if (pword != password) {
           _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -179,6 +173,14 @@ class _LoginPageState extends State<LoginPage>
           );
           return true;
         }
+      } else {
+        // setState(() {
+        //   iconType = Icon(
+        //     Icons.error,
+        //     color: Colors.red,
+        //   );
+        // });
+        return false;
       }
     });
   }
