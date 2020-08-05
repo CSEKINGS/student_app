@@ -152,36 +152,40 @@ class _LoginPageState extends State<LoginPage>
         .collection('collage')
         .document('student') //college,student,dept,batch,class,regno
         .collection(_dept)
-        .document(_batch)
+        .where('Regno', isEqualTo: '$_regno')
+        // .document(_batch)
         // .collection('103')
         // .document(_regno)
         .snapshots();
     reff.listen((event) async {
-      data = event.data;
-      if (event.data[_regno] == _regno) {
-        password = await data['DOB'];
-        if (pword != password) {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            duration: Duration(seconds: 1),
-            content: Text('Password is incorrect'),
-          ));
-          return false;
-        } else {
-          print('data found');
-          await Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => ProcessData(_regno)),
-          );
-          return true;
-        }
-      } else {
-        // setState(() {
-        //   iconType = Icon(
-        //     Icons.error,
-        //     color: Colors.red,
-        //   );
-        // });
+      var datam = event.documents[0];
+
+      // data = event.documents[_regno];
+      // print(data);
+      // if (event.documents[0] == _regno) {
+      password = await datam['DOB'];
+      if (pword != password) {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text('Password is incorrect'),
+        ));
         return false;
+      } else {
+        print('data found');
+        await Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => ProcessData(_regno)),
+        );
+        return true;
       }
+      // } else {
+      // setState(() {
+      //   iconType = Icon(
+      //     Icons.error,
+      //     color: Colors.red,
+      //   );
+      // });
+      // return false;
+      // }
     });
   }
 

@@ -76,7 +76,8 @@ class _ProcessDataState extends State<ProcessData> {
         .collection('collage')
         .document('student')
         .collection(_dept)
-        .document(_batch)
+        .where('Regno', isEqualTo: '${widget._regno}')
+        // .document(_batch)
         .snapshots();
     // .collection('103')
     // .document(widget._regno)
@@ -86,24 +87,27 @@ class _ProcessDataState extends State<ProcessData> {
     // .document(widget._regno)
     // .snapshots();
     reff.listen((event) async {
-      if (event.data[widget._regno] == widget._regno) {
-        // print('listened');
-        Map data = event.data;
-        details.add(data['Name']);
-        details.add(data['Rollno']);
-        details.add(data['Regno']);
-        details.add(data['PhoneNo']);
-        details.add(data['DOB']);
-        details.add(data['Batch']);
-        details.add(data['Email']);
-        details.add(data['BloodGroup']);
-        details.add(data['Department']);
-        details.add(data['Address']);
-        details.add(data['ProfileUrl']);
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
-        );
-      }
+      var datam = event.documents[0];
+
+      // var ff = event.documents[0];
+      // if (event.data[widget._regno] == widget._regno) {
+      // print('listened');
+      // Map data = event.data[widget._regno];
+      // print(data);
+      details.add(datam['Name']);
+      details.add(datam['Rollno']);
+      details.add(datam['Regno']);
+      details.add(datam['PhoneNo']);
+      details.add(datam['DOB']);
+      details.add(datam['Batch']);
+      details.add(datam['Email']);
+      details.add(datam['BloodGroup']);
+      details.add(datam['Department']);
+      details.add(datam['Address']);
+      details.add(datam['ProfileUrl']);
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
+      );
     });
     return details;
   }
