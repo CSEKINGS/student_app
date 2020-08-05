@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/admin/attendance/Dialog.dart';
+
 import 'AddDetails.dart';
 import 'Operations.dart';
 
@@ -57,10 +58,41 @@ class _CustomViewState extends State<CustomView> {
                   builder: (context) => Attendance(null, null, widget.text)));
         }
       },
-      child: Column(
-        children: <Widget>[
-          Text(widget.text),
-        ],
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(
+            8.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(
+                0.0,
+                10.0,
+              ),
+              blurRadius: 15.0,
+            ),
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(
+                0.0,
+                -3.0,
+              ),
+              blurRadius: 10.0,
+            ),
+          ],
+        ),
+        child: Column(
+          children: <Widget>[
+            Text(
+              widget.text,
+              style: TextStyle(letterSpacing: 0.9, fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
       ),
     );
   }
