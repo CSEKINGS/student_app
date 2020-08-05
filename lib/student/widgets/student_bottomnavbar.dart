@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
@@ -85,28 +86,44 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         body: _children[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          onTap: onTappedBar,
-          currentIndex: _currentIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Dashboard'),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
+          ]),
+          child: SafeArea(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+              child: GNav(
+                gap: 8,
+                activeColor: Colors.white,
+                iconSize: 24,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                duration: Duration(milliseconds: 500),
+                tabBackgroundColor: Colors.grey[800],
+                onTabChange: onTappedBar,
+                selectedIndex: _currentIndex,
+                tabs: [
+                  GButton(
+                    icon: Icons.home,
+                    text: 'Dashboard',
+                  ),
+                  GButton(
+                    icon: Icons.score,
+                    text: 'Grade',
+                  ),
+                  GButton(
+                    icon: Icons.person,
+                    text: 'Profile',
+                  ),
+                  GButton(
+                    icon: Icons.file_download,
+                    text: 'Notes',
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              title: Text('Grade'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Profile'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.file_download),
-              title: Text('Notes'),
-            ),
-          ],
+          ),
         ),
       ),
     );

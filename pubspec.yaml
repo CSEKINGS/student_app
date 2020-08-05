@@ -45,6 +45,7 @@ dependencies:
   circular_profile_avatar: ^1.0.6
   image_picker: ^0.6.7+4
   webview_flutter: ^0.3.22+1
+  google_nav_bar: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -76,17 +77,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: CustomIcons
-      fonts:
-        - asset: assets/CustomIcons.ttf
-
-    - family: Poppins-Bold
-      fonts:
-        - asset: assets/Poppins-Bold.ttf
-
-    - family: Poppins-Medium
-      fonts:
-        - asset: assets/Poppins-Medium.ttf
+  ##  fonts:
+  ##    - family: CustomIcons
+  #      fonts:
+  ##        - asset: assets/CustomIcons.ttf
+  ##
+  ##    - family: Poppins-Bold
+  ##      fonts:
+  ##        - asset: assets/Poppins-Bold.ttf
+  ##
+  ##    - family: Poppins-Medium
+  ##      fonts:
+  ##        - asset: assets/Poppins-Medium.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
