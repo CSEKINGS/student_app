@@ -288,7 +288,7 @@ class _LoginPageState extends State<LoginPage>
     _pageController = PageController();
   }
 
-  void showInSnackBar(String value) {
+  void invalidsnackbar(String value) {
     FocusScope.of(context).requestFocus(new FocusNode());
     _scaffoldKey.currentState?.removeCurrentSnackBar();
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
@@ -302,6 +302,23 @@ class _LoginPageState extends State<LoginPage>
       ),
       backgroundColor: Colors.red,
       duration: Duration(seconds: 3),
+    ));
+  }
+
+  void validsnackbar(String value) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    _scaffoldKey.currentState?.removeCurrentSnackBar();
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(
+        value,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+        ),
+      ),
+      backgroundColor: Colors.greenAccent,
+      duration: Duration(seconds: 5),
     ));
   }
 
@@ -551,10 +568,11 @@ class _LoginPageState extends State<LoginPage>
   validatekey() {
     for (int i = 0; i < keys1.length; i++) {
       if (keys1[i].name == givenkey) {
+        validsnackbar('Loading...');
         admin_auth();
         break;
       } else {
-        showInSnackBar('invalid key');
+        invalidsnackbar('invalid key');
       }
     }
   }
@@ -575,7 +593,7 @@ class _LoginPageState extends State<LoginPage>
         );
         // print(true);
       } else {
-        showInSnackBar('invalid user');
+        invalidsnackbar('invalid user');
       }
     }
   }
@@ -610,8 +628,12 @@ class _LoginPageState extends State<LoginPage>
                             //key form field
                             focusNode: myFocusNodeName,
                             controller: signupNameController,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.visiblePassword,
                             textCapitalization: TextCapitalization.words,
+                            inputFormatters: [
+                              BlacklistingTextInputFormatter(
+                                  new RegExp(r"\s\b|\b\s"))
+                            ],
                             onSaved: (input) async {
                               givenkey = input;
                             },
@@ -659,6 +681,10 @@ class _LoginPageState extends State<LoginPage>
                             //   adminuserkey.currentState.validate();
                             // },
                             keyboardType: TextInputType.emailAddress,
+                            inputFormatters: [
+                              BlacklistingTextInputFormatter(
+                                  new RegExp(r"\s\b|\b\s"))
+                            ],
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
@@ -702,6 +728,10 @@ class _LoginPageState extends State<LoginPage>
                             onSaved: (input) {
                               givenpass = input.toString();
                             },
+                            inputFormatters: [
+                              BlacklistingTextInputFormatter(
+                                  new RegExp(r"\s\b|\b\s"))
+                            ],
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
