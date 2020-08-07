@@ -21,10 +21,9 @@ class _ProfileState extends State<Profile> {
               children: <Widget>[
                 CircularProfileAvatar(
                   widget.details[10],
-                  radius: 100,
+                  radius: 110,
                   backgroundColor: Colors.transparent,
                   borderWidth: 10,
-                  borderColor: Colors.brown,
                   cacheImage: true,
                   onTap: () {
                     print('success');

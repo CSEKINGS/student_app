@@ -1,33 +1,16 @@
-// import 'dart:html';
 import 'dart:async';
-// import 'dart:html';
 import 'dart:math';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:student_app/admin/attendance/DbAndRefs.dart';
-import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:student_app/common/admin_auth.dart';
-// import 'package:';
+import 'package:student_app/admin/attendance/DbAndRefs.dart';
+import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:student_app/common/process_data.dart';
+
 import 'theme.dart' as Theme;
-
-// void main() => runApp(new MyApp());
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//       title: 'TheGorgeousLogin',
-//       theme: new ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: new LoginPage(),
-//     );
-//   }
-// }
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -177,7 +160,6 @@ class _LoginPageState extends State<LoginPage>
         .collection(_dept)
         .document(_batch);
     for (int i = 0; i < cls.length; i++) {
-      // setState(() {
       reff1
           .collection(cls[i].name)
           .where('Regno', isEqualTo: '$_regno')
@@ -185,25 +167,23 @@ class _LoginPageState extends State<LoginPage>
           .then((value) {
         if (value.documents.isNotEmpty) {
           isfound = true;
-          setState(() {
-            value.documents.forEach((element) {
-              password = element.data['DOB'];
-              if (password != pword) {
-                invalidsnackbar('Password is incorrect');
-              } else {
-                foundclass = cls[i].name;
-                print('data found');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (_) => ProcessData(_regno, foundclass)),
-                );
-              }
-              // print(element.data);
-            });
+          value.documents.forEach((element) {
+            password = element.data['DOB'];
+            if (password != pword) {
+              invalidsnackbar('Password is incorrect');
+            } else {
+              foundclass = cls[i].name;
+              print('data found');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (_) => ProcessData(_regno, foundclass)),
+              );
+            }
+            // print(element.data);
           });
         }
       });
-      // });
+
     }
   }
   // var reff = await reference
@@ -694,8 +674,8 @@ class _LoginPageState extends State<LoginPage>
                             keyboardType: TextInputType.visiblePassword,
                             textCapitalization: TextCapitalization.words,
                             inputFormatters: [
-                              BlacklistingTextInputFormatter(
-                                  new RegExp(r"\s\b|\b\s"))
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r"\s\b|\b\s"))
                             ],
                             onSaved: (input) async {
                               givenkey = input;
@@ -745,8 +725,8 @@ class _LoginPageState extends State<LoginPage>
                             // },
                             keyboardType: TextInputType.emailAddress,
                             inputFormatters: [
-                              BlacklistingTextInputFormatter(
-                                  new RegExp(r"\s\b|\b\s"))
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r"\s\b|\b\s"))
                             ],
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
@@ -792,8 +772,8 @@ class _LoginPageState extends State<LoginPage>
                               givenpass = input.toString();
                             },
                             inputFormatters: [
-                              BlacklistingTextInputFormatter(
-                                  new RegExp(r"\s\b|\b\s"))
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r"\s\b|\b\s"))
                             ],
                             decoration: InputDecoration(
                               border: InputBorder.none,

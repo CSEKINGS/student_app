@@ -430,11 +430,13 @@ class _UploadProfile extends State<UploadProfile> {
       });
     });
     depRef.snapshots().listen((event) {
-      setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          department.add(Contents.fromSnapshot(event.documents[i]));
-        }
-      });
+      if (mounted) {
+        setState(() {
+          for (int i = 0; i < event.documents.length; i++) {
+            department.add(Contents.fromSnapshot(event.documents[i]));
+          }
+        });
+      }
     });
   }
 
