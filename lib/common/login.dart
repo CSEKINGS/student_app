@@ -1,5 +1,6 @@
 // import 'dart:html';
 import 'dart:async';
+// import 'dart:html';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_app/admin/attendance/DbAndRefs.dart';
@@ -85,6 +86,7 @@ class _LoginPageState extends State<LoginPage>
   bool valid;
   // bool _passwordVisible;
   Widget iconType;
+  List<Contents> cls = List();
 
   // bool checkUserSP, checkPwordSP;
 
@@ -93,13 +95,30 @@ class _LoginPageState extends State<LoginPage>
   final ukey = GlobalKey<FormFieldState>();
   final passkey = GlobalKey<FormFieldState>();
   // String userid, passcode;
-
-  auth() {}
+  DbRef dbobj = DbRef();
+  CollectionReference reference1;
+  var datareference;
+  String foundclass;
 
   Future processdata() async {
     ukey.currentState.save();
     passkey.currentState.save();
     formValidation(valid);
+  }
+
+  listclass() {
+    reference1 = Firestore.instance
+        .collection('class')
+        .document('$_dept')
+        .collection('$_batch');
+    reference1.snapshots().listen((event) {
+      cls.clear();
+      setState(() {
+        for (int i = 0; i < event.documents.length; i++) {
+          cls.add(Contents.fromSnapshot(event.documents[i]));
+        }
+      });
+    });
   }
 
   Future formValidation(valid) async {
@@ -147,47 +166,85 @@ class _LoginPageState extends State<LoginPage>
           _dept = 'BIOMEDICAL';
         }
         break;
+      default:
+        {}
     }
-    var reff = reference
+    bool isfound = false;
+    await listclass();
+    var reff1 = reference
         .collection('collage')
-        .document('student') //college,student,dept,batch,class,regno
+        .document('student')
         .collection(_dept)
-        .where('Regno', isEqualTo: '$_regno')
-        // .document(_batch)
-        // .collection('103')
-        // .document(_regno)
-        .snapshots();
-    reff.listen((event) async {
-      var datam = event.documents[0];
-
-      // data = event.documents[_regno];
-      // print(data);
-      // if (event.documents[0] == _regno) {
-      password = await datam['DOB'];
-      if (pword != password) {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          duration: Duration(seconds: 1),
-          content: Text('Password is incorrect'),
-        ));
-        return false;
-      } else {
-        print('data found');
-        await Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => ProcessData(_regno)),
-        );
-        return true;
-      }
-      // } else {
+        .document(_batch);
+    for (int i = 0; i < cls.length; i++) {
       // setState(() {
-      //   iconType = Icon(
-      //     Icons.error,
-      //     color: Colors.red,
-      //   );
+      reff1
+          .collection(cls[i].name)
+          .where('Regno', isEqualTo: '$_regno')
+          .getDocuments()
+          .then((value) {
+        if (value.documents.isNotEmpty) {
+          isfound = true;
+          setState(() {
+            value.documents.forEach((element) {
+              password = element.data['DOB'];
+              if (password != pword) {
+                invalidsnackbar('Password is incorrect');
+              } else {
+                foundclass = cls[i].name;
+                print('data found');
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (_) => ProcessData(_regno, foundclass)),
+                );
+              }
+              // print(element.data);
+            });
+          });
+        }
+      });
       // });
-      // return false;
-      // }
-    });
+    }
   }
+  // var reff = await reference
+  //     .collection('collage')
+  //     .document('student') //college,student,dept,batch,class,regno
+  //     .collection(_dept)
+  //     .where('Regno', isEqualTo: '$_regno')
+  //     // .document(_batch)
+  //     // .collection('103')
+  //     // .document(_regno)
+  //     .snapshots();
+  // reff.listen((event) async {
+  //   var datam = event.documents[0];
+
+  //   // data = event.documents[_regno];
+  //   // print(data);
+  //   // if (event.documents[0] == _regno) {
+  //   password = await datam['DOB'];
+  //   if (pword != password) {
+  //     _scaffoldKey.currentState.showSnackBar(SnackBar(
+  //       duration: Duration(seconds: 1),
+  //       content: Text('Password is incorrect'),
+  //     ));
+  //     return false;
+  //   } else {
+  //     print('data found');
+  //     await Navigator.of(context).push(
+  //       MaterialPageRoute(builder: (_) => ProcessData(_regno)),
+  //     );
+  //     return true;
+  //   }
+  //   // } else {
+  //   // setState(() {
+  //   //   iconType = Icon(
+  //   //     Icons.error,
+  //   //     color: Colors.red,
+  //   //   );
+  //   // });
+  //   // return false;
+  //   // }
+  // });
 
   @override
   Widget build(BuildContext context) {

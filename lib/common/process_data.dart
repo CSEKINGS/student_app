@@ -5,9 +5,9 @@ import 'package:student_app/student/widgets/student_bottomnavbar.dart';
 import 'login.dart';
 
 class ProcessData extends StatefulWidget {
-  final String _regno;
+  final String _regno, foundclass;
 
-  ProcessData(this._regno);
+  ProcessData(this._regno, this.foundclass);
 
   @override
   _ProcessDataState createState() => _ProcessDataState();
@@ -26,6 +26,7 @@ class _ProcessDataState extends State<ProcessData> {
   Future<List> stream() async {
     final SharedPreferences preference = await _preference;
     await preference.setString('username', widget._regno);
+    await preference.setString('foundedclass', widget.foundclass);
 
     _batch = '20' + widget._regno.substring(4, 6);
     _dept = widget._regno.substring(6, 9);
@@ -76,35 +77,35 @@ class _ProcessDataState extends State<ProcessData> {
         .collection('collage')
         .document('student')
         .collection(_dept)
-        .where('Regno', isEqualTo: '${widget._regno}')
-        // .document(_batch)
+        // .where('Regno', isEqualTo: '${widget._regno}')
+        .document(_batch)
+        // .snapshots();
+        .collection(widget.foundclass)
+        // .document(widget._regno)
+        // .snapshots(); //college,student,dept,batch,class,regno
+        // .document(_dept)
+        // .collection(_batch)
+        .document(widget._regno)
         .snapshots();
-    // .collection('103')
-    // .document(widget._regno)
-    // .snapshots(); //college,student,dept,batch,class,regno
-    // .document(_dept)
-    // .collection(_batch)
-    // .document(widget._regno)
-    // .snapshots();
     reff.listen((event) async {
-      var datam = event.documents[0];
+      // var datam = event.documents[0];
 
       // var ff = event.documents[0];
       // if (event.data[widget._regno] == widget._regno) {
       // print('listened');
       // Map data = event.data[widget._regno];
       // print(data);
-      details.add(datam['Name']);
-      details.add(datam['Rollno']);
-      details.add(datam['Regno']);
-      details.add(datam['PhoneNo']);
-      details.add(datam['DOB']);
-      details.add(datam['Batch']);
-      details.add(datam['Email']);
-      details.add(datam['BloodGroup']);
-      details.add(datam['Department']);
-      details.add(datam['Address']);
-      details.add(datam['ProfileUrl']);
+      details.add(event.data['Name']);
+      details.add(event.data['Rollno']);
+      details.add(event.data['Regno']);
+      details.add(event.data['PhoneNo']);
+      details.add(event.data['DOB']);
+      details.add(event.data['Batch']);
+      details.add(event.data['Email']);
+      details.add(event.data['BloodGroup']);
+      details.add(event.data['Department']);
+      details.add(event.data['Address']);
+      details.add(event.data['ProfileUrl']);
       Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
       );
