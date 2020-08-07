@@ -461,12 +461,6 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             validator: (String input) {
                               if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
-                                // setState(() {
-                                //   iconType = Icon(
-                                //     Icons.error,
-                                //     color: Colors.red,
-                                //   );
-                                // });
                                 return 'Invalid Details';
                               }
                               return null;
