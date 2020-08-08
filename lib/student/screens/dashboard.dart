@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_app/common/login.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -21,8 +22,11 @@ class _DashboardState extends State<Dashboard> {
               child: OutlineButton(
                 onPressed: () async {
                   final SharedPreferences preference = await _preference;
-                  await preference.setString('username', null);
-                  SystemNavigator.pop();
+                  await preference.remove('username');
+                  await preference.remove('foundedclass');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => LoginPage()),
+                  );
                 },
                 child: Text('Logout'),
               ),

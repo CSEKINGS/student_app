@@ -83,28 +83,14 @@ class _LoginPageState extends State<LoginPage>
   var datareference;
   String foundclass;
 
-  Future processdata() async {
+  processdata() {
     ukey.currentState.save();
     passkey.currentState.save();
-    formValidation(valid);
+    formValidation();
+    print('processdata executed');
   }
 
-  listclass() {
-    reference1 = Firestore.instance
-        .collection('class')
-        .document('$_dept')
-        .collection('$_batch');
-    reference1.snapshots().listen((event) {
-      cls.clear();
-      setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          cls.add(Contents.fromSnapshot(event.documents[i]));
-        }
-      });
-    });
-  }
-
-  Future formValidation(valid) async {
+  formValidation() {
     _batch = '20' + initialname.substring(4, 6);
     _dept = initialname.substring(6, 9);
     _regno = initialname;
@@ -149,25 +135,44 @@ class _LoginPageState extends State<LoginPage>
           _dept = 'BIOMEDICAL';
         }
         break;
-      default:
-        {}
     }
-    bool isfound = false;
-    await listclass();
+    // bool isfound = false;
+    listclass();
+    print('Formvalidation executed');
+  }
+
+  listclass() {
+    reference1 =
+        reference.collection('class').document('$_dept').collection('$_batch');
+    reference1.snapshots().listen((event) {
+      cls.clear();
+      setState(() {
+        for (int i = 0; i < event.documents.length; i++) {
+          cls.add(Contents.fromSnapshot(event.documents[i]));
+        }
+        loadpassword();
+      });
+    });
+    print('listclass executed');
+  }
+
+  loadpassword() async {
     var reff1 = reference
         .collection('collage')
         .document('student')
         .collection(_dept)
         .document(_batch);
     for (int i = 0; i < cls.length; i++) {
-      reff1
+      await reff1
           .collection(cls[i].name)
           .where('Regno', isEqualTo: '$_regno')
           .getDocuments()
           .then((value) {
+        print('getdoucments executed');
         if (value.documents.isNotEmpty) {
-          isfound = true;
+          // isfound = true;
           value.documents.forEach((element) {
+            print('elements for each is executed');
             password = element.data['DOB'];
             if (password != pword) {
               invalidsnackbar('Password is incorrect');
@@ -185,45 +190,6 @@ class _LoginPageState extends State<LoginPage>
       });
     }
   }
-  // var reff = await reference
-  //     .collection('collage')
-  //     .document('student') //college,student,dept,batch,class,regno
-  //     .collection(_dept)
-  //     .where('Regno', isEqualTo: '$_regno')
-  //     // .document(_batch)
-  //     // .collection('103')
-  //     // .document(_regno)
-  //     .snapshots();
-  // reff.listen((event) async {
-  //   var datam = event.documents[0];
-
-  //   // data = event.documents[_regno];
-  //   // print(data);
-  //   // if (event.documents[0] == _regno) {
-  //   password = await datam['DOB'];
-  //   if (pword != password) {
-  //     _scaffoldKey.currentState.showSnackBar(SnackBar(
-  //       duration: Duration(seconds: 1),
-  //       content: Text('Password is incorrect'),
-  //     ));
-  //     return false;
-  //   } else {
-  //     print('data found');
-  //     await Navigator.of(context).push(
-  //       MaterialPageRoute(builder: (_) => ProcessData(_regno)),
-  //     );
-  //     return true;
-  //   }
-  //   // } else {
-  //   // setState(() {
-  //   //   iconType = Icon(
-  //   //     Icons.error,
-  //   //     color: Colors.red,
-  //   //   );
-  //   // });
-  //   // return false;
-  //   // }
-  // });
 
   @override
   Widget build(BuildContext context) {
@@ -444,9 +410,9 @@ class _LoginPageState extends State<LoginPage>
                             focusNode: myFocusNodeEmailLogin,
                             // controller: loginEmailController,
                             keyboardType: TextInputType.emailAddress,
-                            onFieldSubmitted: (value) {
-                              ukey.currentState.validate();
-                            },
+                            // onFieldSubmitted: (value) {
+                            //   ukey.currentState.validate();
+                            // },
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
@@ -463,9 +429,11 @@ class _LoginPageState extends State<LoginPage>
                               if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
                                 return 'Invalid Details';
                               }
+                              print("validator for ukey");
                               return null;
                             },
                             onSaved: (String input) {
+                              print('onsaved for ukey');
                               initialname = input;
                             },
                           ),
@@ -510,12 +478,15 @@ class _LoginPageState extends State<LoginPage>
                               ),
                             ),
                             onSaved: (String input) {
+                              print('onsaved for passkey');
+
                               pword = input.toString();
                             },
                             validator: (String input) {
                               if (!RegExp(r"^[0-9/-]{10}$").hasMatch(input)) {
                                 return 'Password is incorrect';
                               }
+                              print('validator for passkey');
                               return null;
                             },
                           ),
@@ -566,10 +537,11 @@ class _LoginPageState extends State<LoginPage>
                         ),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      print('buttorn pressed');
                       if (ukey.currentState.validate()) {
                         if (passkey.currentState.validate()) {
-                          processdata();
+                          await processdata();
                         }
                       }
                       // showInSnackBar("Login button pressed");
