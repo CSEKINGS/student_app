@@ -425,8 +425,10 @@ class _LoginPageState extends State<LoginPage>
                             focusNode: myFocusNodePasswordLogin,
                             maxLength: 10,
                             obscureText: _obscureTextLogin,
-                            style:
-                            TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
@@ -654,7 +656,7 @@ class _LoginPageState extends State<LoginPage>
                                   RegExp(r"\s\b|\b\s"))
                             ],
                             style:
-                            TextStyle(fontSize: 16.0, color: Colors.black),
+                                TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
