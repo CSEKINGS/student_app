@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   //FoucsNode Keys
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
@@ -183,14 +183,16 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       key: _scaffoldKey,
       body: NotificationListener<OverscrollIndicatorNotification>(
-        // ignore: missing_return
         onNotification: (overscroll) {
           overscroll.disallowGlow();
+          return null;
         },
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height >= 775.0
@@ -793,6 +795,9 @@ class _LoginPageState extends State<LoginPage>
       _obscureTextSignup = !_obscureTextSignup;
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class TabIndicationPainter extends CustomPainter {
