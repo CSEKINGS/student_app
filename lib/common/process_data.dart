@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
-import 'login.dart';
 
 class ProcessData extends StatefulWidget {
   final String _regno, foundclass;
@@ -15,11 +14,7 @@ class ProcessData extends StatefulWidget {
 
 class _ProcessDataState extends State<ProcessData> {
   final reference = Firestore.instance;
-
   String _batch, _dept;
-  LoginPage kd = new LoginPage();
-  // Future<String> storeuser;
-
   List details = [];
   Future<SharedPreferences> _preference = SharedPreferences.getInstance();
 
@@ -77,24 +72,11 @@ class _ProcessDataState extends State<ProcessData> {
         .collection('collage')
         .document('student')
         .collection(_dept)
-        // .where('Regno', isEqualTo: '${widget._regno}')
         .document(_batch)
-        // .snapshots();
         .collection(widget.foundclass)
-        // .document(widget._regno)
-        // .snapshots(); //college,student,dept,batch,class,regno
-        // .document(_dept)
-        // .collection(_batch)
         .document(widget._regno)
         .snapshots();
     reff.listen((event) async {
-      // var datam = event.documents[0];
-
-      // var ff = event.documents[0];
-      // if (event.data[widget._regno] == widget._regno) {
-      // print('listened');
-      // Map data = event.data[widget._regno];
-      // print(data);
       details.add(event.data['Name']);
       details.add(event.data['Rollno']);
       details.add(event.data['Regno']);

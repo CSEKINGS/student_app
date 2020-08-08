@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,69 +17,63 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => new _LoginPageState();
 }
 
-// class users {
-//   String name, key;
-//   users(this.name);
-//   users.fromSnapshot(DocumentSnapshot snapshot)
-//       : name = snapshot.data['name'],
-//         key = snapshot.documentID;
-// }
-
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  //FoucsNode Keys
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
-
   final FocusNode myFocusNodePassword = FocusNode();
   final FocusNode myFocusNodeEmail = FocusNode();
   final FocusNode myFocusNodeName = FocusNode();
 
+  //GlobalKeys
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final snack = GlobalKey<ScaffoldState>();
+  final ukey = GlobalKey<FormFieldState>();
+  final passkey = GlobalKey<FormFieldState>();
+  final adminuserkey = GlobalKey<FormFieldState>();
+  final adminpasskey = GlobalKey<FormFieldState>();
+  final adminkey = GlobalKey<FormFieldState>();
+
+  //TextEditingController Objects and other contorllers
   TextEditingController loginEmailController = new TextEditingController();
   TextEditingController loginPasswordController = new TextEditingController();
-
-  bool _obscureTextLogin = true;
-  bool _obscureTextSignup = true;
-
-//  bool _obscureTextSignupConfirm = true;
-
   TextEditingController signupEmailController = new TextEditingController();
   TextEditingController signupNameController = new TextEditingController();
   TextEditingController signupPasswordController = new TextEditingController();
   TextEditingController signupConfirmPasswordController =
       new TextEditingController();
-
   PageController _pageController;
 
+  //FirebaseReferences and its variables
+  final reference = Firestore.instance;
+  CollectionReference reference1;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  //Objects
+  DbRef dbobj = DbRef();
+
+  //Lists
+  List<String> details = [];
+  List<Contents> cls = List();
+  List<Contents> keys1 = List();
+
+  //Variables
+  bool _obscureTextLogin = true;
+  bool _obscureTextSignup = true;
+  bool valid;
   Color left = Colors.black;
   Color right = Colors.white;
-
-  String _batch, _dept, _regno, password;
-  Map data;
-  final reference = Firestore.instance;
-  List<String> details = [];
-
-  // TextEditingController _uname = TextEditingController();
-  // TextEditingController _pass = TextEditingController();
-  String pword;
-  String initialname;
-  bool valid;
-  // bool _passwordVisible;
-  Widget iconType;
-  List<Contents> cls = List();
-
-  // bool checkUserSP, checkPwordSP;
-
-  // final _logkey = GlobalKey<FormState>();
-  final snack = GlobalKey<ScaffoldState>();
-  final ukey = GlobalKey<FormFieldState>();
-  final passkey = GlobalKey<FormFieldState>();
-  // String userid, passcode;
-  DbRef dbobj = DbRef();
-  CollectionReference reference1;
-  var datareference;
-  String foundclass;
+  String _batch,
+      _dept,
+      _regno,
+      password,
+      givenkey,
+      givenuser,
+      givenpass,
+      foundclass,
+      initialname,
+      pword;
 
   processdata() {
     ukey.currentState.save();
@@ -136,7 +128,6 @@ class _LoginPageState extends State<LoginPage>
         }
         break;
     }
-    // bool isfound = false;
     listclass();
     print('Formvalidation executed');
   }
@@ -170,7 +161,6 @@ class _LoginPageState extends State<LoginPage>
           .then((value) {
         print('getdoucments executed');
         if (value.documents.isNotEmpty) {
-          // isfound = true;
           value.documents.forEach((element) {
             print('elements for each is executed');
             password = element.data['DOB'];
@@ -184,7 +174,6 @@ class _LoginPageState extends State<LoginPage>
                     builder: (_) => ProcessData(_regno, foundclass)),
               );
             }
-            // print(element.data);
           });
         }
       });
@@ -269,10 +258,6 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  // void validcheck() {
-  //   ukey.currentState.validate();
-  // }
-
   @override
   void dispose() {
     loginEmailController.dispose();
@@ -287,7 +272,6 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     processkey();
-    // loginEmailController.addListener(validcheck);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -357,7 +341,6 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
             ),
-            //Container(height: 33.0, width: 1.0, color: Colors.white),
             Expanded(
               child: FlatButton(
                 splashColor: Colors.transparent,
@@ -378,7 +361,6 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  // final cardkey = new GlobalKey<State>();
   Widget _buildSignIn(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
@@ -389,7 +371,6 @@ class _LoginPageState extends State<LoginPage>
             overflow: Overflow.visible,
             children: <Widget>[
               Card(
-                // key:cardkey,
                 elevation: 2.0,
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -408,11 +389,7 @@ class _LoginPageState extends State<LoginPage>
                             maxLength: 12,
                             key: ukey,
                             focusNode: myFocusNodeEmailLogin,
-                            // controller: loginEmailController,
                             keyboardType: TextInputType.emailAddress,
-                            // onFieldSubmitted: (value) {
-                            //   ukey.currentState.validate();
-                            // },
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
@@ -449,10 +426,6 @@ class _LoginPageState extends State<LoginPage>
                           child: TextFormField(
                             key: passkey,
                             focusNode: myFocusNodePasswordLogin,
-                            // controller: loginPasswordController,
-                            onFieldSubmitted: (String input) {
-                              passkey.currentState.validate();
-                            },
                             maxLength: 10,
                             obscureText: _obscureTextLogin,
                             style:
@@ -525,7 +498,6 @@ class _LoginPageState extends State<LoginPage>
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
                     splashColor: Theme.Colors.loginGradientEnd,
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 42.0),
@@ -544,7 +516,6 @@ class _LoginPageState extends State<LoginPage>
                           await processdata();
                         }
                       }
-                      // showInSnackBar("Login button pressed");
                     }),
               ),
             ],
@@ -554,21 +525,13 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  final adminuserkey = GlobalKey<FormFieldState>();
-  final adminpasskey = GlobalKey<FormFieldState>();
-  final adminkey = GlobalKey<FormFieldState>();
-  String givenkey, givenuser, givenpass;
-  List<Contents> keys1 = List();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   processkey() {
     CollectionReference collref = Firestore.instance.collection('key');
     collref.snapshots().listen((event) {
       setState(() {
         for (int i = 0; i < event.documents.length; i++) {
           keys1.add(Contents.fromSnapshot(event.documents[i]));
-//            print(event.documents[i].data['name']);
         }
-//        print(keys1[0].name);
       });
     });
   }
@@ -599,7 +562,6 @@ class _LoginPageState extends State<LoginPage>
         Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => AdminBottomNav()),
         );
-        // print(true);
       } else {
         invalidsnackbar('invalid user');
       }
@@ -645,10 +607,6 @@ class _LoginPageState extends State<LoginPage>
                             onSaved: (input) async {
                               givenkey = input;
                             },
-                            // onFieldSubmitted: (input) {
-                            //   givenkey = input.toString();
-                            //   adminkey.currentState.validate();
-                            // },
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
@@ -797,7 +755,6 @@ class _LoginPageState extends State<LoginPage>
                     //Button field
                     highlightColor: Colors.transparent,
                     splashColor: Theme.Colors.loginGradientEnd,
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 42.0),
@@ -819,8 +776,6 @@ class _LoginPageState extends State<LoginPage>
                           await validatekey();
                         }
                       }
-
-                      // showInSnackBar("SignUp button pressed");
                     }),
               ),
             ],
@@ -851,12 +806,6 @@ class _LoginPageState extends State<LoginPage>
       _obscureTextSignup = !_obscureTextSignup;
     });
   }
-
-//  void _toggleSignupConfirm() {
-//    setState(() {
-//      _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
-//    });
-//  }
 }
 
 class TabIndicationPainter extends CustomPainter {
