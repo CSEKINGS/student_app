@@ -78,16 +78,16 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   ##  fonts:
-  ##    - family: CustomIcons
+  ##    - family:
   #      fonts:
-  ##        - asset: assets/CustomIcons.ttf
+  ##        - asset: assets/
   ##
-  ##    - family: Poppins-Bold
+  ##    - family:
   ##      fonts:
-  ##        - asset: assets/Poppins-Bold.ttf
+  ##        - asset: assets/
   ##
-  ##    - family: Poppins-Medium
+  ##    - family:
   ##      fonts:
-  ##        - asset: assets/Poppins-Medium.ttf
+  ##        - asset: assets/
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

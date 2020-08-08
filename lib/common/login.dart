@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage>
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage>
   final FocusNode myFocusNodeName = FocusNode();
 
   //GlobalKeys
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final snack = GlobalKey<ScaffoldState>();
   final ukey = GlobalKey<FormFieldState>();
   final passkey = GlobalKey<FormFieldState>();
@@ -36,13 +37,13 @@ class _LoginPageState extends State<LoginPage>
   final adminkey = GlobalKey<FormFieldState>();
 
   //TextEditingController Objects and other contorllers
-  TextEditingController loginEmailController = new TextEditingController();
-  TextEditingController loginPasswordController = new TextEditingController();
-  TextEditingController signupEmailController = new TextEditingController();
-  TextEditingController signupNameController = new TextEditingController();
-  TextEditingController signupPasswordController = new TextEditingController();
+  TextEditingController loginEmailController = TextEditingController();
+  TextEditingController loginPasswordController = TextEditingController();
+  TextEditingController signupEmailController = TextEditingController();
+  TextEditingController signupNameController = TextEditingController();
+  TextEditingController signupPasswordController = TextEditingController();
   TextEditingController signupConfirmPasswordController =
-      new TextEditingController();
+      TextEditingController();
   PageController _pageController;
 
   //FirebaseReferences and its variables
@@ -182,7 +183,7 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       body: NotificationListener<OverscrollIndicatorNotification>(
         // ignore: missing_return
@@ -191,34 +192,26 @@ class _LoginPageState extends State<LoginPage>
         },
         child: SingleChildScrollView(
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height >= 775.0
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height >= 775.0
                 ? MediaQuery.of(context).size.height
                 : 775.0,
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [
-                    Theme.Colors.loginGradientStart,
-                    Theme.Colors.loginGradientEnd
-                  ],
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 1.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
-            ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 75.0),
-                  child: new Image(
-                      width: 250.0,
-                      height: 191.0,
-                      fit: BoxFit.fill,
-                      image: new AssetImage('assets/image_02.png')),
+                Expanded(
+                  child: Image(
+                      fit: BoxFit.scaleDown,
+                      image: AssetImage('assets/image_01.png')),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20.0),
+                  padding: EdgeInsets.only(top: 1.0),
                   child: _buildMenuBar(context),
                 ),
                 Expanded(
@@ -239,11 +232,11 @@ class _LoginPageState extends State<LoginPage>
                       }
                     },
                     children: <Widget>[
-                      new ConstrainedBox(
+                      ConstrainedBox(
                         constraints: const BoxConstraints.expand(),
                         child: _buildSignIn(context),
                       ),
-                      new ConstrainedBox(
+                      ConstrainedBox(
                         constraints: const BoxConstraints.expand(),
                         child: _buildSignUp(context),
                       ),
@@ -281,10 +274,10 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void invalidsnackbar(String value) {
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
     _scaffoldKey.currentState?.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(
-      content: new Text(
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(
         value,
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -298,10 +291,10 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void validsnackbar(String value) {
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
     _scaffoldKey.currentState?.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(
-      content: new Text(
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(
         value,
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -378,24 +371,24 @@ class _LoginPageState extends State<LoginPage>
                 ),
                 child: Container(
                   width: 300.0,
-                  height: 250.0,
+                  height: 220.0,
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                              top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             maxLength: 12,
                             key: ukey,
                             focusNode: myFocusNodeEmailLogin,
                             keyboardType: TextInputType.emailAddress,
                             style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
-                                FontAwesomeIcons.envelope,
+                                Icons.person,
                                 color: Colors.black,
                                 size: 22.0,
                               ),
@@ -422,14 +415,14 @@ class _LoginPageState extends State<LoginPage>
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                              top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             key: passkey,
                             focusNode: myFocusNodePasswordLogin,
                             maxLength: 10,
                             obscureText: _obscureTextLogin,
                             style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
@@ -470,8 +463,8 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 220.0),
-                decoration: new BoxDecoration(
+                margin: EdgeInsets.only(top: 200.0),
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
@@ -502,7 +495,7 @@ class _LoginPageState extends State<LoginPage>
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 42.0),
                       child: Text(
-                        "LOGIN",
+                        "Login",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 25.0,
@@ -601,7 +594,7 @@ class _LoginPageState extends State<LoginPage>
                             keyboardType: TextInputType.visiblePassword,
                             textCapitalization: TextCapitalization.words,
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
+                              FilteringTextInputFormatter.deny(
                                   RegExp(r"\s\b|\b\s"))
                             ],
                             onSaved: (input) async {
@@ -612,7 +605,7 @@ class _LoginPageState extends State<LoginPage>
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
-                                FontAwesomeIcons.user,
+                                FontAwesomeIcons.key,
                                 color: Colors.black,
                               ),
                               hintText: "Key",
@@ -648,7 +641,7 @@ class _LoginPageState extends State<LoginPage>
                             // },
                             keyboardType: TextInputType.emailAddress,
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
+                              FilteringTextInputFormatter.deny(
                                   RegExp(r"\s\b|\b\s"))
                             ],
                             style:
@@ -695,7 +688,7 @@ class _LoginPageState extends State<LoginPage>
                               givenpass = input.toString();
                             },
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
+                              FilteringTextInputFormatter.deny(
                                   RegExp(r"\s\b|\b\s"))
                             ],
                             decoration: InputDecoration(
@@ -824,7 +817,7 @@ class TabIndicationPainter extends CustomPainter {
       this.dy = 25.0,
       this.pageController})
       : super(repaint: pageController) {
-    painter = new Paint()
+    painter = Paint()
       ..color = Color(0xFFFFFFFF)
       ..style = PaintingStyle.fill;
   }
@@ -833,21 +826,20 @@ class TabIndicationPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final pos = pageController.position;
     double fullExtent =
-        (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
+    (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
 
     double pageOffset = pos.extentBefore / fullExtent;
 
     bool left2right = dxEntry < dxTarget;
-    Offset entry = new Offset(left2right ? dxEntry : dxTarget, dy);
-    Offset target = new Offset(left2right ? dxTarget : dxEntry, dy);
+    Offset entry = Offset(left2right ? dxEntry : dxTarget, dy);
+    Offset target = Offset(left2right ? dxTarget : dxEntry, dy);
 
-    Path path = new Path();
+    Path path = Path();
     path.addArc(
-        new Rect.fromCircle(center: entry, radius: radius), 0.5 * pi, 1 * pi);
-    path.addRect(
-        new Rect.fromLTRB(entry.dx, dy - radius, target.dx, dy + radius));
+        Rect.fromCircle(center: entry, radius: radius), 0.5 * pi, 1 * pi);
+    path.addRect(Rect.fromLTRB(entry.dx, dy - radius, target.dx, dy + radius));
     path.addArc(
-        new Rect.fromCircle(center: target, radius: radius), 1.5 * pi, 1 * pi);
+        Rect.fromCircle(center: target, radius: radius), 1.5 * pi, 1 * pi);
 
     canvas.translate(size.width * pageOffset, 0.0);
     canvas.drawShadow(path, Color(0xFFfbab66), 3.0, true);
