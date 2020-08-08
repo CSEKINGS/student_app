@@ -98,7 +98,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
                 gap: 8,
                 activeColor: Colors.white,
                 iconSize: 24,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                padding: EdgeInsets.symmetric(vertical: 5),
                 duration: Duration(milliseconds: 500),
                 tabBackgroundColor: Colors.grey[800],
                 onTabChange: onTappedBar,
