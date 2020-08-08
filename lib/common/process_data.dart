@@ -103,6 +103,10 @@ class _ProcessDataState extends State<ProcessData> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: Text('Loading....'),
+      ),
+    );
   }
 }

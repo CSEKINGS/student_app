@@ -95,7 +95,8 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
           ]),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 10.0),
               child: GNav(
                 gap: 8,
                 activeColor: Colors.white,
