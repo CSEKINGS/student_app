@@ -378,7 +378,7 @@ class _LoginPageState extends State<LoginPage>
                             focusNode: myFocusNodeEmailLogin,
                             keyboardType: TextInputType.emailAddress,
                             style:
-                            TextStyle(fontSize: 16.0, color: Colors.black),
+                                TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
