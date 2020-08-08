@@ -59,30 +59,33 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: onTappedBar,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check_box),
-            title: Text('Attendance'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            title: Text('Admin'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.file_upload),
-            title: Text('Notes'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud_upload),
-            title: Text('Profile'),
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        body: _children[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          onTap: onTappedBar,
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.check_box),
+              title: Text('Attendance'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              title: Text('Admin'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.file_upload),
+              title: Text('Notes'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.cloud_upload),
+              title: Text('Profile'),
+            ),
+          ],
+        ),
       ),
     );
   }
