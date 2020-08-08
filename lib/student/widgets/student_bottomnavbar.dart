@@ -92,13 +92,12 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
           ]),
           child: SafeArea(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: GNav(
                 gap: 8,
                 activeColor: Colors.white,
                 iconSize: 24,
-                padding: EdgeInsets.symmetric(vertical: 5),
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 duration: Duration(milliseconds: 500),
                 tabBackgroundColor: Colors.grey[800],
                 onTabChange: onTappedBar,
