@@ -85,7 +85,10 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        body: _children[_currentIndex],
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _children,
+        ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(color: Colors.white, boxShadow: [
             BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
