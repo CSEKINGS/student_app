@@ -75,7 +75,7 @@ class UploadNotesState extends State<UploadNotes> {
     });
   }
 
-  _signout() async {
+  sign0utStaff() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     await _auth.signOut();
     Navigator.of(context).pop(false);
@@ -114,7 +114,8 @@ class UploadNotesState extends State<UploadNotes> {
               SizedBox(
                 height: 20.0,
               ),
-              OutlineButton(child: Text('Sign Out'), onPressed: _signout),
+              OutlineButton(
+                  child: Text('Sign Out'), onPressed: () => sign0utStaff()),
               Flexible(
                 child: ListView(
                   children: children,

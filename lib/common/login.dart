@@ -273,7 +273,7 @@ class _LoginPageState extends State<LoginPage>
       DeviceOrientation.portraitDown,
     ]);
 
-    _pageController = PageController();
+    _pageController = PageController(keepPage: true);
   }
 
   void invalidsnackbar(String value) {
@@ -305,7 +305,6 @@ class _LoginPageState extends State<LoginPage>
           fontSize: 16.0,
         ),
       ),
-      backgroundColor: Colors.greenAccent,
       duration: Duration(seconds: 5),
     ));
   }
@@ -382,6 +381,7 @@ class _LoginPageState extends State<LoginPage>
                           padding: EdgeInsets.only(
                               top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
                           child: TextFormField(
+                            autocorrect: false,
                             maxLength: 12,
                             key: ukey,
                             focusNode: myFocusNodeEmailLogin,
@@ -420,12 +420,13 @@ class _LoginPageState extends State<LoginPage>
                           padding: EdgeInsets.only(
                               top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
                           child: TextFormField(
+                            autocorrect: false,
                             key: passkey,
                             focusNode: myFocusNodePasswordLogin,
                             maxLength: 10,
                             obscureText: _obscureTextLogin,
                             style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
@@ -636,6 +637,7 @@ class _LoginPageState extends State<LoginPage>
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextFormField(
+                            autocorrect: false,
                             key: adminuserkey,
                             //EmailAdress field
                             focusNode: myFocusNodeEmail,
@@ -652,7 +654,7 @@ class _LoginPageState extends State<LoginPage>
                                   RegExp(r"\s\b|\b\s"))
                             ],
                             style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            TextStyle(fontSize: 16.0, color: Colors.black),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
@@ -667,7 +669,7 @@ class _LoginPageState extends State<LoginPage>
                                 return 'Email Required';
                               }
                               if (!RegExp(
-                                      r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                  r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                                   .hasMatch(input)) {
                                 return 'Valid Email Required';
                               }
@@ -684,13 +686,14 @@ class _LoginPageState extends State<LoginPage>
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextFormField(
+                            autocorrect: false,
                             key: adminpasskey,
                             //PasswordField
                             focusNode: myFocusNodePassword,
                             controller: signupPasswordController,
                             obscureText: _obscureTextSignup,
                             style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            TextStyle(fontSize: 16.0, color: Colors.black),
                             onSaved: (input) {
                               givenpass = input.toString();
                             },
