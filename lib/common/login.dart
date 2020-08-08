@@ -259,7 +259,15 @@ class _LoginPageState extends State<LoginPage>
   @override
   void initState() {
     super.initState();
-    processkey();
+    getUser().then((user) {
+      if (user != null) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => AdminBottomNav()),
+        );
+      } else {
+        processkey();
+      }
+    });
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -534,6 +542,10 @@ class _LoginPageState extends State<LoginPage>
         invalidsnackbar('invalid key');
       }
     }
+  }
+
+  Future<FirebaseUser> getUser() async {
+    return await _auth.currentUser();
   }
 
   // ignore: non_constant_identifier_names
@@ -821,7 +833,7 @@ class TabIndicationPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final pos = pageController.position;
     double fullExtent =
-    (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
+        (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
 
     double pageOffset = pos.extentBefore / fullExtent;
 

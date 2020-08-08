@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -74,6 +75,12 @@ class UploadNotesState extends State<UploadNotes> {
     });
   }
 
+  _signout() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    await _auth.signOut();
+    Navigator.of(context).pop(false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
@@ -107,6 +114,7 @@ class UploadNotesState extends State<UploadNotes> {
               SizedBox(
                 height: 20.0,
               ),
+              OutlineButton(child: Text('Sign Out'), onPressed: _signout),
               Flexible(
                 child: ListView(
                   children: children,

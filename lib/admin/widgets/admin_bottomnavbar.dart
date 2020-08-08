@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:student_app/admin/attendance/Dialog.dart';
 import 'package:student_app/admin/screens/mark_entry.dart';
 import 'package:student_app/admin/screens/upload_notes.dart';
@@ -22,6 +23,38 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  Future<bool> _onBackPressed() {
+    return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            title: Text(
+              'Do you want to exit..?',
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
+            actions: <Widget>[
+              CloseButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                color: Colors.red,
+              ),
+              SizedBox(height: 16),
+              IconButton(
+                onPressed: () async {
+                  SystemNavigator.pop();
+                },
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.green,
+                ),
+              ),
+              SizedBox(width: 16),
+            ],
+          ),
+        ) ??
+        false;
   }
 
   @override
