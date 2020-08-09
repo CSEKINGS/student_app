@@ -84,7 +84,7 @@ class _AttendanceState extends State<Attendance> {
 
   void _addAttendance(var hour) {
     CollectionReference ref1 = obj.placeAttendance(cls, widget.yer, widget.dep);
-    var period, total;
+    var period;
     switch (hour) {
       case '09':
         {
@@ -154,7 +154,7 @@ class _AttendanceState extends State<Attendance> {
     ref.add({'name': '$date'});
     _addAttendance(hour);
   }
-  var hasdate;
+  var hasDate;
   void checker() {
     var datetime = DateTime.now().toString();
     var dateParse = DateTime.parse(datetime);
@@ -165,10 +165,10 @@ class _AttendanceState extends State<Attendance> {
       for(int i=0;i<value.documents.length;i++){
         if(value.documents[i].data['name']==date){
           _addAttendance(hour);
-          hasdate='yes';
+          hasDate='yes';
         }
       }
-      if(hasdate!='yes'){
+      if(hasDate!='yes'){
         addDate(date, hour);
       }
     });
