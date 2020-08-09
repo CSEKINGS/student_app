@@ -25,9 +25,6 @@ class _ProfileState extends State<Profile> {
                   backgroundColor: Colors.transparent,
                   borderWidth: 10,
                   cacheImage: true,
-                  onTap: () {
-                    print('success');
-                  },
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -33,7 +33,6 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasData) {
             return route();
           } else {
-            // Return loading screen while reading preferences
             return Center(child: CircularProgressIndicator());
           }
         },

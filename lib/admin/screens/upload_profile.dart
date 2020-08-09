@@ -58,7 +58,7 @@ class _UploadProfile extends State<UploadProfile> {
         StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
         var url = await taskSnapshot.ref.getDownloadURL();
         profileUrl = url.toString();
-        print('$profileUrl');
+
         DocumentReference ref = Firestore.instance
             .collection('collage')
             .document('student')
@@ -255,7 +255,6 @@ class _UploadProfile extends State<UploadProfile> {
       onChanged: (String name) {
         setState(() {
           batch = name;
-          print(dept);
         });
       },
       value: batch,

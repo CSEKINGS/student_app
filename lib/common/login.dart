@@ -80,7 +80,6 @@ class _LoginPageState extends State<LoginPage>
     ukey.currentState.save();
     passkey.currentState.save();
     formValidation();
-    print('processdata executed');
   }
 
   formValidation() {
@@ -130,7 +129,6 @@ class _LoginPageState extends State<LoginPage>
         break;
     }
     listclass();
-    print('Formvalidation executed');
   }
 
   listclass() {
@@ -145,7 +143,6 @@ class _LoginPageState extends State<LoginPage>
         loadpassword();
       });
     });
-    print('listclass executed');
   }
 
   loadpassword() async {
@@ -160,16 +157,14 @@ class _LoginPageState extends State<LoginPage>
           .where('Regno', isEqualTo: '$_regno')
           .getDocuments()
           .then((value) {
-        print('getdoucments executed');
         if (value.documents.isNotEmpty) {
           value.documents.forEach((element) {
-            print('elements for each is executed');
             password = element.data['DOB'];
             if (password != pword) {
               invalidsnackbar('Password is incorrect');
             } else {
               foundclass = cls[i].name;
-              print('data found');
+
               Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (_) => ProcessData(_regno, foundclass)),
@@ -398,11 +393,10 @@ class _LoginPageState extends State<LoginPage>
                               if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
                                 return 'Invalid Details';
                               }
-                              print("validator for ukey");
+
                               return null;
                             },
                             onSaved: (String input) {
-                              print('onsaved for ukey');
                               initialname = input;
                             },
                           ),
@@ -446,15 +440,13 @@ class _LoginPageState extends State<LoginPage>
                               ),
                             ),
                             onSaved: (String input) {
-                              print('onsaved for passkey');
-
                               pword = input.toString();
                             },
                             validator: (String input) {
                               if (!RegExp(r"^[0-9/-]{10}$").hasMatch(input)) {
                                 return 'Password is incorrect';
                               }
-                              print('validator for passkey');
+
                               return null;
                             },
                           ),
@@ -505,7 +497,6 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () async {
-                      print('buttorn pressed');
                       if (ukey.currentState.validate()) {
                         if (passkey.currentState.validate()) {
                           await processdata();
