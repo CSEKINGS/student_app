@@ -82,15 +82,102 @@ class _AttendanceState extends State<Attendance> {
     });
   }
 
-  void _addAttendance() {
+  void _addAttendance(var hour) {
     CollectionReference ref1 = obj.placeAttendance(cls, widget.yer, widget.dep);
+    var period, total;
+    switch (hour) {
+      case '09':
+        {
+          period = 1;
+        }
+        break;
+      case '10':
+        {
+          period = 2;
+        }
+        break;
+      case '11':
+        {
+          period = 3;
+        }
+        break;
+      case '12':
+        {
+          period = 4;
+        }
+        break;
+      case '13':
+        {
+          period = 5;
+        }
+        break;
+      case '14':
+        {
+          period = 6;
+        }
+        break;
+      case '15':
+        {
+          period = 7;
+        }
+        break;
+      case '16':
+        {
+          period = 8;
+        }
+        break;
+      case '19':
+        {
+          period = 10;
+        }
+        break;
+    }
     for (int i = 0; i < item.length; i++) {
-      ref1.document(item[i].key).setData({
-        'Roll-no': item[i].rollNo,
-        'name': item[i].name,
-        'attendance': item[i].isSelected ? 'present' : 'absent'
+
+      ref1.document(item[i].key).get().then((value) {
+        for (int j = 1; j < 11; j++) {
+          if (value.data['$j'] == 'present') {
+            print(value.data['$j']);
+            if (value.data['total']!=null){
+              ref1.document(item[i].key).updateData({'total': value.data['total']+1});
+            }
+            else if(value.data['total']==null){
+              ref1.document(item[i].key).setData({
+                'Roll-no': item[i].rollNo,
+                'name': item[i].name,
+                '$period': item[i].isSelected ? 'present' : 'absent',
+                'total': 1
+              });
+            }
+          }
+        }
       });
     }
+  }
+
+  void addDate(var date, var hour) {
+    CollectionReference ref = obj.getDates();
+    ref.add({'name': '$date'});
+    _addAttendance(hour);
+  }
+  var hasdate;
+  void checker() {
+    var datetime = DateTime.now().toString();
+    var dateParse = DateTime.parse(datetime);
+    var date = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
+    var hour = "${dateParse.hour}";
+    CollectionReference ref = obj.getDates();
+    ref.getDocuments().then((value){
+      for(int i=0;i<value.documents.length;i++){
+        if(value.documents[i].data['name']==date){
+          _addAttendance(hour);
+          hasdate='yes';
+        }
+      }
+      if(hasdate!='yes'){
+        addDate(date, hour);
+      }
+    });
   }
 
   void _delete() {
@@ -213,7 +300,7 @@ class _AttendanceState extends State<Attendance> {
                   _delete();
                   _clearData();
                 } else if (widget.text == 'Attendance') {
-                  _addAttendance();
+                  checker();
                 } else if (widget.text == 'Delete department') {
                   _deleteDep();
                   _clearData1();
