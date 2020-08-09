@@ -88,6 +88,7 @@ class _ProcessDataState extends State<ProcessData> {
       details.add(event.data['Department']);
       details.add(event.data['Address']);
       details.add(event.data['ProfileUrl']);
+      details.add(widget.foundclass);
       Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
       );
