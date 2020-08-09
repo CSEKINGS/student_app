@@ -126,18 +126,12 @@ class _AttendanceState extends State<Attendance> {
           period = 8;
         }
         break;
-      case '19':
-        {
-          period = 10;
-        }
-        break;
     }
     for (int i = 0; i < item.length; i++) {
 
       ref1.document(item[i].key).get().then((value) {
         for (int j = 1; j < 11; j++) {
           if (value.data['$j'] == 'present') {
-            print(value.data['$j']);
             if (value.data['total']!=null){
               ref1.document(item[i].key).updateData({'total': value.data['total']+1});
             }
