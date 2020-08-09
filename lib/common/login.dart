@@ -268,10 +268,6 @@ class _LoginPageState extends State<LoginPage>
         processkey();
       }
     });
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
 
     _pageController = PageController(keepPage: true);
   }
@@ -695,7 +691,7 @@ class _LoginPageState extends State<LoginPage>
                             controller: signupPasswordController,
                             obscureText: _obscureTextSignup,
                             style:
-                            TextStyle(fontSize: 16.0, color: Colors.black),
+                                TextStyle(fontSize: 16.0, color: Colors.black),
                             onSaved: (input) {
                               givenpass = input.toString();
                             },
