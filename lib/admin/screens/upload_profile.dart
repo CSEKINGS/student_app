@@ -418,7 +418,6 @@ class _UploadProfile extends State<UploadProfile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     CollectionReference yearRef = obj.getDetailRef('year');
     CollectionReference depRef = obj.getDetailRef('department');

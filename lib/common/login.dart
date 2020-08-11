@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage>
 
   listclass() {
     reference1 = reference
-        .collection('college')
+        .collection('collage')
         .document('entity')
         .collection('class')
         .document(_dept)
