@@ -88,6 +88,7 @@ class _CustomViewState extends State<CustomView> {
         child: Column(
           children: <Widget>[
             Image(
+                color: Colors.black54,
                 height: 70,
                 width: 50,
                 fit: BoxFit.fill,
