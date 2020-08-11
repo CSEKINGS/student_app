@@ -87,9 +87,15 @@ class _CustomViewState extends State<CustomView> {
         ),
         child: Column(
           children: <Widget>[
+            Image(
+                height: 70,
+                width: 50,
+                fit: BoxFit.fill,
+                alignment: Alignment.center,
+                image: AssetImage('assets/${widget.text}.png')),
             Text(
               widget.text,
-              style: TextStyle(letterSpacing: 0.9, fontWeight: FontWeight.w400),
+              style: TextStyle(fontWeight: FontWeight.w400),
             ),
           ],
         ),
