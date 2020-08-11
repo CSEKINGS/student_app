@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'DbAndRefs.dart';
 
 class Attendance extends StatefulWidget {
@@ -14,6 +13,7 @@ class Attendance extends StatefulWidget {
 
 class _AttendanceState extends State<Attendance> {
   String cls;
+  String hasDate;
   List<Contents> classes = List();
   List<Item> item = List();
   DbRef obj = DbRef();
@@ -82,94 +82,67 @@ class _AttendanceState extends State<Attendance> {
     });
   }
 
-  void _addAttendance(var hour) {
+  void _addAttendance(String date,String data) {
     CollectionReference ref1 = obj.placeAttendance(cls, widget.yer, widget.dep);
-    var period;
-    switch (hour) {
-      case '09':
-        {
-          period = 1;
-        }
-        break;
-      case '10':
-        {
-          period = 2;
-        }
-        break;
-      case '11':
-        {
-          period = 3;
-        }
-        break;
-      case '12':
-        {
-          period = 4;
-        }
-        break;
-      case '13':
-        {
-          period = 5;
-        }
-        break;
-      case '14':
-        {
-          period = 6;
-        }
-        break;
-      case '15':
-        {
-          period = 7;
-        }
-        break;
-      case '16':
-        {
-          period = 8;
-        }
-        break;
-    }
     for (int i = 0; i < item.length; i++) {
-
-      ref1.document(item[i].key).get().then((value) {
-        for (int j = 1; j < 11; j++) {
-          if (value.data['$j'] == 'present') {
-            if (value.data['total']!=null){
-              ref1.document(item[i].key).updateData({'total': value.data['total']+1});
-            }
-            else if(value.data['total']==null){
-              ref1.document(item[i].key).setData({
-                'Roll-no': item[i].rollNo,
-                'name': item[i].name,
-                '$period': item[i].isSelected ? 'present' : 'absent',
-                'total': 1
-              });
-            }
-          }
+      ref1.document(item[i].key).get().then((value){
+        if(!value.exists){
+          ref1.document(item[i].key).setData({
+            'Roll-no': item[i].rollNo,
+            'name': item[i].name,
+            'attendance': item[i].isSelected ? 'present' : 'absent',
+            'date': date,
+            'total':item[i].isSelected?1:0
+          });
+        }
+        else if(item[i].isSelected&&data=='new'){
+          ref1.document(item[i].key).updateData({
+            'attendance':'present',
+            'date':date,
+            'total':value.data['total']+1
+          });
+        }
+        else if(!item[i].isSelected&&data=='new'){
+          ref1.document(item[i].key).updateData({
+            'attendance':'absent',
+            'date':date
+          });
+        }
+        else if(item[i].isSelected&&data=='exist'){
+          ref1.document(item[i].key).updateData({
+            'attendance': 'present',
+            'total':(value.data['attendance']=='absent')?value.data['total']+1:value.data['total']
+          });
+        }
+        else if(!item[i].isSelected&&data=='exist'){
+          ref1.document(item[i].key).updateData({
+            'attendance': 'absent',
+            'total':(value.data['attendance']=='present')?value.data['total']-1:value.data['total']
+          });
         }
       });
     }
   }
 
-  void addDate(var date, var hour) {
+  void addDate(String date) {
     CollectionReference ref = obj.getDates();
     ref.add({'name': '$date'});
-    _addAttendance(hour);
+    _addAttendance(date,'new');
   }
-  var hasDate;
+
   void checker() {
-    var datetime = DateTime.now().toString();
-    var dateParse = DateTime.parse(datetime);
-    var date = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
-    var hour = "${dateParse.hour}";
+    DateTime dateParse = DateTime.parse(DateTime.now().toString());
+    String date = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
     CollectionReference ref = obj.getDates();
     ref.getDocuments().then((value){
       for(int i=0;i<value.documents.length;i++){
         if(value.documents[i].data['name']==date){
-          _addAttendance(hour);
+          _addAttendance(date,'exist');
           hasDate='yes';
         }
       }
       if(hasDate!='yes'){
-        addDate(date, hour);
+        addDate(date);
       }
     });
   }
