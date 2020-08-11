@@ -16,7 +16,7 @@ class _CustomViewState extends State<CustomView> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: Colors.cyanAccent,
+      splashColor: Colors.black54,
       onTap: () {
         if (widget.text == 'Add class') {
           showDialog(
