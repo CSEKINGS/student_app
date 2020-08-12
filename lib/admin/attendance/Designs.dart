@@ -16,7 +16,7 @@ class _CustomViewState extends State<CustomView> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: Colors.cyanAccent,
+      splashColor: Colors.black54,
       onTap: () {
         if (widget.text == 'Add class') {
           showDialog(
@@ -87,9 +87,16 @@ class _CustomViewState extends State<CustomView> {
         ),
         child: Column(
           children: <Widget>[
+            Image(
+                color: Colors.black54,
+                height: 70,
+                width: 50,
+                fit: BoxFit.fill,
+                alignment: Alignment.center,
+                image: AssetImage('assets/${widget.text}.png')),
             Text(
               widget.text,
-              style: TextStyle(letterSpacing: 0.9, fontWeight: FontWeight.w400),
+              style: TextStyle(fontWeight: FontWeight.w400),
             ),
           ],
         ),

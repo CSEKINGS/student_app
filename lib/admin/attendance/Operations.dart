@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'DbAndRefs.dart';
 
 class Attendance extends StatefulWidget {
@@ -14,6 +13,7 @@ class Attendance extends StatefulWidget {
 
 class _AttendanceState extends State<Attendance> {
   String cls;
+  String hasDate;
   List<Contents> classes = List();
   List<Item> item = List();
   DbRef obj = DbRef();
@@ -82,15 +82,69 @@ class _AttendanceState extends State<Attendance> {
     });
   }
 
-  void _addAttendance() {
+  void _addAttendance(String date,String data) {
     CollectionReference ref1 = obj.placeAttendance(cls, widget.yer, widget.dep);
     for (int i = 0; i < item.length; i++) {
-      ref1.document(item[i].key).setData({
-        'Roll-no': item[i].rollNo,
-        'name': item[i].name,
-        'attendance': item[i].isSelected ? 'present' : 'absent'
+      ref1.document(item[i].key).get().then((value){
+        if(!value.exists){
+          ref1.document(item[i].key).setData({
+            'Roll-no': item[i].rollNo,
+            'name': item[i].name,
+            'attendance': item[i].isSelected ? 'present' : 'absent',
+            'date': date,
+            'total':item[i].isSelected?1:0
+          });
+        }
+        else if(item[i].isSelected&&data=='new'){
+          ref1.document(item[i].key).updateData({
+            'attendance':'present',
+            'date':date,
+            'total':value.data['total']+1
+          });
+        }
+        else if(!item[i].isSelected&&data=='new'){
+          ref1.document(item[i].key).updateData({
+            'attendance':'absent',
+            'date':date
+          });
+        }
+        else if(item[i].isSelected&&data=='exist'){
+          ref1.document(item[i].key).updateData({
+            'attendance': 'present',
+            'total':(value.data['attendance']=='absent')?value.data['total']+1:value.data['total']
+          });
+        }
+        else if(!item[i].isSelected&&data=='exist'){
+          ref1.document(item[i].key).updateData({
+            'attendance': 'absent',
+            'total':(value.data['attendance']=='present')?value.data['total']-1:value.data['total']
+          });
+        }
       });
     }
+  }
+
+  void addDate(String date) {
+    CollectionReference ref = obj.getDates();
+    ref.add({'name': '$date'});
+    _addAttendance(date,'new');
+  }
+
+  void checker() {
+    DateTime dateParse = DateTime.parse(DateTime.now().toString());
+    String date = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
+    CollectionReference ref = obj.getDates();
+    ref.getDocuments().then((value){
+      for(int i=0;i<value.documents.length;i++){
+        if(value.documents[i].data['name']==date){
+          _addAttendance(date,'exist');
+          hasDate='yes';
+        }
+      }
+      if(hasDate!='yes'){
+        addDate(date);
+      }
+    });
   }
 
   void _delete() {
@@ -213,7 +267,7 @@ class _AttendanceState extends State<Attendance> {
                   _delete();
                   _clearData();
                 } else if (widget.text == 'Attendance') {
-                  _addAttendance();
+                  checker();
                 } else if (widget.text == 'Delete department') {
                   _deleteDep();
                   _clearData1();

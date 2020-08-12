@@ -19,6 +19,7 @@ class _ProcessDataState extends State<ProcessData> {
   Future<SharedPreferences> _preference = SharedPreferences.getInstance();
 
   Future<List> stream() async {
+    var days;
     final SharedPreferences preference = await _preference;
     await preference.setString('username', widget._regno);
     await preference.setString('foundedclass', widget.foundclass);
@@ -88,16 +89,34 @@ class _ProcessDataState extends State<ProcessData> {
       details.add(event.data['Department']);
       details.add(event.data['Address']);
       details.add(event.data['ProfileUrl']);
+      details.add(event.data['Class']);
+      var ref2 = reference
+          .collection('collage')
+          .document('date')
+          .collection('working');
+      ref2.snapshots().listen((event) {
+        days = 0;
+        for (int i = 0; i < event.documents.length; i++) {
+          days = days + 1;
+          // setState(() {
+          //   workingdays.add(Contents.fromSnapshot(event.documents[i]));
+          // });
+          print('$days' + '********');
+        }
+      });
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => StudentBottomNav(details)),
+        MaterialPageRoute(builder: (_) => StudentBottomNav(details, days)),
       );
     });
     return details;
   }
 
+  gettotaldays() {}
+
   @override
   void initState() {
     super.initState();
+    gettotaldays();
     stream();
   }
 

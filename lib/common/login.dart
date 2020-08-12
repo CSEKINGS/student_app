@@ -132,8 +132,13 @@ class _LoginPageState extends State<LoginPage>
   }
 
   listclass() {
-    reference1 =
-        reference.collection('class').document('$_dept').collection('$_batch');
+    reference1 = reference
+        .collection('collage')
+        .document('entity')
+        .collection('class')
+        .document(_dept)
+        .collection(_batch);
+    // reference.collection('class').document('$_dept').collection('$_batch');
     reference1.snapshots().listen((event) {
       cls.clear();
       setState(() {
@@ -254,13 +259,12 @@ class _LoginPageState extends State<LoginPage>
   @override
   void initState() {
     super.initState();
+    processkey();
     getUser().then((user) {
       if (user != null) {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => AdminBottomNav()),
         );
-      } else {
-        processkey();
       }
     });
 

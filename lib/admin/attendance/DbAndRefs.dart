@@ -28,18 +28,18 @@ class DbRef {
   }
 
   CollectionReference placeAttendance(String cls, String yer, String dep) {
-    var datetime = DateTime.now().toString();
-    var dateParse = DateTime.parse(datetime);
-    var date = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
-    var hour = "${dateParse.hour}";
-    return (Firestore.instance.collection('$dep/$yer/$cls/$date/$hour'));
+    return (Firestore.instance.collection('collage/attendance/$dep/$yer/$cls'));
   }
 
   CollectionReference getDetailRef(String val) {
-    return (Firestore.instance.collection('$val'));
+    return (Firestore.instance.collection('collage/entity/$val'));
   }
 
   CollectionReference getDetailRef2(String year, String department) {
-    return (Firestore.instance.collection('class/$department/$year'));
+    return (Firestore.instance.collection('collage/entity/class/$department/$year'));
+  }
+
+  CollectionReference getDates(){
+    return (Firestore.instance.collection('collage/date/working'));
   }
 }
