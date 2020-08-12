@@ -48,12 +48,6 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
   }
 
-  alert() {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -66,34 +60,46 @@ class _DashboardState extends State<Dashboard> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Center(
-                      child: CircularPercentIndicator(
-                        percent: percentage,
-                        backgroundColor: Colors.teal,
-                        progressColor: Colors.deepOrange,
-                        radius: 100,
-                        center: InkWell(
-                            child: Text(
-                              '$displaypercent' + '%',
-                            ),
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext con) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25.0)),
-                                      title: Text('Details'),
-                                      content: Container(
-                                        height: 100,
-                                        child: Text(
-                                            'Total no. of Days :  ${widget.days}' +
-                                                '\n' +
-                                                'No of Present days : $presentdays'),
-                                      ),
-                                    );
-                                  });
-                            }),
+                      child: InkWell(
+                        customBorder: CircleBorder(),
+                        splashColor: Colors.indigoAccent,
+                        child: CircularPercentIndicator(
+                          animation: true,
+                          animationDuration: 1200,
+                          lineWidth: 12.0,
+                          percent: percentage,
+                          backgroundColor: Colors.teal,
+                          progressColor: Colors.deepOrange,
+                          radius: 100,
+                          circularStrokeCap: CircularStrokeCap.butt,
+                          center: Text(
+                            '$displaypercent' + '%',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15.0),
+                          ),
+                          footer: Text('Your Attendance Percentage',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14.0)),
+                        ),
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext con) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(25.0)),
+                                  title: Text('Details'),
+                                  content: Container(
+                                    height: 100,
+                                    child: Text(
+                                        'Total no. of Days :  ${widget.days}' +
+                                            '\n' +
+                                            'No of Present days : $presentdays'),
+                                  ),
+                                );
+                              });
+                        },
                       ),
                     ),
                     OutlineButton(
