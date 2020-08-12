@@ -46,6 +46,7 @@ dependencies:
   webview_flutter: ^0.3.22+1
   google_nav_bar: ^2.2.0
   percent_indicator: ^2.1.5
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
