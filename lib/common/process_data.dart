@@ -103,10 +103,10 @@ class _ProcessDataState extends State<ProcessData> {
           // });
           print('$days' + '********');
         }
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => StudentBottomNav(details, days)),
+        );
       });
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => StudentBottomNav(details, days)),
-      );
     });
     return details;
   }
