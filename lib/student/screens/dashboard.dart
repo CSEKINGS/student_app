@@ -23,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
   double percentage;
   var displaypercent;
 
-  Future getdays() async {
+  getdays() async {
     var ref1 = references
         .collection('collage')
         .document('attendance')
@@ -38,7 +38,6 @@ class _DashboardState extends State<Dashboard> {
       displaypercent = percentage * 100;
       final ff = NumberFormat('##.0#', 'en_US');
       displaypercent = ff.format(displaypercent);
-      print(displaypercent);
     });
     return true;
   }
@@ -54,52 +53,61 @@ class _DashboardState extends State<Dashboard> {
       child: Scaffold(
         body: FutureBuilder(
             future: getdays(),
-            builder: (buildContext, snapshot) {
-              if (snapshot.hasData) {
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData && snapshot != null) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Center(
-                      child: InkWell(
-                        customBorder: CircleBorder(),
-                        splashColor: Colors.indigoAccent,
-                        child: CircularPercentIndicator(
-                          animation: true,
-                          animationDuration: 1200,
-                          lineWidth: 12.0,
-                          percent: percentage,
-                          backgroundColor: Colors.teal,
-                          progressColor: Colors.deepOrange,
-                          radius: 100,
-                          circularStrokeCap: CircularStrokeCap.butt,
-                          center: Text(
-                            '$displaypercent' + '%',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15.0),
+                      child: Card(
+                        elevation: 1.5,
+                        margin: EdgeInsets.all(15.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: InkWell(
+                            customBorder: CircleBorder(),
+                            splashColor: Colors.indigoAccent,
+                            child: CircularPercentIndicator(
+                              animation: true,
+                              animationDuration: 1200,
+                              lineWidth: 10.0,
+                              percent: percentage,
+                              backgroundColor: Colors.teal,
+                              progressColor: Colors.deepOrange,
+                              radius: 100.0,
+                              circularStrokeCap: CircularStrokeCap.butt,
+                              center: Text(
+                                '$displaypercent' + '%',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0),
+                              ),
+                              footer: Text('Attendance Percentage',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0)),
+                            ),
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext con) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      title: Text('Details'),
+                                      content: Container(
+                                        height: 50,
+                                        child: Text(
+                                            'Total number of days :  ${widget.days}' +
+                                                '\n' +
+                                                'No of Present days : $presentdays'),
+                                      ),
+                                    );
+                                  });
+                            },
                           ),
-                          footer: Text('Your Attendance Percentage',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14.0)),
                         ),
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext con) {
-                                return AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(25.0)),
-                                  title: Text('Details'),
-                                  content: Container(
-                                    height: 100,
-                                    child: Text(
-                                        'Total no. of Days :  ${widget.days}' +
-                                            '\n' +
-                                            'No of Present days : $presentdays'),
-                                  ),
-                                );
-                              });
-                        },
                       ),
                     ),
                     OutlineButton(
@@ -113,9 +121,8 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ],
                 );
-              } else {
-                return CircularProgressIndicator();
               }
+              return CircularProgressIndicator();
             }),
       ),
     );
