@@ -42,11 +42,18 @@ class _UploadProfile extends State<UploadProfile> {
   DbRef obj = DbRef();
 
   Future getImage() async {
-    var image = await picker.getImage(source: ImageSource.gallery);
+    try {
+      var image = await picker.getImage(source: ImageSource.gallery);
 
-    setState(() {
-      _image = File(image.path);
-    });
+      setState(() {
+        _image = File(image.path);
+      });
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text("No image selected. Please select a image."),
+      ));
+    }
   }
 
   Future upload(BuildContext context) async {
@@ -443,6 +450,7 @@ class _UploadProfile extends State<UploadProfile> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Container(
             margin: EdgeInsets.all(20),
             child: Form(

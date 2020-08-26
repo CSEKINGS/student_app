@@ -15,6 +15,7 @@ class _ProfileState extends State<Profile> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

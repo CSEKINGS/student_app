@@ -107,12 +107,17 @@ class UploadNotesState extends State<UploadNotes> {
                 onChanged: (bool value) => setState(() => _multiPick = value),
                 value: _multiPick,
               ),
-              OutlineButton(
-                onPressed: () => openFileExplorer(),
-                child: Text("Open file picker"),
+              Center(
+                child: OutlineButton(
+                  onPressed: () => openFileExplorer(),
+                  child: Text("Upload notes"),
+                ),
               ),
               SizedBox(
                 height: 20.0,
+              ),
+              Divider(
+                thickness: 1.0,
               ),
               OutlineButton(
                   child: Text('Sign Out'), onPressed: () => sign0utStaff()),

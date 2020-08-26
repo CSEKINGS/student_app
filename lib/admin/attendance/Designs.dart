@@ -86,11 +86,12 @@ class _CustomViewState extends State<CustomView> {
           ],
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Image(
                 color: Colors.black54,
-                height: 70,
-                width: 50,
+                height: 60,
+                width: 60,
                 fit: BoxFit.fill,
                 alignment: Alignment.center,
                 image: AssetImage('assets/${widget.text}.png')),
