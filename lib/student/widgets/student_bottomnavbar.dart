@@ -8,7 +8,8 @@ import 'package:student_app/student/screens/view_notes.dart';
 
 class StudentBottomNav extends StatefulWidget {
   final List details;
-  var days;
+  final days;
+
   StudentBottomNav(this.details, this.days);
 
   @override

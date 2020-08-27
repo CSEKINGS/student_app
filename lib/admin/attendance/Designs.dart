@@ -89,12 +89,13 @@ class _CustomViewState extends State<CustomView> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Image(
-                color: Colors.black54,
-                height: 60,
-                width: 60,
-                fit: BoxFit.fill,
-                alignment: Alignment.center,
-                image: AssetImage('assets/${widget.text}.png')),
+              color: Colors.black54,
+              height: 60,
+              width: 60,
+              fit: BoxFit.fill,
+              alignment: Alignment.center,
+              image: AssetImage('assets/${widget.text}.png'),
+            ),
             Text(
               widget.text,
               style: TextStyle(fontWeight: FontWeight.w400),

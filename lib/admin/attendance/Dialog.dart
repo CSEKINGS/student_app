@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'GetDetails.dart';
 
-// ignore: must_be_immutable
 class DialogBox extends StatefulWidget {
-  String text;
+  final String text;
+
   DialogBox(this.text);
+
   @override
   _DialogBoxState createState() => _DialogBoxState();
 }

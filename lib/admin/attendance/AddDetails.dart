@@ -86,15 +86,17 @@ class _AddDetailsState extends State<AddDetails> {
               },
             ),
             ListView.builder(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                padding: EdgeInsets.all(10),
-                itemCount: classes.length,
-                itemBuilder: (context, int index) => Container(
-                        child: ListTile(
-                      title: Text(classes[index].name.toString()),
-                    ))),
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              padding: EdgeInsets.all(10),
+              itemCount: classes.length,
+              itemBuilder: (context, int index) => Container(
+                child: ListTile(
+                  title: Text(classes[index].name.toString()),
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -13,7 +13,7 @@ class _NotesState extends State<Notes> {
   List _notesList = [];
   String path;
 
-  getNotes() {
+  retrieveNotes() {
     final StorageReference storageRef =
         FirebaseStorage.instance.ref().child('notes');
     storageRef.listAll().then((result) {
@@ -44,7 +44,7 @@ class _NotesState extends State<Notes> {
   @override
   void initState() {
     super.initState();
-    getNotes();
+    retrieveNotes();
   }
 
   @override

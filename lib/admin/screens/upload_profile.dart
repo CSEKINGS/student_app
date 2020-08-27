@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_app/admin/attendance/DbAndRefs.dart';
-// import 'package:student_app/admin/screens/classes.dart';
 
 class UploadProfile extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class UploadProfile extends StatefulWidget {
 }
 
 class _UploadProfile extends State<UploadProfile> {
-  // _UploadProfile();
   String id,
       name,
       rollNo,
@@ -29,8 +27,6 @@ class _UploadProfile extends State<UploadProfile> {
   File _image;
   String cls;
 
-  // static String cls;
-  // getclass getff = getclass(cls);
   String profileUrl;
   final picker = ImagePicker();
   final reference = Firestore.instance;
@@ -40,6 +36,29 @@ class _UploadProfile extends State<UploadProfile> {
   List<Contents> classes = List();
 
   DbRef obj = DbRef();
+
+  @override
+  void initState() {
+    super.initState();
+    CollectionReference yearRef = obj.getDetailRef('year');
+    CollectionReference depRef = obj.getDetailRef('department');
+    yearRef.snapshots().listen((event) {
+      setState(() {
+        for (int i = 0; i < event.documents.length; i++) {
+          year.add(Contents.fromSnapshot(event.documents[i]));
+        }
+      });
+    });
+    depRef.snapshots().listen((event) {
+      if (mounted) {
+        setState(() {
+          for (int i = 0; i < event.documents.length; i++) {
+            department.add(Contents.fromSnapshot(event.documents[i]));
+          }
+        });
+      }
+    });
+  }
 
   Future getImage() async {
     try {
@@ -57,7 +76,7 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   Future upload(BuildContext context) async {
-    if (formkey.currentState.validate()) {
+    if (formKey.currentState.validate()) {
       try {
         StorageReference firebaseStorageRef =
             FirebaseStorage.instance.ref().child('profile/$batch/$dept/$regNo');
@@ -96,7 +115,7 @@ class _UploadProfile extends State<UploadProfile> {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('Submitted Successfully'),
         ));
-        formkey.currentState.reset();
+        formKey.currentState.reset();
         setState(() {
           _image = null;
         });
@@ -112,12 +131,16 @@ class _UploadProfile extends State<UploadProfile> {
     }
   }
 
-  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  Widget buildname() {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  Widget buildNameField() {
     return TextFormField(
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'Name',
           hintText: 'Ex: Ramesh M',
           contentPadding: EdgeInsets.all(15.0),
@@ -136,11 +159,14 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget buildrolno() {
+  Widget buildRollNoField() {
     return TextFormField(
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'Roll Number',
           hintText: 'Ex: B16cs058',
           contentPadding: EdgeInsets.all(15.0),
@@ -159,12 +185,15 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget buildregno() {
+  Widget buildRegNoField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'Register Number',
           hintText: 'Ex: 820617104035',
           contentPadding: EdgeInsets.all(15.0),
@@ -183,11 +212,14 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget buildemail() {
+  Widget buildEmailField() {
     return TextFormField(
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'Email',
           hintText: 'Ex: example@gmail.com',
           contentPadding: EdgeInsets.all(15.0),
@@ -210,12 +242,15 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget buildphno() {
+  Widget buildPhoneField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'Phone Number',
           hintText: 'Ex: 9849342931',
           contentPadding: EdgeInsets.all(15.0),
@@ -234,11 +269,14 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget buildblood() {
+  Widget buildBloodGroupField() {
     return TextFormField(
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'Blood Group',
           hintText: 'Ex: O Positive',
           contentPadding: EdgeInsets.all(15.0),
@@ -256,7 +294,7 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget buildbatch() {
+  Widget buildBatchDropDown() {
     return DropdownButton(
       hint: Text('select year'),
       onChanged: (String name) {
@@ -266,7 +304,8 @@ class _UploadProfile extends State<UploadProfile> {
       },
       value: batch,
       items: year
-          .map((e) => DropdownMenuItem(
+          .map((e) =>
+          DropdownMenuItem(
                 child: Text(e.name),
                 value: e.name,
               ))
@@ -274,7 +313,7 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget builddept() {
+  Widget buildDeptDropDown() {
     return DropdownButton(
       hint: Text('select department'),
       onChanged: (name) {
@@ -284,7 +323,8 @@ class _UploadProfile extends State<UploadProfile> {
       },
       value: dept,
       items: department
-          .map((e) => DropdownMenuItem(
+          .map((e) =>
+          DropdownMenuItem(
                 child: Text(e.name),
                 value: e.name,
               ))
@@ -292,11 +332,14 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget buildaddr() {
+  Widget buildAddressField() {
     return TextFormField(
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'Address',
           hintText: 'Ex: 23,Dubai kuruku santhu, dubai',
           contentPadding: EdgeInsets.all(15.0),
@@ -315,12 +358,15 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  Widget builddob() {
+  Widget buildDOBField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
           labelText: 'DOB',
           hintText: 'EX: 30-12-1999',
           contentPadding: EdgeInsets.all(15.0),
@@ -338,7 +384,7 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  initiateclass() {
+  initiateClass() {
     CollectionReference reference;
     reference = obj.getDetailRef2(batch, dept);
     reference.snapshots().listen((event) {
@@ -351,9 +397,8 @@ class _UploadProfile extends State<UploadProfile> {
     });
   }
 
-  // classes(String batch, String dept) {}
-  Widget getclasses(batch, dept) {
-    initiateclass();
+  Widget retrieveClasses(batch, dept) {
+    initiateClass();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -386,8 +431,7 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  Widget Uprofile() {
+  Widget uploadProfilePic() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -423,29 +467,6 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    CollectionReference yearRef = obj.getDetailRef('year');
-    CollectionReference depRef = obj.getDetailRef('department');
-    yearRef.snapshots().listen((event) {
-      setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          year.add(Contents.fromSnapshot(event.documents[i]));
-        }
-      });
-    });
-    depRef.snapshots().listen((event) {
-      if (mounted) {
-        setState(() {
-          for (int i = 0; i < event.documents.length; i++) {
-            department.add(Contents.fromSnapshot(event.documents[i]));
-          }
-        });
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -454,21 +475,21 @@ class _UploadProfile extends State<UploadProfile> {
           child: Container(
             margin: EdgeInsets.all(20),
             child: Form(
-              key: formkey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Uprofile(),
+                  uploadProfilePic(),
                   SizedBox(height: 10),
-                  buildname(),
+                  buildNameField(),
                   SizedBox(height: 10),
-                  buildrolno(),
+                  buildRollNoField(),
                   SizedBox(height: 10),
-                  buildregno(),
+                  buildRegNoField(),
                   SizedBox(height: 10),
-                  buildphno(),
+                  buildPhoneField(),
                   SizedBox(height: 10),
-                  builddob(),
+                  buildDOBField(),
                   SizedBox(height: 10),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -481,12 +502,12 @@ class _UploadProfile extends State<UploadProfile> {
                             ),
                           ),
                         ),
-                        buildbatch()
+                        buildBatchDropDown()
                       ]),
                   SizedBox(height: 10),
-                  buildemail(),
+                  buildEmailField(),
                   SizedBox(height: 10),
-                  buildblood(),
+                  buildBloodGroupField(),
                   SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -499,14 +520,14 @@ class _UploadProfile extends State<UploadProfile> {
                           ),
                         ),
                       ),
-                      Container(child: builddept()),
+                      Container(child: buildDeptDropDown()),
                     ],
                   ),
                   (dept != null && batch != null)
-                      ? getclasses(batch, dept)
+                      ? retrieveClasses(batch, dept)
                       : Container(),
                   SizedBox(height: 10),
-                  buildaddr(),
+                  buildAddressField(),
                   SizedBox(height: 10),
                   OutlineButton(
                     splashColor: Colors.blue,
@@ -516,7 +537,7 @@ class _UploadProfile extends State<UploadProfile> {
                           fontSize: 16,
                         )),
                     onPressed: () {
-                      formkey.currentState.save();
+                      formKey.currentState.save();
                       upload(context);
                     }, //onPressed
                   ),

@@ -52,10 +52,12 @@ class UploadNotesState extends State<UploadNotes> {
         upload(fileName, filePath);
       }
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text("No file selected, Please select a file to upload."),
-      ));
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text("No file selected, Please select a file to upload."),
+        ),
+      );
     }
   }
 
