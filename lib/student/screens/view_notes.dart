@@ -93,7 +93,7 @@ class _NotesState extends State<Notes> {
             Expanded(
               child: _searchResult.length != 0 || controller.text.isNotEmpty
                   ? ListView.builder(
-                physics: BouncingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       itemCount: _searchResult.length,
                       itemBuilder: (context, index) {
                         return Container(
@@ -105,53 +105,53 @@ class _NotesState extends State<Notes> {
                                   Icons.file_download,
                                 ),
                                 onPressed: () {
-                            openURL(_searchResult[index]);
-                          },
-                        ),
-                        leading: Icon(Icons.note),
-                        title: Text(
-                          _searchResult[index],
-                        ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.lightBlue,
-                          blurRadius: 0.1,
-                          offset: Offset(0.0, 0.5),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                                  openURL(_searchResult[index]);
+                                },
+                              ),
+                              leading: Icon(Icons.note),
+                              title: Text(
+                                _searchResult[index],
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.lightBlue,
+                                blurRadius: 0.1,
+                                offset: Offset(0.0, 0.5),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     )
                   : ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: _notesList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 5.0,
-                    child: ListTile(
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.arrow_downward,
-                          color: Colors.green,
-                        ),
-                        onPressed: () {
-                          openURL(_notesList[index]);
-                        },
-                      ),
-                      leading: Icon(
-                        Icons.insert_drive_file,
-                        color: Colors.deepOrange,
-                      ),
-                      title: Text(
-                        _notesList[index],
-                      ),
-                    ),
-                  );
-                },
+                      physics: BouncingScrollPhysics(),
+                      itemCount: _notesList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 5.0,
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.arrow_downward,
+                                color: Colors.green,
+                              ),
+                              onPressed: () {
+                                openURL(_notesList[index]);
+                              },
+                            ),
+                            leading: Icon(
+                              Icons.insert_drive_file,
+                              color: Colors.deepOrange,
+                            ),
+                            title: Text(
+                              _notesList[index],
+                            ),
+                          ),
+                        );
+                      },
                     ),
             ),
           ],

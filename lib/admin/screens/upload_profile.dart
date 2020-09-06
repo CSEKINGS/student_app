@@ -304,8 +304,7 @@ class _UploadProfile extends State<UploadProfile> {
       },
       value: batch,
       items: year
-          .map((e) =>
-          DropdownMenuItem(
+          .map((e) => DropdownMenuItem(
                 child: Text(e.name),
                 value: e.name,
               ))
@@ -323,8 +322,7 @@ class _UploadProfile extends State<UploadProfile> {
       },
       value: dept,
       items: department
-          .map((e) =>
-          DropdownMenuItem(
+          .map((e) => DropdownMenuItem(
                 child: Text(e.name),
                 value: e.name,
               ))
