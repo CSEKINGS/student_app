@@ -101,7 +101,7 @@ class _ProcessDataState extends State<ProcessData> {
           // setState(() {
           //   workingdays.add(Contents.fromSnapshot(event.documents[i]));
           // });
-          print('$days' + '********');
+          // print('$days' + '********');
         }
         Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => StudentBottomNav(details, days)),
@@ -124,7 +124,7 @@ class _ProcessDataState extends State<ProcessData> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Loading....'),
+        child: CircularProgressIndicator(),
       ),
     );
   }

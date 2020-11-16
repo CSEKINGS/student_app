@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('settings'),
+    return SafeArea(
+      child: Scaffold(
+        body: Text('settings'),
+      ),
     );
   }
 }

@@ -22,6 +22,7 @@ class _DashboardState extends State<Dashboard> {
   var presentdays;
   double percentage;
   var displaypercent;
+  Future percents;
 
   getdays() async {
     var ref1 = references
@@ -45,6 +46,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
+    percents = getdays();
   }
 
   @override
@@ -52,7 +54,7 @@ class _DashboardState extends State<Dashboard> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-            future: getdays(),
+            future: percents,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData && snapshot != null) {
                 return Column(

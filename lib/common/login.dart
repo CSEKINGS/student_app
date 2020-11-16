@@ -530,7 +530,7 @@ class _LoginPageState extends State<LoginPage>
     for (int i = 0; i < keys1.length; i++) {
       if (keys1[i].name == givenkey) {
         validsnackbar('Loading...');
-        admin_auth();
+        adminAuth();
         break;
       } else {
         invalidsnackbar('invalid key');
@@ -542,8 +542,7 @@ class _LoginPageState extends State<LoginPage>
     return await _auth.currentUser();
   }
 
-  // ignore: non_constant_identifier_names
-  admin_auth() async {
+  adminAuth() async {
     FirebaseUser user;
     try {
       user = (await _auth.signInWithEmailAndPassword(

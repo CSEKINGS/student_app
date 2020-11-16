@@ -32,12 +32,21 @@ class _GetDetailsState extends State<GetDetails> {
       });
     });
     depRef.snapshots().listen((event) {
-      setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          department.add(Contents.fromSnapshot(event.documents[i]));
-        }
-      });
+      if (mounted) {
+        setState(() {
+          for (int i = 0; i < event.documents.length; i++) {
+            department.add(Contents.fromSnapshot(event.documents[i]));
+          }
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   @override
