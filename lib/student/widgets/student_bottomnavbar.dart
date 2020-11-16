@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
+
+import 'package:student_app/common/settings.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
 import 'package:student_app/student/screens/profile.dart';
@@ -65,6 +66,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
       Grade(details),
       Profile(details),
       Notes(),
+      SettingsPage(),
     ];
   }
 
@@ -91,44 +93,32 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
           index: _currentIndex,
           children: _children,
         ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
-          ]),
-          child: SafeArea(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 10.0),
-              child: GNav(
-                gap: 8,
-                activeColor: Colors.white,
-                iconSize: 24,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                duration: Duration(milliseconds: 500),
-                tabBackgroundColor: Colors.grey[800],
-                onTabChange: onTappedBar,
-                selectedIndex: _currentIndex,
-                tabs: [
-                  GButton(
-                    icon: Icons.home,
-                    text: 'Dashboard',
-                  ),
-                  GButton(
-                    icon: Icons.score,
-                    text: 'Grade',
-                  ),
-                  GButton(
-                    icon: Icons.person,
-                    text: 'Profile',
-                  ),
-                  GButton(
-                    icon: Icons.file_download,
-                    text: 'Notes',
-                  ),
-                ],
-              ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          onTap: onTappedBar,
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: 'Dashboard',
             ),
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.assignment_turned_in_outlined),
+              label: 'Grade',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.insert_drive_file_outlined),
+              label: 'Notes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.extension_outlined),
+              label: 'More',
+            ),
+          ],
         ),
       ),
     );

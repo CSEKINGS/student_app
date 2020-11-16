@@ -4,7 +4,7 @@ import 'package:student_app/common/login.dart';
 import 'package:student_app/common/onboarding_screen.dart';
 import 'package:student_app/common/process_data.dart';
 
-String initScreen, classfound;
+String initScreen, classFound;
 int onBoard;
 
 void main() {
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
     } else if (initScreen == '' || initScreen == null) {
       return LoginPage();
     } else {
-      return ProcessData(initScreen, classfound);
+      return ProcessData(initScreen, classFound);
     }
   }
 
@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
     await prefs.setInt("onBoard", 1);
 
     initScreen = prefs.getString('username');
-    classfound = prefs.getString('foundedclass');
+    classFound = prefs.getString('foundedclass');
     return true;
   }
 }

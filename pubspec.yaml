@@ -44,7 +44,6 @@ dependencies:
   circular_profile_avatar: ^1.0.6
   image_picker: ^0.6.7+4
   webview_flutter: ^0.3.22+1
-  google_nav_bar: ^2.2.0
   percent_indicator: ^2.1.5
   intl: ^0.16.1
 

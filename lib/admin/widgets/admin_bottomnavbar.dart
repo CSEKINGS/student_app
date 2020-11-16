@@ -4,6 +4,7 @@ import 'package:student_app/admin/attendance/Dialog.dart';
 import 'package:student_app/admin/screens/mark_entry.dart';
 import 'package:student_app/admin/screens/upload_notes.dart';
 import 'package:student_app/admin/screens/upload_profile.dart';
+import 'package:student_app/common/settings.dart';
 
 class AdminBottomNav extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
     MarkEntry(),
     UploadNotes(),
     UploadProfile(),
+    SettingsPage(),
   ];
 
   void onTappedBar(int index) {
@@ -70,19 +72,23 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.check_box),
-              title: Text('Attendance'),
+              label: 'Attendance',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              title: Text('Admin'),
+              icon: Icon(Icons.person_add_alt_1_outlined),
+              label: 'Admin',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.file_upload),
-              title: Text('Notes'),
+              icon: Icon(Icons.upload_outlined),
+              label: 'Notes',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.cloud_upload),
-              title: Text('Profile'),
+              icon: Icon(Icons.cloud_upload_outlined),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.extension_outlined),
+              label: 'More',
             ),
           ],
         ),
