@@ -13,11 +13,11 @@ An app to digitalize the college  works in a cross-platform application.
     
   </tr>
   <tr>
-    <td><img src="Student_login.jpg" width=240 height=520></td>
-    <td><img src="Dashboard.jpg" width=240 height=520></td>
-    <td><img src="Mark.jpg" width=240   height=520></td>
-    <td><img src="Profile.jpg" width=240 height=520></td>
-    <td><img src="Notes.jpg" width=240   height=520></td>
+    <td><img src="screenshot/Student_login.jpg" width=108  height=234></td>
+    <td><img src="screenshot/Dashboard.jpg" width=108  height=234></td>
+    <td><img src="screenshot/Mark.jpg" width=108    height=234></td>
+    <td><img src="screenshot/Profile.jpg" width=108  height=234></td>
+    <td><img src="screenshot/Notes.jpg" width=108    height=234></td>
      </tr>
  </table>
 
@@ -31,11 +31,11 @@ An app to digitalize the college  works in a cross-platform application.
      
 </tr>
 <tr>
-<td><img src="Staff_login.jpg" width=240   height=520></td>
-    <td><img src="Attendance.jpg" width=240 height=520></td>
-    <td><img src="Admin.jpg" width=240   height=520></td>
-    <td><img src="Upload_notes.jpg" width=240 height=520></td>
-    <td><img src="Upload_Profile.jpg" width=240 height=520></td>
+<td><img src="screenshot/Staff_login.jpg" width=240   height=520></td>
+    <td><img src="screenshot/Attendance.jpg" width=240 height=520></td>
+    <td><img src="screenshot/Admin.jpg" width=240   height=520></td>
+    <td><img src="screenshot/Upload_notes.jpg" width=240 height=520></td>
+    <td><img src="screenshot/Upload_Profile.jpg" width=240 height=520></td>
 </tr>
 
 </table>
