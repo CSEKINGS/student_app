@@ -16,7 +16,7 @@ An app to digitalize the college  works in a cross-platform application.
     <td><img src="screenshots/Student_login.jpg" width=108  height=234></td>
     <td><img src="screenshots/Dashboard.jpg" width=108  height=234></td>
     <td><img src="screenshots/Mark.jpg" width=108    height=234></td>
-    <td><img src="screenshots/Profile.jpg" width=108  height=234></td>
+    <td><img src="screenshots/Profile_view.jpg" width=108  height=234></td>
     <td><img src="screenshots/Notes.jpg" width=108    height=234></td>
      </tr>
  </table>
