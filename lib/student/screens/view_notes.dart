@@ -26,7 +26,7 @@ class _NotesState extends State<Notes> {
   }
 
   openURL(String name) async {
-    StorageReference ref = FirebaseStorage.instance.ref().child("notes/$name");
+    Reference ref = FirebaseStorage.instance.ref().child("notes/$name");
     String furl = (await ref.getDownloadURL()).toString();
 
     _launchURL() async {

@@ -14,8 +14,8 @@ class Attendance extends StatefulWidget {
 class _AttendanceState extends State<Attendance> {
   String cls;
   String hasDate;
-  List<Contents> classes = List();
-  List<Item> item = List();
+  List<Contents> classes = [];
+  List<Item> item = [];
   DbRef obj = DbRef();
 
   @override
@@ -28,8 +28,8 @@ class _AttendanceState extends State<Attendance> {
       reference = obj.getDetailRef2(widget.yer, widget.dep);
       reference.snapshots().listen((event) {
         setState(() {
-          for (int i = 0; i < event.documents.length; i++) {
-            classes.add(Contents.fromSnapshot(event.documents[i]));
+          for (int i = 0; i < event.docs.length; i++) {
+            classes.add(Contents.fromSnapshot(event.docs[i]));
           }
         });
       });
@@ -38,8 +38,8 @@ class _AttendanceState extends State<Attendance> {
         reference = obj.getDetailRef('department');
         reference.snapshots().listen((event) {
           setState(() {
-            for (int i = 0; i < event.documents.length; i++) {
-              classes.add(Contents.fromSnapshot(event.documents[i]));
+            for (int i = 0; i < event.docs.length; i++) {
+              classes.add(Contents.fromSnapshot(event.docs[i]));
             }
           });
         });
@@ -49,8 +49,8 @@ class _AttendanceState extends State<Attendance> {
         reference = obj.getDetailRef('year');
         reference.snapshots().listen((event) {
           setState(() {
-            for (int i = 0; i < event.documents.length; i++) {
-              classes.add(Contents.fromSnapshot(event.documents[i]));
+            for (int i = 0; i < event.docs.length; i++) {
+              classes.add(Contents.fromSnapshot(event.docs[i]));
             }
           });
         });
@@ -75,49 +75,46 @@ class _AttendanceState extends State<Attendance> {
     CollectionReference ref = obj.getProfile(cls, widget.yer, widget.dep);
     ref.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          item.add(Item.fromSnapshot(event.documents[i]));
+        for (int i = 0; i < event.docs.length; i++) {
+          item.add(Item.fromSnapshot(event.docs[i]));
         }
       });
     });
   }
 
-  void _addAttendance(String date,String data) {
+  void _addAttendance(String date, String data) {
     CollectionReference ref1 = obj.placeAttendance(cls, widget.yer, widget.dep);
     for (int i = 0; i < item.length; i++) {
-      ref1.document(item[i].key).get().then((value){
-        if(!value.exists){
-          ref1.document(item[i].key).setData({
+      ref1.doc(item[i].key).get().then((value) {
+        if (!value.exists) {
+          ref1.doc(item[i].key).set({
             'Roll-no': item[i].rollNo,
             'name': item[i].name,
             'attendance': item[i].isSelected ? 'present' : 'absent',
             'date': date,
-            'total':item[i].isSelected?1:0
+            'total': item[i].isSelected ? 1 : 0
           });
-        }
-        else if(item[i].isSelected&&data=='new'){
-          ref1.document(item[i].key).updateData({
-            'attendance':'present',
-            'date':date,
-            'total':value.data['total']+1
-          });
-        }
-        else if(!item[i].isSelected&&data=='new'){
-          ref1.document(item[i].key).updateData({
-            'attendance':'absent',
-            'date':date
-          });
-        }
-        else if(item[i].isSelected&&data=='exist'){
-          ref1.document(item[i].key).updateData({
+        } else if (item[i].isSelected && data == 'new') {
+          ref1.doc(item[i].key).update({
             'attendance': 'present',
-            'total':(value.data['attendance']=='absent')?value.data['total']+1:value.data['total']
+            'date': date,
+            'total': value.data['total'] + 1
           });
-        }
-        else if(!item[i].isSelected&&data=='exist'){
-          ref1.document(item[i].key).updateData({
+        } else if (!item[i].isSelected && data == 'new') {
+          ref1.doc(item[i].key).update({'attendance': 'absent', 'date': date});
+        } else if (item[i].isSelected && data == 'exist') {
+          ref1.doc(item[i].key).update({
+            'attendance': 'present',
+            'total': (value.data['attendance'] == 'absent')
+                ? value.data['total'] + 1
+                : value.data['total']
+          });
+        } else if (!item[i].isSelected && data == 'exist') {
+          ref1.doc(item[i].key).update({
             'attendance': 'absent',
-            'total':(value.data['attendance']=='present')?value.data['total']-1:value.data['total']
+            'total': (value.data['attendance'] == 'present')
+                ? value.data['total'] - 1
+                : value.data['total']
           });
         }
       });
@@ -127,21 +124,21 @@ class _AttendanceState extends State<Attendance> {
   void addDate(String date) {
     CollectionReference ref = obj.getDates();
     ref.add({'name': '$date'});
-    _addAttendance(date,'new');
+    _addAttendance(date, 'new');
   }
 
   void checker() {
     DateTime dateParse = DateTime.parse(DateTime.now().toString());
     String date = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
     CollectionReference ref = obj.getDates();
-    ref.getDocuments().then((value){
-      for(int i=0;i<value.documents.length;i++){
-        if(value.documents[i].data['name']==date){
-          _addAttendance(date,'exist');
-          hasDate='yes';
+    ref.get().then((value) {
+      for (int i = 0; i < value.docs.length; i++) {
+        if (value.docs[i].data['name'] == date) {
+          _addAttendance(date, 'exist');
+          hasDate = 'yes';
         }
       }
-      if(hasDate!='yes'){
+      if (hasDate != 'yes') {
         addDate(date);
       }
     });
@@ -151,7 +148,7 @@ class _AttendanceState extends State<Attendance> {
     CollectionReference ref1 = obj.getProfile(cls, widget.yer, widget.dep);
     for (int i = 0; i < item.length; i++) {
       if (item[i].isSelected) {
-        ref1.document(item[i].key).delete();
+        ref1.doc(item[i].key).delete();
       }
     }
   }
@@ -160,7 +157,7 @@ class _AttendanceState extends State<Attendance> {
     CollectionReference ref1 = obj.getDetailRef('department');
     for (int i = 0; i < classes.length; i++) {
       if (classes[i].isSelected) {
-        ref1.document(classes[i].key).delete();
+        ref1.doc(classes[i].key).delete();
       }
     }
   }
@@ -169,7 +166,7 @@ class _AttendanceState extends State<Attendance> {
     CollectionReference ref1 = obj.getDetailRef('year');
     for (int i = 0; i < classes.length; i++) {
       if (classes[i].isSelected) {
-        ref1.document(classes[i].key).delete();
+        ref1.doc(classes[i].key).delete();
       }
     }
   }
@@ -178,7 +175,7 @@ class _AttendanceState extends State<Attendance> {
     CollectionReference ref1 = obj.getDetailRef2(widget.yer, widget.dep);
     for (int i = 0; i < classes.length; i++) {
       if (classes[i].isSelected) {
-        ref1.document(classes[i].key).delete();
+        ref1.doc(classes[i].key).delete();
       }
     }
   }
@@ -186,7 +183,7 @@ class _AttendanceState extends State<Attendance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Selections'),
       ),
@@ -259,9 +256,12 @@ class _AttendanceState extends State<Attendance> {
                             });
                           },
                         ))),
-            RaisedButton(
+            ElevatedButton(
               child: Text('Submit'),
-              color: Colors.lightBlueAccent,
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+              ),
               onPressed: () {
                 if (widget.text == 'Delete students') {
                   _delete();

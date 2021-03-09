@@ -38,8 +38,8 @@ class _AddDetailsState extends State<AddDetails> {
     }
     getRef.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          classes.add(Contents.fromSnapshot(event.documents[i]));
+        for (int i = 0; i < event.docs.length; i++) {
+          classes.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
     });

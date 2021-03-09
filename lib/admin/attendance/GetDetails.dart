@@ -14,8 +14,8 @@ class GetDetails extends StatefulWidget {
 }
 
 class _GetDetailsState extends State<GetDetails> {
-  List<Contents> year = List();
-  List<Contents> department = List();
+  List<Contents> year = [];
+  List<Contents> department = [];
   String yer, dep, cls;
   DbRef obj = DbRef();
 
@@ -26,16 +26,16 @@ class _GetDetailsState extends State<GetDetails> {
     CollectionReference depRef = obj.getDetailRef('department');
     yearRef.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          year.add(Contents.fromSnapshot(event.documents[i]));
+        for (int i = 0; i < event.docs.length; i++) {
+          year.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
     });
     depRef.snapshots().listen((event) {
       if (mounted) {
         setState(() {
-          for (int i = 0; i < event.documents.length; i++) {
-            department.add(Contents.fromSnapshot(event.documents[i]));
+          for (int i = 0; i < event.docs.length; i++) {
+            department.add(Contents.fromSnapshot(event.docs[i]));
           }
         });
       }
@@ -85,12 +85,11 @@ class _GetDetailsState extends State<GetDetails> {
                     ))
                 .toList(),
           ),
-          FlatButton(
-            color: Colors.black,
-            textColor: Colors.white,
+          TextButton(
+            style: ButtonStyle(),
             child: Text(
               'Enter',
-              style: TextStyle(fontSize: 20.0),
+              style: TextStyle(fontSize: 20.0, color: Colors.white),
             ),
             onPressed: () {
               if (widget.text == 'Attendance') {

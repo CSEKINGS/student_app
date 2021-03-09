@@ -64,7 +64,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           title: "Notes and Question banks",
           body: "View and download notes prepared by your college on the go",
           image: _buildImage('notes'),
-          footer: RaisedButton(
+          footer: ElevatedButton(
             onPressed: () {
               introKey.currentState?.animateScroll(0);
             },
@@ -72,10 +72,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               'sample btn',
               style: TextStyle(color: Colors.white),
             ),
-            color: Colors.deepPurpleAccent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.deepPurpleAccent)),
           ),
           decoration: pageDecoration,
         ),

@@ -17,22 +17,24 @@ class UploadNotes extends StatefulWidget {
 }
 
 class UploadNotesState extends State<UploadNotes> {
-  final databaseReference = Firestore.instance;
+  final databaseReference = FirebaseFirestore.instance;
   String _path;
   Map<String, String> _paths;
   String _extension;
   FileType _pickType = FileType.any;
   bool _multiPick = false;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  List<StorageUploadTask> _tasks = <StorageUploadTask>[];
+  List<UploadTask> _tasks = <UploadTask>[];
 
   void openFileExplorer() async {
     try {
       _path = null;
       if (_multiPick) {
-        _paths = await FilePicker.getMultiFilePath(type: _pickType);
+        _paths = (await FilePicker.platform.pickFiles(
+            type: _pickType, allowMultiple: true)) as Map<String, String>;
       } else {
-        _path = await FilePicker.getFilePath(type: _pickType);
+        _path =
+            (await FilePicker.platform.pickFiles(type: _pickType)) as String;
       }
       uploadToFirebase();
     } on PlatformException catch (e) {
@@ -52,7 +54,7 @@ class UploadNotesState extends State<UploadNotes> {
         upload(fileName, filePath);
       }
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text("No file selected, Please select a file to upload."),
@@ -63,10 +65,10 @@ class UploadNotesState extends State<UploadNotes> {
 
   upload(fileName, filePath) {
     _extension = fileName.toString().split('.').last;
-    StorageReference storageRef =
+    Reference storageRef =
         FirebaseStorage.instance.ref().child("notes/$fileName");
 
-    final StorageUploadTask uploadTask = storageRef.putFile(
+    final UploadTask uploadTask = storageRef.putFile(
       File(filePath),
       StorageMetadata(
         contentType: '$_pickType/$_extension',
@@ -110,7 +112,7 @@ class UploadNotesState extends State<UploadNotes> {
                 value: _multiPick,
               ),
               Center(
-                child: OutlineButton(
+                child: OutlinedButton(
                   onPressed: () => openFileExplorer(),
                   child: Text("Upload notes"),
                 ),
@@ -121,7 +123,7 @@ class UploadNotesState extends State<UploadNotes> {
               Divider(
                 thickness: 1.0,
               ),
-              OutlineButton(
+              OutlinedButton(
                   child: Text('Sign Out'), onPressed: () => sign0utStaff()),
               Flexible(
                 child: ListView(
@@ -140,7 +142,7 @@ class UploadTaskListTile extends StatelessWidget {
   const UploadTaskListTile({Key key, this.task, this.onDismissed})
       : super(key: key);
 
-  final StorageUploadTask task;
+  final UploadTask task;
   final VoidCallback onDismissed;
 
   String get status {
@@ -161,8 +163,8 @@ class UploadTaskListTile extends StatelessWidget {
     return result;
   }
 
-  String _bytesTransferred(StorageTaskSnapshot snapshot) {
-    return '${snapshot.bytesTransferred}/${snapshot.totalByteCount}';
+  String _bytesTransferred(TaskSnapshot snapshot) {
+    return '${snapshot.bytesTransferred}/${snapshot.totalBytes}';
   }
 
   @override
@@ -174,7 +176,7 @@ class UploadTaskListTile extends StatelessWidget {
         Widget subtitle;
         if (asyncSnapshot.hasData) {
           final StorageTaskEvent event = asyncSnapshot.data;
-          final StorageTaskSnapshot snapshot = event.snapshot;
+          final TaskSnapshot snapshot = event.snapshot;
           subtitle = Text('$status: ${_bytesTransferred(snapshot)} bytes sent');
         } else {
           subtitle = const Text('Starting...');

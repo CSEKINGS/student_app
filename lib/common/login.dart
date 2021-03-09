@@ -56,8 +56,8 @@ class _LoginPageState extends State<LoginPage>
 
   //Lists
   List<String> details = [];
-  List<Contents> cls = List();
-  List<Contents> keys1 = List();
+  List<Contents> cls = [];
+  List<Contents> keys1 = [];
 
   //Variables
   bool _obscureTextLogin = true;
@@ -318,9 +318,10 @@ class _LoginPageState extends State<LoginPage>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Expanded(
-              child: FlatButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent)),
                 onPressed: _onSignInButtonPress,
                 child: Text(
                   "Student",
@@ -332,9 +333,10 @@ class _LoginPageState extends State<LoginPage>
               ),
             ),
             Expanded(
-              child: FlatButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent)),
                 onPressed: _onSignUpButtonPress,
                 child: Text(
                   "Staff",
@@ -357,8 +359,8 @@ class _LoginPageState extends State<LoginPage>
       child: Column(
         children: <Widget>[
           Stack(
+            clipBehavior: Clip.none,
             alignment: Alignment.topCenter,
-            overflow: Overflow.visible,
             children: <Widget>[
               Card(
                 elevation: 2.0,
@@ -568,8 +570,8 @@ class _LoginPageState extends State<LoginPage>
       child: Column(
         children: <Widget>[
           Stack(
+            clipBehavior: Clip.none,
             alignment: Alignment.topCenter,
-            overflow: Overflow.visible,
             children: <Widget>[
               Card(
                 elevation: 2.0,
