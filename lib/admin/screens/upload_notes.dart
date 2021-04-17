@@ -70,7 +70,7 @@ class UploadNotesState extends State<UploadNotes> {
 
     final UploadTask uploadTask = storageRef.putFile(
       File(filePath),
-      StorageMetadata(
+      SettableMetadata(
         contentType: '$_pickType/$_extension',
       ),
     );
@@ -88,49 +88,50 @@ class UploadNotesState extends State<UploadNotes> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
-    _tasks.forEach((StorageUploadTask task) {
+    _tasks.forEach((UploadTask task) {
       final Widget tile = UploadTaskListTile(
         task: task,
-        onDismissed: () => setState(() => _tasks.remove(task)),
       );
       children.add(tile);
     });
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        key: _scaffoldKey,
-        body: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              SwitchListTile.adaptive(
-                title: Text('Pick multiple files', textAlign: TextAlign.left),
-                onChanged: (bool value) => setState(() => _multiPick = value),
-                value: _multiPick,
-              ),
-              Center(
-                child: OutlinedButton(
-                  onPressed: () => openFileExplorer(),
-                  child: Text("Upload notes"),
+      home: SafeArea(
+        child: Scaffold(
+          key: _scaffoldKey,
+          body: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SwitchListTile.adaptive(
+                  title: Text('Pick multiple files', textAlign: TextAlign.left),
+                  onChanged: (bool value) => setState(() => _multiPick = value),
+                  value: _multiPick,
                 ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Divider(
-                thickness: 1.0,
-              ),
-              OutlinedButton(
-                  child: Text('Sign Out'), onPressed: () => sign0utStaff()),
-              Flexible(
-                child: ListView(
-                  children: children,
+                Center(
+                  child: OutlinedButton(
+                    onPressed: () => openFileExplorer(),
+                    child: Text("Upload notes"),
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 20.0,
+                ),
+                Divider(
+                  thickness: 1.0,
+                ),
+                OutlinedButton(
+                    child: Text('Sign Out'), onPressed: () => sign0utStaff()),
+                Flexible(
+                  child: ListView(
+                    children: children,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -139,29 +140,10 @@ class UploadNotesState extends State<UploadNotes> {
 }
 
 class UploadTaskListTile extends StatelessWidget {
-  const UploadTaskListTile({Key key, this.task, this.onDismissed})
-      : super(key: key);
+  UploadTaskListTile({Key key, this.task}) : super(key: key);
 
-  final UploadTask task;
-  final VoidCallback onDismissed;
-
-  String get status {
-    String result;
-    if (task.isComplete) {
-      if (task.isSuccessful) {
-        result = 'Complete';
-      } else if (task.isCanceled) {
-        result = 'Canceled';
-      } else {
-        result = 'Failed ERROR: ${task.lastSnapshot.error}';
-      }
-    } else if (task.isInProgress) {
-      result = 'Uploading';
-    } else if (task.isPaused) {
-      result = 'Paused';
-    }
-    return result;
-  }
+  // final UploadTask task;
+  UploadTask task = FirebaseStorage.instance as UploadTask;
 
   String _bytesTransferred(TaskSnapshot snapshot) {
     return '${snapshot.bytesTransferred}/${snapshot.totalBytes}';
@@ -169,51 +151,18 @@ class UploadTaskListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<StorageTaskEvent>(
-      stream: task.events,
-      builder: (BuildContext context,
-          AsyncSnapshot<StorageTaskEvent> asyncSnapshot) {
+    return FutureBuilder(
+      builder: (BuildContext context, AsyncSnapshot asyncSnapshot) {
         Widget subtitle;
         if (asyncSnapshot.hasData) {
-          final StorageTaskEvent event = asyncSnapshot.data;
-          final TaskSnapshot snapshot = event.snapshot;
-          subtitle = Text('$status: ${_bytesTransferred(snapshot)} bytes sent');
+          final TaskSnapshot snapshot = task.snapshot;
+          subtitle = Text(' ${_bytesTransferred(snapshot)} bytes sent');
         } else {
           subtitle = const Text('Starting...');
         }
-        return Dismissible(
-          key: Key(task.hashCode.toString()),
-          onDismissed: (_) => onDismissed(),
-          child: ListTile(
-            title: Text('Upload Task #${task.hashCode}'),
-            subtitle: subtitle,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Offstage(
-                  offstage: !task.isInProgress,
-                  child: IconButton(
-                    icon: const Icon(Icons.pause),
-                    onPressed: () => task.pause(),
-                  ),
-                ),
-                Offstage(
-                  offstage: !task.isPaused,
-                  child: IconButton(
-                    icon: const Icon(Icons.file_upload),
-                    onPressed: () => task.resume(),
-                  ),
-                ),
-                Offstage(
-                  offstage: task.isComplete,
-                  child: IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () => task.cancel(),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        return ListTile(
+          title: Text('Upload Task #${task.hashCode}'),
+          subtitle: subtitle,
         );
       },
     );

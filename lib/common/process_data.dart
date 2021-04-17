@@ -13,7 +13,7 @@ class ProcessData extends StatefulWidget {
 }
 
 class _ProcessDataState extends State<ProcessData> {
-  final reference = Firestore.instance;
+  final reference = FirebaseFirestore.instance;
   String _batch, _dept;
   List details = [];
   Future<SharedPreferences> _preference = SharedPreferences.getInstance();
@@ -71,32 +71,30 @@ class _ProcessDataState extends State<ProcessData> {
 
     var reff = reference
         .collection('collage')
-        .document('student')
+        .doc('student')
         .collection(_dept)
-        .document(_batch)
+        .doc(_batch)
         .collection(widget.foundclass)
-        .document(widget._regno)
+        .doc(widget._regno)
         .snapshots();
     reff.listen((event) async {
-      details.add(event.data['Name']);
-      details.add(event.data['Rollno']);
-      details.add(event.data['Regno']);
-      details.add(event.data['PhoneNo']);
-      details.add(event.data['DOB']);
-      details.add(event.data['Batch']);
-      details.add(event.data['Email']);
-      details.add(event.data['BloodGroup']);
-      details.add(event.data['Department']);
-      details.add(event.data['Address']);
-      details.add(event.data['ProfileUrl']);
-      details.add(event.data['Class']);
-      var ref2 = reference
-          .collection('collage')
-          .document('date')
-          .collection('working');
+      details.add(event.data()['Name']);
+      details.add(event.data()['Rollno']);
+      details.add(event.data()['Regno']);
+      details.add(event.data()['PhoneNo']);
+      details.add(event.data()['DOB']);
+      details.add(event.data()['Batch']);
+      details.add(event.data()['Email']);
+      details.add(event.data()['BloodGroup']);
+      details.add(event.data()['Department']);
+      details.add(event.data()['Address']);
+      details.add(event.data()['ProfileUrl']);
+      details.add(event.data()['Class']);
+      var ref2 =
+          reference.collection('collage').doc('date').collection('working');
       ref2.snapshots().listen((event) {
         days = 0;
-        for (int i = 0; i < event.documents.length; i++) {
+        for (int i = 0; i < event.docs.length; i++) {
           days = days + 1;
           // setState(() {
           //   workingdays.add(Contents.fromSnapshot(event.documents[i]));

@@ -33,7 +33,7 @@ class _DashboardState extends State<Dashboard> {
         .collection(widget.details[11])
         .doc(widget.details[2]);
     ref1.snapshots().listen((event) {
-      presentdays = event.data['total'];
+      presentdays = event.data()['total'];
       presentdays = presentdays.toDouble();
       percentage = presentdays / widget.days;
       displaypercent = percentage * 100;

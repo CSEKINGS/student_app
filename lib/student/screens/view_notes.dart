@@ -10,19 +10,13 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
   List _searchResult = [];
-  List _notesList = [];
+  List<dynamic> _notesList = [];
   String path;
 
-  retrieveNotes() {
-    final StorageReference storageRef =
-        FirebaseStorage.instance.ref().child('notes');
-    storageRef.listAll().then((result) {
-      if (mounted) {
-        setState(() {
-          _notesList = result['items'].keys.toList();
-        });
-      }
-    });
+  Future<void> retrieveNotes() async {
+    ListResult result =
+        await FirebaseStorage.instance.ref().child('notes').listAll();
+    _notesList = result.items.toList();
   }
 
   openURL(String name) async {

@@ -98,23 +98,23 @@ class _AttendanceState extends State<Attendance> {
           ref1.doc(item[i].key).update({
             'attendance': 'present',
             'date': date,
-            'total': value.data['total'] + 1
+            'total': value.data()['total'] + 1
           });
         } else if (!item[i].isSelected && data == 'new') {
           ref1.doc(item[i].key).update({'attendance': 'absent', 'date': date});
         } else if (item[i].isSelected && data == 'exist') {
           ref1.doc(item[i].key).update({
             'attendance': 'present',
-            'total': (value.data['attendance'] == 'absent')
-                ? value.data['total'] + 1
-                : value.data['total']
+            'total': (value.data()['attendance'] == 'absent')
+                ? value.data()['total'] + 1
+                : value.data()['total']
           });
         } else if (!item[i].isSelected && data == 'exist') {
           ref1.doc(item[i].key).update({
             'attendance': 'absent',
-            'total': (value.data['attendance'] == 'present')
-                ? value.data['total'] - 1
-                : value.data['total']
+            'total': (value.data()['attendance'] == 'present')
+                ? value.data()['total'] - 1
+                : value.data()['total']
           });
         }
       });
@@ -133,7 +133,7 @@ class _AttendanceState extends State<Attendance> {
     CollectionReference ref = obj.getDates();
     ref.get().then((value) {
       for (int i = 0; i < value.docs.length; i++) {
-        if (value.docs[i].data['name'] == date) {
+        if (value.docs[i].data()['name'] == date) {
           _addAttendance(date, 'exist');
           hasDate = 'yes';
         }

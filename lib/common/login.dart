@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:student_app/admin/attendance/DbAndRefs.dart';
@@ -47,7 +48,7 @@ class _LoginPageState extends State<LoginPage>
   PageController _pageController;
 
   //FirebaseReferences and its variables
-  final reference = Firestore.instance;
+  final reference = FirebaseFirestore.instance;
   CollectionReference reference1;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -134,16 +135,16 @@ class _LoginPageState extends State<LoginPage>
   listclass() {
     reference1 = reference
         .collection('collage')
-        .document('entity')
+        .doc('entity')
         .collection('class')
-        .document(_dept)
+        .doc(_dept)
         .collection(_batch);
     // reference.collection('class').document('$_dept').collection('$_batch');
     reference1.snapshots().listen((event) {
       cls.clear();
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          cls.add(Contents.fromSnapshot(event.documents[i]));
+        for (int i = 0; i < event.docs.length; i++) {
+          cls.add(Contents.fromSnapshot(event.docs[i]));
         }
         loadpassword();
       });
@@ -153,18 +154,18 @@ class _LoginPageState extends State<LoginPage>
   loadpassword() async {
     var reff1 = reference
         .collection('collage')
-        .document('student')
+        .doc('student')
         .collection(_dept)
-        .document(_batch);
+        .doc(_batch);
     for (int i = 0; i < cls.length; i++) {
       await reff1
           .collection(cls[i].name)
           .where('Regno', isEqualTo: '$_regno')
-          .getDocuments()
+          .get()
           .then((value) {
-        if (value.documents.isNotEmpty) {
-          value.documents.forEach((element) {
-            password = element.data['DOB'];
+        if (value.docs.isNotEmpty) {
+          value.docs.forEach((element) {
+            password = element.data()['DOB'];
             if (password != pword) {
               invalidsnackbar('Password is incorrect');
             } else {
@@ -273,8 +274,8 @@ class _LoginPageState extends State<LoginPage>
 
   void invalidsnackbar(String value) {
     FocusScope.of(context).requestFocus(FocusNode());
-    _scaffoldKey.currentState?.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         value,
         textAlign: TextAlign.center,
@@ -290,8 +291,8 @@ class _LoginPageState extends State<LoginPage>
 
   void validsnackbar(String value) {
     FocusScope.of(context).requestFocus(FocusNode());
-    _scaffoldKey.currentState?.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         value,
         textAlign: TextAlign.center,
@@ -518,11 +519,11 @@ class _LoginPageState extends State<LoginPage>
   }
 
   processkey() {
-    CollectionReference collref = Firestore.instance.collection('key');
+    CollectionReference collref = FirebaseFirestore.instance.collection('key');
     collref.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          keys1.add(Contents.fromSnapshot(event.documents[i]));
+        for (int i = 0; i < event.docs.length; i++) {
+          keys1.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
     });
@@ -540,12 +541,12 @@ class _LoginPageState extends State<LoginPage>
     }
   }
 
-  Future<FirebaseUser> getUser() async {
-    return await _auth.currentUser();
+  Future<User> getUser() async {
+    return await _auth.currentUser;
   }
 
   adminAuth() async {
-    FirebaseUser user;
+    User user;
     try {
       user = (await _auth.signInWithEmailAndPassword(
               email: givenuser, password: givenpass))

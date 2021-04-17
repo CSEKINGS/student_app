@@ -6,8 +6,8 @@ class Contents {
   bool isSelected = false;
   Contents(this.name);
   Contents.fromSnapshot(DocumentSnapshot snapshot)
-      : name = snapshot.data['name'],
-        key = snapshot.documentID;
+      : name = snapshot.data()['name'],
+        key = snapshot.id;
 }
 
 class Item {
@@ -17,9 +17,9 @@ class Item {
   String key;
   Item(this.name, this.rollNo);
   Item.fromSnapshot(DocumentSnapshot snapshot)
-      : name = snapshot.data['Name'],
-        rollNo = snapshot.data['Rollno'].toString(),
-        key = snapshot.documentID;
+      : name = snapshot.data()['Name'],
+        rollNo = snapshot.data()['Rollno'].toString(),
+        key = snapshot.id;
 }
 
 class DbRef {
