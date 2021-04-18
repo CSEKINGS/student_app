@@ -110,7 +110,7 @@ class UploadNotesState extends State<UploadNotes> {
                 value: _multiPick,
               ),
               Center(
-                child: OutlineButton(
+                child: OutlinedButton(
                   onPressed: () => openFileExplorer(),
                   child: Text("Upload notes"),
                 ),
@@ -121,7 +121,7 @@ class UploadNotesState extends State<UploadNotes> {
               Divider(
                 thickness: 1.0,
               ),
-              OutlineButton(
+              OutlinedButton(
                   child: Text('Sign Out'), onPressed: () => sign0utStaff()),
               Flexible(
                 child: ListView(

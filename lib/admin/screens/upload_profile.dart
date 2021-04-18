@@ -31,9 +31,9 @@ class _UploadProfile extends State<UploadProfile> {
   final picker = ImagePicker();
   final reference = Firestore.instance;
   String dep, yer;
-  List<Contents> year = List();
-  List<Contents> department = List();
-  List<Contents> classes = List();
+  List<Contents> year = [];
+  List<Contents> department = [];
+  List<Contents> classes = [];
 
   DbRef obj = DbRef();
 

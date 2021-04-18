@@ -14,8 +14,8 @@ class Attendance extends StatefulWidget {
 class _AttendanceState extends State<Attendance> {
   String cls;
   String hasDate;
-  List<Contents> classes = List();
-  List<Item> item = List();
+  List<Contents> classes = [];
+  List<Item> item = [];
   DbRef obj = DbRef();
 
   @override
@@ -259,9 +259,11 @@ class _AttendanceState extends State<Attendance> {
                             });
                           },
                         ))),
-            RaisedButton(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.lightBlueAccent,
+              ),
               child: Text('Submit'),
-              color: Colors.lightBlueAccent,
               onPressed: () {
                 if (widget.text == 'Delete students') {
                   _delete();

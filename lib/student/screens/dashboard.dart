@@ -18,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
   Future<SharedPreferences> _preference = SharedPreferences.getInstance();
   final references = Firestore.instance;
 
-  List<Contents> workingdays = List();
+  List<Contents> workingdays = [];
   var presentdays;
   double percentage;
   var displaypercent;
@@ -112,7 +112,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    OutlineButton(
+                    OutlinedButton(
                       onPressed: () async {
                         final SharedPreferences preference = await _preference;
                         await preference.remove('username');

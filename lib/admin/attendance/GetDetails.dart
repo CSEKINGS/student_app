@@ -14,8 +14,8 @@ class GetDetails extends StatefulWidget {
 }
 
 class _GetDetailsState extends State<GetDetails> {
-  List<Contents> year = List();
-  List<Contents> department = List();
+  List<Contents> year = [];
+  List<Contents> department = [];
   String yer, dep, cls;
   DbRef obj = DbRef();
 
@@ -85,9 +85,13 @@ class _GetDetailsState extends State<GetDetails> {
                     ))
                 .toList(),
           ),
-          FlatButton(
-            color: Colors.black,
-            textColor: Colors.white,
+          TextButton(
+            style: TextButton.styleFrom(
+              primary: Colors.black,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             child: Text(
               'Enter',
               style: TextStyle(fontSize: 20.0),
