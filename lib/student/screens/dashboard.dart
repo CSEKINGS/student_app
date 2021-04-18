@@ -35,12 +35,8 @@ class _DashboardState extends State<Dashboard> {
         .collection(widget.details[11])
         .doc(widget.details[2]);
     ref1.snapshots().listen((event) {
-      presentDays = event.data()['total'];
-      presentDays = presentDays.toDouble();
-      percentage = presentDays / widget.days;
-      displayPercent = percentage * 100;
-      final ff = NumberFormat('##.0#', 'en_US');
-      displayPercent = ff.format(displayPercent);
+      percentage = event.data()['total'].toDouble() / widget.days;
+      displayPercent = NumberFormat('##.0#', 'en_US').format(percentage * 100);
     });
     return true;
   }
@@ -48,7 +44,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    percents = getDays();
   }
 
   @override
@@ -56,80 +51,77 @@ class _DashboardState extends State<Dashboard> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-            future: percents,
+            future: getDays(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              try {
-                if (snapshot.hasData && snapshot != null) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Center(
-                        child: Card(
-                          elevation: 1.5,
-                          margin: EdgeInsets.all(15.0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: InkWell(
-                              customBorder: CircleBorder(),
-                              splashColor: Colors.indigoAccent,
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext con) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0)),
-                                        title: Text('Details'),
-                                        content: Container(
-                                          height: 50,
-                                          child: Text(
-                                              'Total number of days :  ${widget.days}'
-                                              '\n'
-                                              'No of Present days : $presentDays'),
-                                        ),
-                                      );
-                                    });
-                              },
-                              child: CircularPercentIndicator(
-                                animation: true,
-                                animationDuration: 1200,
-                                lineWidth: 10.0,
-                                percent: percentage,
-                                backgroundColor: Colors.teal,
-                                progressColor: Colors.deepOrange,
-                                radius: 100.0,
-                                circularStrokeCap: CircularStrokeCap.butt,
-                                center: Text(
-                                  '$displayPercent' '%',
+              if (snapshot.hasData && snapshot != null) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: Card(
+                        elevation: 1.5,
+                        margin: EdgeInsets.all(15.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: InkWell(
+                            customBorder: CircleBorder(),
+                            splashColor: Colors.indigoAccent,
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext con) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      title: Text('Details'),
+                                      content: Container(
+                                        height: 50,
+                                        child: Text(
+                                            'Total number of days :  ${widget.days}'
+                                            '\n'
+                                            'No of Present days : $presentDays'),
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: CircularPercentIndicator(
+                              animation: true,
+                              animationDuration: 1200,
+                              lineWidth: 10.0,
+                              percent: percentage,
+                              backgroundColor: Colors.teal,
+                              progressColor: Colors.deepOrange,
+                              radius: 100.0,
+                              circularStrokeCap: CircularStrokeCap.butt,
+                              center: Text(
+                                '$displayPercent' '%',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0),
+                              ),
+                              footer: Text('Attendance Percentage',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15.0),
-                                ),
-                                footer: Text('Attendance Percentage',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14.0)),
-                              ),
+                                      fontSize: 14.0)),
                             ),
                           ),
                         ),
                       ),
-                      OutlinedButton(
-                        onPressed: () async {
-                          final preference = await _preference;
-                          await preference.remove('username');
-                          await preference.remove('foundedclass');
-                          await SystemNavigator.pop();
-                        },
-                        child: Text('Logout'),
-                      ),
-                    ],
-                  );
-                }
-              } catch (error) {
-                return CircularProgressIndicator();
+                    ),
+                    OutlinedButton(
+                      onPressed: () async {
+                        final preference = await _preference;
+                        await preference.remove('username');
+                        await preference.remove('foundedclass');
+                        await SystemNavigator.pop();
+                      },
+                      child: Text('Logout'),
+                    ),
+                  ],
+                );
               }
+
               return CircularProgressIndicator();
             }),
       ),

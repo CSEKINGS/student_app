@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../Models/db_model.dart';
 
 class Attendance extends StatefulWidget {
-  final String yer, dep, text;
+  final String year, dept, text;
 
-  Attendance(this.yer, this.dep, this.text);
+  Attendance(this.year, this.dept, this.text);
 
   @override
   _AttendanceState createState() => _AttendanceState();
@@ -26,7 +26,7 @@ class _AttendanceState extends State<Attendance> {
     if (widget.text == 'Delete students' ||
         widget.text == 'Attendance' ||
         widget.text == 'Delete class') {
-      reference = obj.getDetailRef2(widget.yer, widget.dep);
+      reference = obj.getDetailRef2(widget.year, widget.dept);
       reference.snapshots().listen((event) {
         setState(() {
           for (var i = 0; i < event.docs.length; i++) {
@@ -59,21 +59,21 @@ class _AttendanceState extends State<Attendance> {
     }
   }
 
-  void _clearData() {
+  void _clearItem() {
     setState(() {
       item.clear();
     });
   }
 
-  void _clearData1() {
+  void _clearClasses() {
     setState(() {
       classes.clear();
     });
   }
 
   void _getStudent() {
-    _clearData();
-    var ref = obj.getProfile(cls, widget.yer, widget.dep);
+    _clearItem();
+    var ref = obj.getProfile(cls, widget.year, widget.dept);
     ref.snapshots().listen((event) {
       setState(() {
         for (var i = 0; i < event.docs.length; i++) {
@@ -84,7 +84,7 @@ class _AttendanceState extends State<Attendance> {
   }
 
   void _addAttendance(String date, String data) {
-    var ref1 = obj.placeAttendance(cls, widget.yer, widget.dep);
+    var ref1 = obj.placeAttendance(cls, widget.year, widget.dept);
     for (var i = 0; i < item.length; i++) {
       ref1.doc(item[i].key).get().then((value) {
         if (!value.exists) {
@@ -146,7 +146,7 @@ class _AttendanceState extends State<Attendance> {
   }
 
   void _delete() {
-    var ref1 = obj.getProfile(cls, widget.yer, widget.dep);
+    var ref1 = obj.getProfile(cls, widget.year, widget.dept);
     for (var i = 0; i < item.length; i++) {
       if (item[i].isSelected) {
         ref1.doc(item[i].key).delete();
@@ -173,7 +173,7 @@ class _AttendanceState extends State<Attendance> {
   }
 
   void _deleteClass() {
-    var ref1 = obj.getDetailRef2(widget.yer, widget.dep);
+    var ref1 = obj.getDetailRef2(widget.year, widget.dept);
     for (var i = 0; i < classes.length; i++) {
       if (classes[i].isSelected) {
         ref1.doc(classes[i].key).delete();
@@ -265,18 +265,18 @@ class _AttendanceState extends State<Attendance> {
               onPressed: () {
                 if (widget.text == 'Delete students') {
                   _delete();
-                  _clearData();
+                  _clearItem();
                 } else if (widget.text == 'Attendance') {
                   checker();
                 } else if (widget.text == 'Delete department') {
                   _deleteDep();
-                  _clearData1();
+                  _clearClasses();
                 } else if (widget.text == 'Delete year') {
                   _deleteYear();
-                  _clearData1();
+                  _clearClasses();
                 } else if (widget.text == 'Delete class') {
                   _deleteClass();
-                  _clearData1();
+                  _clearClasses();
                 }
               },
               child: Text('Submit'),
