@@ -5,7 +5,7 @@ import 'package:student_app/admin/screens/upload_notes.dart';
 import 'package:student_app/admin/screens/upload_profile.dart';
 import 'package:student_app/common/settings.dart';
 
-import 'Dialog.dart';
+import 'dialog.dart';
 
 class AdminBottomNav extends StatefulWidget {
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../logic/AddDetails.dart';
-import '../logic/Operations.dart';
-import 'Dialog.dart';
+import '../logic/add_details.dart';
+import '../logic/attendance.dart';
+import 'dialog.dart';
 
 class CustomView extends StatefulWidget {
   final String text;

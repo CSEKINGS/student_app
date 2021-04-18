@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../Models/db_model.dart';
-import 'AddDetails.dart';
-import 'Operations.dart';
+import 'add_details.dart';
+import 'attendance.dart';
 
 class GetDetails extends StatefulWidget {
   final String text;
