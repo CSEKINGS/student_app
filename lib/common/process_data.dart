@@ -16,11 +16,11 @@ class _ProcessDataState extends State<ProcessData> {
   final reference = FirebaseFirestore.instance;
   String _batch, _dept;
   List details = [];
-  Future<SharedPreferences> _preference = SharedPreferences.getInstance();
+  final Future<SharedPreferences> _preference = SharedPreferences.getInstance();
 
   Future<List> stream() async {
     var days;
-    final SharedPreferences preference = await _preference;
+    final preference = await _preference;
     await preference.setString('username', widget._regno);
     await preference.setString('foundedclass', widget.foundclass);
 
@@ -94,7 +94,7 @@ class _ProcessDataState extends State<ProcessData> {
           reference.collection('collage').doc('date').collection('working');
       ref2.snapshots().listen((event) {
         days = 0;
-        for (int i = 0; i < event.docs.length; i++) {
+        for (var i = 0; i < event.docs.length; i++) {
           days = days + 1;
           // setState(() {
           //   workingdays.add(Contents.fromSnapshot(event.documents[i]));
@@ -109,12 +109,12 @@ class _ProcessDataState extends State<ProcessData> {
     return details;
   }
 
-  gettotaldays() {}
+  void getTotalDays() {}
 
   @override
   void initState() {
     super.initState();
-    gettotaldays();
+    getTotalDays();
     stream();
   }
 

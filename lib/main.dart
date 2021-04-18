@@ -53,9 +53,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<bool> getSharedVal() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    onBoard = prefs.getInt("onBoard");
-    await prefs.setInt("onBoard", 1);
+    var prefs = await SharedPreferences.getInstance();
+    onBoard = prefs.getInt('onBoard');
+    await prefs.setInt('onBoard', 1);
 
     initScreen = prefs.getString('username');
     classFound = prefs.getString('foundedclass');

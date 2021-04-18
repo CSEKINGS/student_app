@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import '../Models/db_model.dart';
 import 'AddDetails.dart';
-import 'DbAndRefs.dart';
 import 'Operations.dart';
 
 class GetDetails extends StatefulWidget {
@@ -17,16 +17,16 @@ class _GetDetailsState extends State<GetDetails> {
   List<Contents> year = [];
   List<Contents> department = [];
   String yer, dep, cls;
-  DbRef obj = DbRef();
+  DatabaseReference obj = DatabaseReference();
 
   @override
   void initState() {
     super.initState();
-    CollectionReference yearRef = obj.getDetailRef('year');
-    CollectionReference depRef = obj.getDetailRef('department');
+    var yearRef = obj.getDetailRef('year');
+    var depRef = obj.getDetailRef('department');
     yearRef.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.docs.length; i++) {
+        for (var i = 0; i < event.docs.length; i++) {
           year.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
@@ -34,7 +34,7 @@ class _GetDetailsState extends State<GetDetails> {
     depRef.snapshots().listen((event) {
       if (mounted) {
         setState(() {
-          for (int i = 0; i < event.docs.length; i++) {
+          for (var i = 0; i < event.docs.length; i++) {
             department.add(Contents.fromSnapshot(event.docs[i]));
           }
         });
@@ -44,8 +44,6 @@ class _GetDetailsState extends State<GetDetails> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     super.dispose();
   }
 
@@ -65,14 +63,14 @@ class _GetDetailsState extends State<GetDetails> {
             value: yer,
             items: year
                 .map((e) => DropdownMenuItem(
-                      child: Text(e.name),
                       value: e.name,
+                      child: Text(e.name),
                     ))
                 .toList(),
           ),
           DropdownButton(
             hint: Text('select department'),
-            onChanged: (name) {
+            onChanged: (String name) {
               setState(() {
                 dep = name;
               });
@@ -80,17 +78,13 @@ class _GetDetailsState extends State<GetDetails> {
             value: dep,
             items: department
                 .map((e) => DropdownMenuItem(
-                      child: Text(e.name),
                       value: e.name,
+                      child: Text(e.name),
                     ))
                 .toList(),
           ),
           TextButton(
             style: ButtonStyle(),
-            child: Text(
-              'Enter',
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
-            ),
             onPressed: () {
               if (widget.text == 'Attendance') {
                 Navigator.push(
@@ -117,6 +111,10 @@ class _GetDetailsState extends State<GetDetails> {
                             Attendance(yer, dep, widget.text)));
               }
             },
+            child: Text(
+              'Enter',
+              style: TextStyle(fontSize: 20.0, color: Colors.white),
+            ),
           )
         ],
       ),

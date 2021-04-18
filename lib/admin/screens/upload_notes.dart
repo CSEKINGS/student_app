@@ -18,57 +18,55 @@ class UploadNotes extends StatefulWidget {
 
 class UploadNotesState extends State<UploadNotes> {
   final databaseReference = FirebaseFirestore.instance;
-  String _path;
-  Map<String, String> _paths;
+  FilePickerResult _path;
+  var _paths;
   String _extension;
-  FileType _pickType = FileType.any;
+  final FileType _pickType = FileType.any;
   bool _multiPick = false;
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  List<UploadTask> _tasks = <UploadTask>[];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final List<UploadTask> _tasks = <UploadTask>[];
 
   void openFileExplorer() async {
     try {
       _path = null;
       if (_multiPick) {
-        _paths = (await FilePicker.platform.pickFiles(
-            type: _pickType, allowMultiple: true)) as Map<String, String>;
+        _paths = (await FilePicker.platform
+            .pickFiles(type: _pickType, allowMultiple: true));
       } else {
-        _path =
-            (await FilePicker.platform.pickFiles(type: _pickType)) as String;
+        _path = (await FilePicker.platform.pickFiles(type: _pickType));
       }
       uploadToFirebase();
     } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
+      print('Unsupported operation' + e.toString());
     }
     if (!mounted) return;
   }
 
-  uploadToFirebase() {
+  void uploadToFirebase() {
     try {
       if (_multiPick) {
         _paths.forEach((fileName, filePath) => {upload(fileName, filePath)});
       } else {
-        String fileName = _path.split('/').last;
+        var fileName = _path.toString().split('/').last;
 
-        String filePath = _path;
+        var filePath = _path.toString();
         upload(fileName, filePath);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text("No file selected, Please select a file to upload."),
+          content: Text('No file selected, Please select a file to upload.'),
         ),
       );
     }
   }
 
-  upload(fileName, filePath) {
+  void upload(fileName, filePath) {
     _extension = fileName.toString().split('.').last;
-    Reference storageRef =
-        FirebaseStorage.instance.ref().child("notes/$fileName");
+    var storageRef = FirebaseStorage.instance.ref().child('notes/$fileName');
 
-    final UploadTask uploadTask = storageRef.putFile(
+    final uploadTask = storageRef.putFile(
       File(filePath),
       SettableMetadata(
         contentType: '$_pickType/$_extension',
@@ -79,15 +77,15 @@ class UploadNotesState extends State<UploadNotes> {
     });
   }
 
-  sign0utStaff() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+  void sign0utStaff() async {
+    final _auth = FirebaseAuth.instance;
     await _auth.signOut();
     Navigator.of(context).pop(false);
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[];
+    final children = <Widget>[];
     _tasks.forEach((UploadTask task) {
       final Widget tile = UploadTaskListTile(
         task: task,
@@ -114,7 +112,7 @@ class UploadNotesState extends State<UploadNotes> {
                 Center(
                   child: OutlinedButton(
                     onPressed: () => openFileExplorer(),
-                    child: Text("Upload notes"),
+                    child: Text('Upload notes'),
                   ),
                 ),
                 SizedBox(
@@ -124,7 +122,9 @@ class UploadNotesState extends State<UploadNotes> {
                   thickness: 1.0,
                 ),
                 OutlinedButton(
-                    child: Text('Sign Out'), onPressed: () => sign0utStaff()),
+                  onPressed: () => sign0utStaff(),
+                  child: Text('Sign Out'),
+                ),
                 Flexible(
                   child: ListView(
                     children: children,
@@ -155,7 +155,7 @@ class UploadTaskListTile extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot asyncSnapshot) {
         Widget subtitle;
         if (asyncSnapshot.hasData) {
-          final TaskSnapshot snapshot = task.snapshot;
+          final snapshot = task.snapshot;
           subtitle = Text(' ${_bytesTransferred(snapshot)} bytes sent');
         } else {
           subtitle = const Text('Starting...');

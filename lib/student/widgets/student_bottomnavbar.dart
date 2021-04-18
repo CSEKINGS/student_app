@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:student_app/common/settings.dart';
 import 'package:student_app/student/screens/dashboard.dart';
 import 'package:student_app/student/screens/grade.dart';
@@ -10,6 +9,7 @@ import 'package:student_app/student/screens/view_notes.dart';
 class StudentBottomNav extends StatefulWidget {
   final List details;
   final days;
+
   StudentBottomNav(this.details, this.days);
 
   @override
@@ -21,6 +21,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   List details;
   Future<List> getList;
   var storeValue;
+
   _StudentBottomNavState(this.details);
 
   Future<bool> _onBackPressed() {
@@ -41,7 +42,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
               SizedBox(height: 16),
               IconButton(
                 onPressed: () async {
-                  SystemNavigator.pop();
+                  await SystemNavigator.pop();
                 },
                 icon: Icon(
                   Icons.check,
@@ -59,7 +60,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   void initState() {
     super.initState();
 
-    print('${widget.days}' + '########');
+    print('${widget.days}' '########');
 
     _children = [
       Dashboard(details, widget.days),

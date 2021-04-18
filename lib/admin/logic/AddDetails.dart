@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'DbAndRefs.dart';
+import 'package:student_app/admin/Models/db_model.dart';
 
 class AddDetails extends StatefulWidget {
   final String yer, dep;
@@ -16,7 +15,7 @@ class _AddDetailsState extends State<AddDetails> {
   List<Contents> classes = [];
   TextEditingController eCtrl = TextEditingController();
   String name;
-  DbRef obj = DbRef();
+  DatabaseReference obj = DatabaseReference();
 
   @override
   void initState() {
@@ -38,7 +37,7 @@ class _AddDetailsState extends State<AddDetails> {
     }
     getRef.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.docs.length; i++) {
+        for (var i = 0; i < event.docs.length; i++) {
           classes.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
@@ -52,8 +51,8 @@ class _AddDetailsState extends State<AddDetails> {
   }
 
   void addClassname(String name) {
-    String yer = widget.yer;
-    String dep = widget.dep;
+    var yer = widget.yer;
+    var dep = widget.dep;
     CollectionReference addRef;
     if (yer != null && dep != null) {
       addRef = obj.getDetailRef2(yer, dep);

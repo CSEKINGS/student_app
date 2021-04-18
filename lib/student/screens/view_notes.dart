@@ -9,22 +9,21 @@ class Notes extends StatefulWidget {
 
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
-  List _searchResult = [];
+  final List _searchResult = [];
   List<dynamic> _notesList = [];
   String path;
 
   Future<void> retrieveNotes() async {
-    ListResult result =
-        await FirebaseStorage.instance.ref().child('notes').listAll();
+    var result = await FirebaseStorage.instance.ref().child('notes').listAll();
     _notesList = result.items.toList();
   }
 
-  openURL(String name) async {
-    Reference ref = FirebaseStorage.instance.ref().child("notes/$name");
-    String furl = (await ref.getDownloadURL()).toString();
+  Future<void> openURL(String name) async {
+    var ref = FirebaseStorage.instance.ref().child('notes/$name');
+    var furl = (await ref.getDownloadURL()).toString();
 
-    _launchURL() async {
-      String url = furl;
+    void _launchURL() async {
+      var url = furl;
       if (await canLaunch(url)) {
         await launch(url);
       } else {
@@ -85,12 +84,21 @@ class _NotesState extends State<Notes> {
               ),
             ),
             Expanded(
-              child: _searchResult.length != 0 || controller.text.isNotEmpty
+              child: _searchResult.isNotEmpty || controller.text.isNotEmpty
                   ? ListView.builder(
                       physics: BouncingScrollPhysics(),
                       itemCount: _searchResult.length,
                       itemBuilder: (context, index) {
                         return Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.lightBlue,
+                                blurRadius: 0.1,
+                                offset: Offset(0.0, 0.5),
+                              ),
+                            ],
+                          ),
                           child: Card(
                             elevation: 5.0,
                             child: ListTile(
@@ -107,15 +115,6 @@ class _NotesState extends State<Notes> {
                                 _searchResult[index],
                               ),
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.lightBlue,
-                                blurRadius: 0.1,
-                                offset: Offset(0.0, 0.5),
-                              ),
-                            ],
                           ),
                         );
                       },
@@ -154,7 +153,7 @@ class _NotesState extends State<Notes> {
     );
   }
 
-  onSearchTextChanged(String text) async {
+  Future<void> onSearchTextChanged(String text) async {
     _searchResult.clear();
     if (text.isEmpty) {
       setState(() {});
@@ -162,8 +161,9 @@ class _NotesState extends State<Notes> {
     }
 
     _notesList.forEach((movieDetail) {
-      if (movieDetail.toString().toLowerCase().contains(text.toLowerCase()))
+      if (movieDetail.toString().toLowerCase().contains(text.toLowerCase())) {
         _searchResult.add(movieDetail);
+      }
     });
 
     setState(() {});
