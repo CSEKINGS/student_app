@@ -10,24 +10,25 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
   final List _searchResult = [];
-  List<dynamic> _notesList = [];
-  String path;
+  dynamic _notesList = [];
 
   Future<void> retrieveNotes() async {
-    var result = await FirebaseStorage.instance.ref().child('notes').listAll();
-    _notesList = result.items.toList();
+    ListResult result =
+        await FirebaseStorage.instance.ref().child('notes').listAll();
+    setState(() {
+      _notesList = result.items.toList();
+    });
   }
 
   Future<void> openURL(String name) async {
-    var ref = FirebaseStorage.instance.ref().child('notes/$name');
-    var furl = (await ref.getDownloadURL()).toString();
+    var furl =
+        await FirebaseStorage.instance.ref('notes/$name').getDownloadURL();
 
     void _launchURL() async {
-      var url = furl;
-      if (await canLaunch(url)) {
-        await launch(url);
+      if (await canLaunch(furl)) {
+        await launch(furl);
       } else {
-        throw 'Could not launch $url';
+        throw 'Could not launch $furl';
       }
     }
 
@@ -107,7 +108,7 @@ class _NotesState extends State<Notes> {
                                   Icons.file_download,
                                 ),
                                 onPressed: () {
-                                  openURL(_searchResult[index]);
+                                  openURL(_searchResult[index].toString());
                                 },
                               ),
                               leading: Icon(Icons.note),
@@ -132,7 +133,7 @@ class _NotesState extends State<Notes> {
                                 color: Colors.green,
                               ),
                               onPressed: () {
-                                openURL(_notesList[index]);
+                                openURL(_notesList[index].toString());
                               },
                             ),
                             leading: Icon(
@@ -140,7 +141,7 @@ class _NotesState extends State<Notes> {
                               color: Colors.deepOrange,
                             ),
                             title: Text(
-                              _notesList[index],
+                              _notesList[index].toString().split('/').last,
                             ),
                           ),
                         );

@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class UploadNotes extends StatefulWidget {
   UploadNotes() : super();
@@ -17,70 +15,33 @@ class UploadNotes extends StatefulWidget {
 }
 
 class UploadNotesState extends State<UploadNotes> {
-  final databaseReference = FirebaseFirestore.instance;
-  FilePickerResult _path;
-  var _paths;
-  String _extension;
-  final FileType _pickType = FileType.any;
-  bool _multiPick = false;
+  File file;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final List<UploadTask> _tasks = <UploadTask>[];
 
   void openFileExplorer() async {
-    try {
-      _path = null;
-      if (_multiPick) {
-        _paths = (await FilePicker.platform
-            .pickFiles(type: _pickType, allowMultiple: true));
-      } else {
-        _path = (await FilePicker.platform.pickFiles(type: _pickType));
-      }
-      uploadToFirebase();
-    } on PlatformException catch (e) {
-      print('Unsupported operation' + e.toString());
+    FilePickerResult result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      file = File(result.files.single.path);
+    } else {
+      print('no file selected');
     }
-    if (!mounted) return;
-  }
-
-  void uploadToFirebase() {
     try {
-      if (_multiPick) {
-        _paths.forEach((fileName, filePath) => {upload(fileName, filePath)});
-      } else {
-        var fileName = _path.toString().split('/').last;
-
-        var filePath = _path.toString();
-        upload(fileName, filePath);
-      }
+      var fileName = file.toString().split('/').last;
+      String filePath = file.toString();
+      upload(fileName, filePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text('No file selected, Please select a file to upload.'),
-        ),
-      );
+      print(e);
     }
   }
 
-  void upload(fileName, filePath) {
-    _extension = fileName.toString().split('.').last;
-    var storageRef = FirebaseStorage.instance.ref().child('notes/$fileName');
-
-    final uploadTask = storageRef.putFile(
-      File(filePath),
-      SettableMetadata(
-        contentType: '$_pickType/$_extension',
-      ),
-    );
-    setState(() {
-      _tasks.add(uploadTask);
-    });
-  }
-
-  void sign0utStaff() async {
-    final _auth = FirebaseAuth.instance;
-    await _auth.signOut();
-    Navigator.of(context).pop(false);
+  void upload(fileName, filePath) async {
+    try {
+      await FirebaseStorage.instance.ref('notes/$fileName').putFile(file);
+    } on FirebaseException catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -104,11 +65,6 @@ class UploadNotesState extends State<UploadNotes> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SwitchListTile.adaptive(
-                  title: Text('Pick multiple files', textAlign: TextAlign.left),
-                  onChanged: (bool value) => setState(() => _multiPick = value),
-                  value: _multiPick,
-                ),
                 Center(
                   child: OutlinedButton(
                     onPressed: () => openFileExplorer(),
@@ -120,10 +76,6 @@ class UploadNotesState extends State<UploadNotes> {
                 ),
                 Divider(
                   thickness: 1.0,
-                ),
-                OutlinedButton(
-                  onPressed: () => sign0utStaff(),
-                  child: Text('Sign Out'),
                 ),
                 Flexible(
                   child: ListView(
