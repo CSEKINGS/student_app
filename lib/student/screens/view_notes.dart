@@ -10,31 +10,27 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
   final List _searchResult = [];
-  dynamic _notesList = [];
-
-  // TODO downloading files
+  List<Reference> _notesList = [];
 
   Future<void> retrieveNotes() async {
     ListResult result =
         await FirebaseStorage.instance.ref().child('notes').listAll();
+
     setState(() {
       _notesList = result.items.toList();
+      print(_notesList);
     });
   }
 
-  Future<void> openURL(String name) async {
-    var furl =
-        await FirebaseStorage.instance.ref('notes/$name').getDownloadURL();
+  Future<void> openURL(String filename) async {
+    String furl =
+        await FirebaseStorage.instance.ref('notes/$filename').getDownloadURL();
 
-    void _launchURL() async {
-      if (await canLaunch(furl)) {
-        await launch(furl);
-      } else {
-        throw 'Could not launch $furl';
-      }
+    if (await canLaunch(furl)) {
+      await launch(furl);
+    } else {
+      throw 'Could not launch $furl';
     }
-
-    return _launchURL();
   }
 
   @override
@@ -110,7 +106,7 @@ class _NotesState extends State<Notes> {
                                   Icons.file_download,
                                 ),
                                 onPressed: () {
-                                  openURL(_searchResult[index].toString());
+                                  openURL(_searchResult[index].name.toString());
                                 },
                               ),
                               leading: Icon(Icons.note),
@@ -135,16 +131,14 @@ class _NotesState extends State<Notes> {
                                 color: Colors.green,
                               ),
                               onPressed: () {
-                                openURL(_notesList[index].toString());
+                                openURL(_notesList[index].name.toString());
                               },
                             ),
                             leading: Icon(
                               Icons.insert_drive_file,
                               color: Colors.deepOrange,
                             ),
-                            title: Text(
-                              _notesList[index].toString().split('/').last,
-                            ),
+                            title: Text(_notesList[index].name),
                           ),
                         );
                       },
