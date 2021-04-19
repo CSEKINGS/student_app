@@ -22,7 +22,7 @@ class _DashboardState extends State<Dashboard> {
 
   List<Contents> workingDays = [];
   var presentDays;
-  double percentage;
+  double percentage = 0.0;
   var displayPercent;
   Future percents;
 
@@ -35,8 +35,11 @@ class _DashboardState extends State<Dashboard> {
         .collection(widget.details[11])
         .doc(widget.details[2]);
     ref1.snapshots().listen((event) {
-      percentage = event.data()['total'].toDouble() / widget.days;
-      displayPercent = NumberFormat('##.0#', 'en_US').format(percentage * 100);
+      setState(() {
+        percentage = event.data()['total'].toDouble() / widget.days;
+        displayPercent =
+            NumberFormat('##.0#', 'en_US').format(percentage * 100);
+      });
     });
     return true;
   }
@@ -44,6 +47,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
+    percents = getDays();
   }
 
   @override
@@ -51,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-            future: getDays(),
+            future: percents,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData && snapshot != null) {
                 return Column(
