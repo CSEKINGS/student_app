@@ -28,17 +28,23 @@ class UploadNotesState extends State<UploadNotes> {
       print('no file selected');
     }
     try {
-      var fileName = file.toString().split('/').last;
+      var fileName = file.path.split('/').last;
       String filePath = file.toString();
-      upload(fileName, filePath);
+      String extension = file.toString().split('.').last;
+      upload(fileName, filePath, extension);
     } catch (e) {
       print(e);
     }
   }
 
-  void upload(fileName, filePath) async {
+  void upload(fileName, filePath, extension) async {
+    SettableMetadata metadata = SettableMetadata(
+      contentType: '$extension',
+    );
     try {
-      await FirebaseStorage.instance.ref('notes/$fileName').putFile(file);
+      await FirebaseStorage.instance
+          .ref("notes/$fileName")
+          .putFile(file, metadata);
     } on FirebaseException catch (e) {
       print(e);
     }
