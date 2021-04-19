@@ -5,11 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:student_app/admin/attendance/DbAndRefs.dart';
+import 'package:student_app/admin/Models/db_model.dart';
 import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
 import 'package:student_app/common/process_data.dart';
 
-import 'theme.dart' as Theme;
+import '../theme/theme.dart' as theme;
+
+// TODO: Refactoring
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -20,7 +22,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  //FoucsNode Keys
+  //FocusNode Keys
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
   final FocusNode myFocusNodePassword = FocusNode();
@@ -47,12 +49,12 @@ class _LoginPageState extends State<LoginPage>
   PageController _pageController;
 
   //FirebaseReferences and its variables
-  final reference = Firestore.instance;
+  final reference = FirebaseFirestore.instance;
   CollectionReference reference1;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //Objects
-  DbRef dbobj = DbRef();
+  DatabaseReference dbobj = DatabaseReference();
 
   //Lists
   List<String> details = [];
@@ -76,13 +78,13 @@ class _LoginPageState extends State<LoginPage>
       initialname,
       pword;
 
-  processdata() {
+  void processdata() {
     ukey.currentState.save();
     passkey.currentState.save();
     formValidation();
   }
 
-  formValidation() {
+  void formValidation() {
     _batch = '20' + initialname.substring(4, 6);
     _dept = initialname.substring(6, 9);
     _regno = initialname;
@@ -128,45 +130,45 @@ class _LoginPageState extends State<LoginPage>
         }
         break;
     }
-    listclass();
+    listClass();
   }
 
-  listclass() {
+  void listClass() {
     reference1 = reference
         .collection('collage')
-        .document('entity')
+        .doc('entity')
         .collection('class')
-        .document(_dept)
+        .doc(_dept)
         .collection(_batch);
     // reference.collection('class').document('$_dept').collection('$_batch');
     reference1.snapshots().listen((event) {
       cls.clear();
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          cls.add(Contents.fromSnapshot(event.documents[i]));
+        for (var i = 0; i < event.docs.length; i++) {
+          cls.add(Contents.fromSnapshot(event.docs[i]));
         }
-        loadpassword();
+        loadPassword();
       });
     });
   }
 
-  loadpassword() async {
+  void loadPassword() async {
     var reff1 = reference
         .collection('collage')
-        .document('student')
+        .doc('student')
         .collection(_dept)
-        .document(_batch);
-    for (int i = 0; i < cls.length; i++) {
+        .doc(_batch);
+    for (var i = 0; i < cls.length; i++) {
       await reff1
           .collection(cls[i].name)
           .where('Regno', isEqualTo: '$_regno')
-          .getDocuments()
+          .get()
           .then((value) {
-        if (value.documents.isNotEmpty) {
-          value.documents.forEach((element) {
-            password = element.data['DOB'];
+        if (value.docs.isNotEmpty) {
+          value.docs.forEach((element) {
+            password = element.data()['DOB'];
             if (password != pword) {
-              invalidsnackbar('Password is incorrect');
+              invalidSnackBar('Password is incorrect');
             } else {
               foundclass = cls[i].name;
 
@@ -253,13 +255,14 @@ class _LoginPageState extends State<LoginPage>
     myFocusNodeEmail.dispose();
     myFocusNodeName.dispose();
     _pageController?.dispose();
+
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    processkey();
+    processKey();
     getUser().then((user) {
       if (user != null) {
         Navigator.of(context).push(
@@ -271,10 +274,10 @@ class _LoginPageState extends State<LoginPage>
     _pageController = PageController(keepPage: true);
   }
 
-  void invalidsnackbar(String value) {
+  void invalidSnackBar(String value) {
     FocusScope.of(context).requestFocus(FocusNode());
-    _scaffoldKey.currentState?.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         value,
         textAlign: TextAlign.center,
@@ -288,10 +291,10 @@ class _LoginPageState extends State<LoginPage>
     ));
   }
 
-  void validsnackbar(String value) {
+  void validSnackBar(String value) {
     FocusScope.of(context).requestFocus(FocusNode());
-    _scaffoldKey.currentState?.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         value,
         textAlign: TextAlign.center,
@@ -320,11 +323,11 @@ class _LoginPageState extends State<LoginPage>
             Expanded(
               child: TextButton(
                 style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent)),
                 onPressed: _onSignInButtonPress,
                 child: Text(
-                  "Student",
+                  'Student',
                   style: TextStyle(
                     color: left,
                     fontSize: 16.0,
@@ -335,12 +338,11 @@ class _LoginPageState extends State<LoginPage>
             Expanded(
               child: TextButton(
                 style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                ),
-
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent)),
                 onPressed: _onSignUpButtonPress,
                 child: Text(
-                  "Staff",
+                  'Staff',
                   style: TextStyle(
                     color: right,
                     fontSize: 16.0,
@@ -360,7 +362,8 @@ class _LoginPageState extends State<LoginPage>
       child: Column(
         children: <Widget>[
           Stack(
-            clipBehavior: Clip.none, alignment: Alignment.topCenter,
+            clipBehavior: Clip.none,
+            alignment: Alignment.topCenter,
             children: <Widget>[
               Card(
                 elevation: 2.0,
@@ -392,11 +395,11 @@ class _LoginPageState extends State<LoginPage>
                                 color: Colors.black,
                                 size: 22.0,
                               ),
-                              hintText: "Register No.",
+                              hintText: 'Register No.',
                               hintStyle: TextStyle(fontSize: 17.0),
                             ),
                             validator: (String input) {
-                              if (!RegExp(r"^[0-9]{12}$").hasMatch(input)) {
+                              if (!RegExp(r'^[0-9]{12}$').hasMatch(input)) {
                                 return 'Invalid Details';
                               }
 
@@ -432,7 +435,7 @@ class _LoginPageState extends State<LoginPage>
                                 size: 22.0,
                                 color: Colors.black,
                               ),
-                              hintText: "Password",
+                              hintText: 'Password',
                               hintStyle: TextStyle(fontSize: 17.0),
                               suffixIcon: GestureDetector(
                                 onTap: _toggleLogin,
@@ -449,7 +452,7 @@ class _LoginPageState extends State<LoginPage>
                               pword = input.toString();
                             },
                             validator: (String input) {
-                              if (!RegExp(r"^[0-9/-]{10}$").hasMatch(input)) {
+                              if (!RegExp(r'^[0-9/-]{10}$').hasMatch(input)) {
                                 return 'Password is incorrect';
                               }
 
@@ -468,20 +471,20 @@ class _LoginPageState extends State<LoginPage>
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Theme.Colors.loginGradientStart,
+                      color: theme.Colors.loginGradientStart,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                     BoxShadow(
-                      color: Theme.Colors.loginGradientEnd,
+                      color: theme.Colors.loginGradientEnd,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                   ],
                   gradient: LinearGradient(
                       colors: [
-                        Theme.Colors.loginGradientEnd,
-                        Theme.Colors.loginGradientStart
+                        theme.Colors.loginGradientEnd,
+                        theme.Colors.loginGradientStart
                       ],
                       begin: const FractionalOffset(0.2, 0.2),
                       end: const FractionalOffset(1.0, 1.0),
@@ -489,26 +492,27 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "Login",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                        ),
+                  highlightColor: Colors.transparent,
+                  splashColor: theme.Colors.loginGradientEnd,
+                  onPressed: () async {
+                    if (ukey.currentState.validate()) {
+                      if (passkey.currentState.validate()) {
+                        processdata();
+                      }
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
                       ),
                     ),
-                    onPressed: () async {
-                      if (ukey.currentState.validate()) {
-                        if (passkey.currentState.validate()) {
-                          await processdata();
-                        }
-                      }
-                    }),
+                  ),
+                ),
               ),
             ],
           ),
@@ -517,35 +521,35 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  processkey() {
-    CollectionReference collref = Firestore.instance.collection('key');
-    collref.snapshots().listen((event) {
+  void processKey() {
+    var collRef = FirebaseFirestore.instance.collection('key');
+    collRef.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          keys1.add(Contents.fromSnapshot(event.documents[i]));
+        for (var i = 0; i < event.docs.length; i++) {
+          keys1.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
     });
   }
 
-  validatekey() {
-    for (int i = 0; i < keys1.length; i++) {
+  void validateKey() {
+    for (var i = 0; i < keys1.length; i++) {
       if (keys1[i].name == givenkey) {
-        validsnackbar('Loading...');
+        validSnackBar('Loading...');
         adminAuth();
         break;
       } else {
-        invalidsnackbar('invalid key');
+        invalidSnackBar('invalid key');
       }
     }
   }
 
-  Future<FirebaseUser> getUser() async {
-    return await _auth.currentUser();
+  Future<User> getUser() async {
+    return _auth.currentUser;
   }
 
-  adminAuth() async {
-    FirebaseUser user;
+  void adminAuth() async {
+    User user;
     try {
       user = (await _auth.signInWithEmailAndPassword(
               email: givenuser, password: givenpass))
@@ -554,23 +558,23 @@ class _LoginPageState extends State<LoginPage>
       print(e.toString());
     } finally {
       if (user != null) {
-        Navigator.of(context).push(
+        await Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => AdminBottomNav()),
         );
       } else {
-        invalidsnackbar('invalid user');
+        invalidSnackBar('invalid user');
       }
     }
   }
 
   Widget _buildSignUp(BuildContext context) {
-    //signup
     return Container(
       padding: EdgeInsets.only(top: 23.0),
       child: Column(
         children: <Widget>[
           Stack(
-            clipBehavior: Clip.none, alignment: Alignment.topCenter,
+            clipBehavior: Clip.none,
+            alignment: Alignment.topCenter,
             children: <Widget>[
               Card(
                 elevation: 2.0,
@@ -596,7 +600,7 @@ class _LoginPageState extends State<LoginPage>
                             textCapitalization: TextCapitalization.words,
                             inputFormatters: [
                               FilteringTextInputFormatter.deny(
-                                  RegExp(r"\s\b|\b\s"))
+                                  RegExp(r'\s\b|\b\s'))
                             ],
                             onSaved: (input) async {
                               givenkey = input;
@@ -609,7 +613,7 @@ class _LoginPageState extends State<LoginPage>
                                 FontAwesomeIcons.key,
                                 color: Colors.black,
                               ),
-                              hintText: "Key",
+                              hintText: 'Key',
                               hintStyle: TextStyle(fontSize: 16.0),
                             ),
                             validator: (String input) {
@@ -644,7 +648,7 @@ class _LoginPageState extends State<LoginPage>
                             keyboardType: TextInputType.emailAddress,
                             inputFormatters: [
                               FilteringTextInputFormatter.deny(
-                                  RegExp(r"\s\b|\b\s"))
+                                  RegExp(r'\s\b|\b\s'))
                             ],
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
@@ -654,7 +658,7 @@ class _LoginPageState extends State<LoginPage>
                                 FontAwesomeIcons.envelope,
                                 color: Colors.black,
                               ),
-                              hintText: "Email Address",
+                              hintText: 'Email Address',
                               hintStyle: TextStyle(fontSize: 16.0),
                             ),
                             validator: (String input) {
@@ -692,7 +696,7 @@ class _LoginPageState extends State<LoginPage>
                             },
                             inputFormatters: [
                               FilteringTextInputFormatter.deny(
-                                  RegExp(r"\s\b|\b\s"))
+                                  RegExp(r'\s\b|\b\s'))
                             ],
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -700,7 +704,7 @@ class _LoginPageState extends State<LoginPage>
                                 FontAwesomeIcons.lock,
                                 color: Colors.black,
                               ),
-                              hintText: "Password",
+                              hintText: 'Password',
                               hintStyle: TextStyle(fontSize: 16.0),
                               suffixIcon: GestureDetector(
                                 onTap: _toggleSignup,
@@ -726,20 +730,20 @@ class _LoginPageState extends State<LoginPage>
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Theme.Colors.loginGradientStart,
+                      color: theme.Colors.loginGradientStart,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                     BoxShadow(
-                      color: Theme.Colors.loginGradientEnd,
+                      color: theme.Colors.loginGradientEnd,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                   ],
                   gradient: LinearGradient(
                       colors: [
-                        Theme.Colors.loginGradientEnd,
-                        Theme.Colors.loginGradientStart
+                        theme.Colors.loginGradientEnd,
+                        theme.Colors.loginGradientStart
                       ],
                       begin: FractionalOffset(0.2, 0.2),
                       end: FractionalOffset(1.0, 1.0),
@@ -747,32 +751,32 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-
-                    //Button field
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "Login",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                        ),
+                  //Button field
+                  highlightColor: Colors.transparent,
+                  splashColor: theme.Colors.loginGradientEnd,
+                  onPressed: () async {
+                    processKey();
+                    adminkey.currentState.save();
+                    adminuserkey.currentState.save();
+                    adminpasskey.currentState.save();
+                    if (adminkey.currentState.validate()) {
+                      if (adminuserkey.currentState.validate()) {
+                        validateKey();
+                      }
+                    }
+                  },
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
                       ),
                     ),
-                    onPressed: () async {
-                      await processkey();
-                      adminkey.currentState.save();
-                      adminuserkey.currentState.save();
-                      adminpasskey.currentState.save();
-                      if (adminkey.currentState.validate()) {
-                        if (adminuserkey.currentState.validate()) {
-                          await validatekey();
-                        }
-                      }
-                    }),
+                  ),
+                ),
               ),
             ],
           ),
@@ -828,16 +832,16 @@ class TabIndicationPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final pos = pageController.position;
-    double fullExtent =
+    var fullExtent =
         (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
 
-    double pageOffset = pos.extentBefore / fullExtent;
+    var pageOffset = pos.extentBefore / fullExtent;
 
-    bool left2right = dxEntry < dxTarget;
-    Offset entry = Offset(left2right ? dxEntry : dxTarget, dy);
-    Offset target = Offset(left2right ? dxTarget : dxEntry, dy);
+    var left2right = dxEntry < dxTarget;
+    var entry = Offset(left2right ? dxEntry : dxTarget, dy);
+    var target = Offset(left2right ? dxTarget : dxEntry, dy);
 
-    Path path = Path();
+    var path = Path();
     path.addArc(
         Rect.fromCircle(center: entry, radius: radius), 0.5 * pi, 1 * pi);
     path.addRect(Rect.fromLTRB(entry.dx, dy - radius, target.dx, dy + radius));

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/admin/attendance/Dialog.dart';
 
-import 'AddDetails.dart';
-import 'Operations.dart';
+import '../logic/add_details.dart';
+import '../logic/attendance.dart';
+import 'dialog.dart';
 
 class CustomView extends StatefulWidget {
   final String text;
+
   CustomView(this.text);
 
   @override

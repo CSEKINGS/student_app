@@ -4,41 +4,42 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_app/admin/attendance/DbAndRefs.dart';
+import 'package:student_app/admin/Models/db_model.dart';
 
 class Dashboard extends StatefulWidget {
   List details = [];
   var days;
+
   Dashboard(this.details, this.days);
+
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  Future<SharedPreferences> _preference = SharedPreferences.getInstance();
-  final references = Firestore.instance;
+  final Future<SharedPreferences> _preference = SharedPreferences.getInstance();
+  final references = FirebaseFirestore.instance;
 
-  List<Contents> workingdays = [];
-  var presentdays;
-  double percentage;
-  var displaypercent;
+  List<Contents> workingDays = [];
+  var presentDays;
+  double percentage = 0.0;
+  var displayPercent;
   Future percents;
 
-  getdays() async {
+  Future<bool> getDays() async {
     var ref1 = references
         .collection('collage')
-        .document('attendance')
+        .doc('attendance')
         .collection(widget.details[8])
-        .document(widget.details[5])
+        .doc(widget.details[5])
         .collection(widget.details[11])
-        .document(widget.details[2]);
+        .doc(widget.details[2]);
     ref1.snapshots().listen((event) {
-      presentdays = event.data['total'];
-      presentdays = presentdays.toDouble();
-      percentage = presentdays / widget.days;
-      displaypercent = percentage * 100;
-      final ff = NumberFormat('##.0#', 'en_US');
-      displaypercent = ff.format(displaypercent);
+      setState(() {
+        percentage = event.data()['total'].toDouble() / widget.days;
+        displayPercent =
+            NumberFormat('##.0#', 'en_US').format(percentage * 100);
+      });
     });
     return true;
   }
@@ -46,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    percents = getdays();
+    percents = getDays();
   }
 
   @override
@@ -69,26 +70,6 @@ class _DashboardState extends State<Dashboard> {
                           child: InkWell(
                             customBorder: CircleBorder(),
                             splashColor: Colors.indigoAccent,
-                            child: CircularPercentIndicator(
-                              animation: true,
-                              animationDuration: 1200,
-                              lineWidth: 10.0,
-                              percent: percentage,
-                              backgroundColor: Colors.teal,
-                              progressColor: Colors.deepOrange,
-                              radius: 100.0,
-                              circularStrokeCap: CircularStrokeCap.butt,
-                              center: Text(
-                                '$displaypercent' + '%',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0),
-                              ),
-                              footer: Text('Attendance Percentage',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.0)),
-                            ),
                             onTap: () {
                               showDialog(
                                   context: context,
@@ -101,29 +82,50 @@ class _DashboardState extends State<Dashboard> {
                                       content: Container(
                                         height: 50,
                                         child: Text(
-                                            'Total number of days :  ${widget.days}' +
-                                                '\n' +
-                                                'No of Present days : $presentdays'),
+                                            'Total number of days :  ${widget.days}'
+                                            '\n'
+                                            'No of Present days : $presentDays'),
                                       ),
                                     );
                                   });
                             },
+                            child: CircularPercentIndicator(
+                              animation: true,
+                              animationDuration: 1200,
+                              lineWidth: 10.0,
+                              percent: percentage,
+                              backgroundColor: Colors.teal,
+                              progressColor: Colors.deepOrange,
+                              radius: 100.0,
+                              circularStrokeCap: CircularStrokeCap.butt,
+                              center: Text(
+                                '$displayPercent' '%',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0),
+                              ),
+                              footer: Text('Attendance Percentage',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0)),
+                            ),
                           ),
                         ),
                       ),
                     ),
                     OutlinedButton(
                       onPressed: () async {
-                        final SharedPreferences preference = await _preference;
+                        final preference = await _preference;
                         await preference.remove('username');
                         await preference.remove('foundedclass');
-                        SystemNavigator.pop();
+                        await SystemNavigator.pop();
                       },
                       child: Text('Logout'),
                     ),
                   ],
                 );
               }
+
               return CircularProgressIndicator();
             }),
       ),

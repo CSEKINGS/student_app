@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'GetDetails.dart';
+import '../logic/get_details.dart';
 
 class DialogBox extends StatefulWidget {
   final String text;

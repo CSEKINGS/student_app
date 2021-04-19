@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
   final List details;
+
   Profile(this.details);
 
   @override

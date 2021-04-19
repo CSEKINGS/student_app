@@ -9,36 +9,28 @@ class Notes extends StatefulWidget {
 
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
-  List _searchResult = [];
-  List _notesList = [];
-  String path;
+  final List _searchResult = [];
+  List<Reference> _notesList = [];
 
-  retrieveNotes() {
-    final StorageReference storageRef =
-        FirebaseStorage.instance.ref().child('notes');
-    storageRef.listAll().then((result) {
-      if (mounted) {
-        setState(() {
-          _notesList = result['items'].keys.toList();
-        });
-      }
+  Future<void> retrieveNotes() async {
+    ListResult result =
+        await FirebaseStorage.instance.ref().child('notes').listAll();
+
+    setState(() {
+      _notesList = result.items.toList();
+      print(_notesList);
     });
   }
 
-  openURL(String name) async {
-    StorageReference ref = FirebaseStorage.instance.ref().child("notes/$name");
-    String furl = (await ref.getDownloadURL()).toString();
+  Future<void> openURL(String filename) async {
+    String furl =
+        await FirebaseStorage.instance.ref('notes/$filename').getDownloadURL();
 
-    _launchURL() async {
-      String url = furl;
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+    if (await canLaunch(furl)) {
+      await launch(furl);
+    } else {
+      throw 'Could not launch $furl';
     }
-
-    return _launchURL();
   }
 
   @override
@@ -91,29 +83,12 @@ class _NotesState extends State<Notes> {
               ),
             ),
             Expanded(
-              child: _searchResult.length != 0 || controller.text.isNotEmpty
+              child: _searchResult.isNotEmpty || controller.text.isNotEmpty
                   ? ListView.builder(
                       physics: BouncingScrollPhysics(),
                       itemCount: _searchResult.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          child: Card(
-                            elevation: 5.0,
-                            child: ListTile(
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.file_download,
-                                ),
-                                onPressed: () {
-                                  openURL(_searchResult[index]);
-                                },
-                              ),
-                              leading: Icon(Icons.note),
-                              title: Text(
-                                _searchResult[index],
-                              ),
-                            ),
-                          ),
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
@@ -122,6 +97,23 @@ class _NotesState extends State<Notes> {
                                 offset: Offset(0.0, 0.5),
                               ),
                             ],
+                          ),
+                          child: Card(
+                            elevation: 5.0,
+                            child: ListTile(
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.file_download,
+                                ),
+                                onPressed: () {
+                                  openURL(_searchResult[index].name.toString());
+                                },
+                              ),
+                              leading: Icon(Icons.note),
+                              title: Text(
+                                _searchResult[index],
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -139,16 +131,14 @@ class _NotesState extends State<Notes> {
                                 color: Colors.green,
                               ),
                               onPressed: () {
-                                openURL(_notesList[index]);
+                                openURL(_notesList[index].name.toString());
                               },
                             ),
                             leading: Icon(
                               Icons.insert_drive_file,
                               color: Colors.deepOrange,
                             ),
-                            title: Text(
-                              _notesList[index],
-                            ),
+                            title: Text(_notesList[index].name),
                           ),
                         );
                       },
@@ -160,7 +150,7 @@ class _NotesState extends State<Notes> {
     );
   }
 
-  onSearchTextChanged(String text) async {
+  Future<void> onSearchTextChanged(String text) async {
     _searchResult.clear();
     if (text.isEmpty) {
       setState(() {});
@@ -168,8 +158,9 @@ class _NotesState extends State<Notes> {
     }
 
     _notesList.forEach((movieDetail) {
-      if (movieDetail.toString().toLowerCase().contains(text.toLowerCase()))
+      if (movieDetail.toString().toLowerCase().contains(text.toLowerCase())) {
         _searchResult.add(movieDetail);
+      }
     });
 
     setState(() {});

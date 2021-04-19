@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/common/login.dart';
@@ -22,6 +23,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    Firebase.initializeApp();
   }
 
   @override
@@ -51,9 +53,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<bool> getSharedVal() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    onBoard = prefs.getInt("onBoard");
-    await prefs.setInt("onBoard", 1);
+    var prefs = await SharedPreferences.getInstance();
+    onBoard = prefs.getInt('onBoard');
+    await prefs.setInt('onBoard', 1);
 
     initScreen = prefs.getString('username');
     classFound = prefs.getString('foundedclass');

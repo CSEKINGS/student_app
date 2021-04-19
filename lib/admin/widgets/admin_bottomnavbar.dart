@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:student_app/admin/attendance/Dialog.dart';
 import 'package:student_app/admin/screens/mark_entry.dart';
 import 'package:student_app/admin/screens/upload_notes.dart';
 import 'package:student_app/admin/screens/upload_profile.dart';
 import 'package:student_app/common/settings.dart';
+
+import 'dialog.dart';
 
 class AdminBottomNav extends StatefulWidget {
   @override
@@ -45,7 +46,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
               SizedBox(height: 16),
               IconButton(
                 onPressed: () async {
-                  SystemNavigator.pop();
+                  await SystemNavigator.pop();
                 },
                 icon: Icon(
                   Icons.check,

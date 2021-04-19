@@ -17,15 +17,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/$assetName.png', width: 350.0),
       alignment: Alignment.bottomCenter,
+      child: Image.asset('assets/$assetName.png', width: 350.0),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
-    const pageDecoration = const PageDecoration(
+    const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -37,57 +37,53 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       key: introKey,
       pages: [
         PageViewModel(
-          title: "Timetables",
-          body: "Get up-to-date timetables in single click.",
+          title: 'Timetables',
+          body: 'Get up-to-date timetables in single click.',
           image: _buildImage('timetable'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Events",
-          body: "Learn about events and fest.",
+          title: 'Events',
+          body: 'Learn about events and fest.',
           image: _buildImage('candidate'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Grades",
-          body: "Check your grades and assessment exams scores.",
+          title: 'Grades',
+          body: 'Check your grades and assessment exams scores.',
           image: _buildImage('grade'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Announcements",
-          body: "Get latest news about the college via push notification.",
+          title: 'Announcements',
+          body: 'Get latest news about the college via push notification.',
           image: _buildImage('announce'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Notes and Question banks",
-          body: "View and download notes prepared by your college on the go",
+          title: 'Notes and Question banks',
+          body: 'View and download notes prepared by your college on the go',
           image: _buildImage('notes'),
           footer: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.deepPurpleAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
             onPressed: () {
               introKey.currentState?.animateScroll(0);
             },
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.deepPurpleAccent)),
             child: const Text(
               'sample btn',
               style: TextStyle(color: Colors.white),
             ),
-
           ),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "placeholder",
+          title: 'placeholder',
           bodyWidget: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Text("Lets go ", style: bodyStyle),
+              Text('Lets go ', style: bodyStyle),
             ],
           ),
           image: _buildImage('announce'),

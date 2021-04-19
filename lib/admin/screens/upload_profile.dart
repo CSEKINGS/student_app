@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_app/admin/attendance/DbAndRefs.dart';
+import 'package:student_app/admin/Models/db_model.dart';
 
 class UploadProfile extends StatefulWidget {
   @override
@@ -29,31 +29,31 @@ class _UploadProfile extends State<UploadProfile> {
 
   String profileUrl;
   final picker = ImagePicker();
-  final reference = Firestore.instance;
+  final reference = FirebaseFirestore.instance;
   String dep, yer;
   List<Contents> year = [];
   List<Contents> department = [];
   List<Contents> classes = [];
 
-  DbRef obj = DbRef();
+  DatabaseReference obj = DatabaseReference();
 
   @override
   void initState() {
     super.initState();
-    CollectionReference yearRef = obj.getDetailRef('year');
-    CollectionReference depRef = obj.getDetailRef('department');
+    var yearRef = obj.getDetailRef('year');
+    var depRef = obj.getDetailRef('department');
     yearRef.snapshots().listen((event) {
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          year.add(Contents.fromSnapshot(event.documents[i]));
+        for (var i = 0; i < event.docs.length; i++) {
+          year.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
     });
     depRef.snapshots().listen((event) {
       if (mounted) {
         setState(() {
-          for (int i = 0; i < event.documents.length; i++) {
-            department.add(Contents.fromSnapshot(event.documents[i]));
+          for (var i = 0; i < event.docs.length; i++) {
+            department.add(Contents.fromSnapshot(event.docs[i]));
           }
         });
       }
@@ -68,9 +68,9 @@ class _UploadProfile extends State<UploadProfile> {
         _image = File(image.path);
       });
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
-        content: Text("No image selected. Please select a image."),
+        content: Text('No image selected. Please select a image.'),
       ));
     }
   }
@@ -78,21 +78,20 @@ class _UploadProfile extends State<UploadProfile> {
   Future upload(BuildContext context) async {
     if (formKey.currentState.validate()) {
       try {
-        StorageReference firebaseStorageRef =
+        var firebaseStorageRef =
             FirebaseStorage.instance.ref().child('profile/$batch/$dept/$regNo');
-        StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-        StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-        var url = await taskSnapshot.ref.getDownloadURL();
+        var uploadTask = firebaseStorageRef.putFile(_image);
+        var url = await (await uploadTask).ref.getDownloadURL();
         profileUrl = url.toString();
 
-        DocumentReference ref = Firestore.instance
+        var ref = FirebaseFirestore.instance
             .collection('collage')
-            .document('student')
+            .doc('student')
             .collection('$dept')
-            .document('$batch')
+            .doc('$batch')
             .collection('$cls')
-            .document('$regNo');
-        ref.setData({
+            .doc('$regNo');
+        await ref.set({
           'Name': '$name',
           'Rollno': '$rollNo',
           'Regno': '$regNo',
@@ -107,12 +106,12 @@ class _UploadProfile extends State<UploadProfile> {
           'Class': '$cls'
         });
 
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: Duration(seconds: 1),
           content: Text('Profile Picture Uploaded'),
         ));
 
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Submitted Successfully'),
         ));
         formKey.currentState.reset();
@@ -120,12 +119,12 @@ class _UploadProfile extends State<UploadProfile> {
           _image = null;
         });
       } catch (e) {
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Select a profile picture'),
         ));
       }
     } else {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Invalid Details'),
       ));
     }
@@ -138,7 +137,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'Name',
@@ -164,7 +163,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'Roll Number',
@@ -191,7 +190,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'Register Number',
@@ -217,7 +216,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'Email',
@@ -248,7 +247,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'Phone Number',
@@ -274,7 +273,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'Blood Group',
@@ -305,8 +304,8 @@ class _UploadProfile extends State<UploadProfile> {
       value: batch,
       items: year
           .map((e) => DropdownMenuItem(
-                child: Text(e.name),
                 value: e.name,
+                child: Text(e.name),
               ))
           .toList(),
     );
@@ -323,8 +322,8 @@ class _UploadProfile extends State<UploadProfile> {
       value: dept,
       items: department
           .map((e) => DropdownMenuItem(
-                child: Text(e.name),
                 value: e.name,
+                child: Text(e.name),
               ))
           .toList(),
     );
@@ -335,7 +334,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'Address',
@@ -362,7 +361,7 @@ class _UploadProfile extends State<UploadProfile> {
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(5.0),
+              Radius.circular(5.0),
             ),
           ),
           labelText: 'DOB',
@@ -382,14 +381,14 @@ class _UploadProfile extends State<UploadProfile> {
     );
   }
 
-  initiateClass() {
+  void initiateClass() {
     CollectionReference reference;
     reference = obj.getDetailRef2(batch, dept);
     reference.snapshots().listen((event) {
       classes.clear();
       setState(() {
-        for (int i = 0; i < event.documents.length; i++) {
-          classes.add(Contents.fromSnapshot(event.documents[i]));
+        for (var i = 0; i < event.docs.length; i++) {
+          classes.add(Contents.fromSnapshot(event.docs[i]));
         }
       });
     });
@@ -419,8 +418,8 @@ class _UploadProfile extends State<UploadProfile> {
             value: cls,
             items: classes
                 .map((e) => DropdownMenuItem(
-                      child: Text(e.name),
                       value: e.name,
+                      child: Text(e.name),
                     ))
                 .toList(),
           ),
@@ -527,17 +526,19 @@ class _UploadProfile extends State<UploadProfile> {
                   SizedBox(height: 10),
                   buildAddressField(),
                   SizedBox(height: 10),
-                  OutlineButton(
-                    splashColor: Colors.blue,
+                  OutlinedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue)),
+                    onPressed: () {
+                      formKey.currentState.save();
+                      upload(context);
+                    },
                     child: Text('Submit',
                         style: TextStyle(
                           color: Colors.blueAccent,
                           fontSize: 16,
-                        )),
-                    onPressed: () {
-                      formKey.currentState.save();
-                      upload(context);
-                    }, //onPressed
+                        )), //onPressed
                   ),
                 ],
               ),
