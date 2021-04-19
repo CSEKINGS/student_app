@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+// TODO: Dark theming
+
 class Colors {
   const Colors();
 

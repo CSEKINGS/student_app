@@ -7,6 +7,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  // TODO: settings
   void sign0utStaff() async {
     final _auth = FirebaseAuth.instance;
     await _auth.signOut();

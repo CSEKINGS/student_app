@@ -11,6 +11,8 @@ import 'package:student_app/common/process_data.dart';
 
 import '../theme/theme.dart' as theme;
 
+// TODO: Refactoring
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
 

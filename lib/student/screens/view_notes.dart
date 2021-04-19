@@ -12,6 +12,8 @@ class _NotesState extends State<Notes> {
   final List _searchResult = [];
   dynamic _notesList = [];
 
+  // TODO downloading files
+
   Future<void> retrieveNotes() async {
     ListResult result =
         await FirebaseStorage.instance.ref().child('notes').listAll();
