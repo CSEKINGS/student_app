@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -116,6 +117,8 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     OutlinedButton(
                       onPressed: () async {
+                        final _auth = FirebaseAuth.instance;
+                        await _auth.signOut();
                         final preference = await _preference;
                         await preference.remove('username');
                         await preference.remove('foundedclass');

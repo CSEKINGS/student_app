@@ -36,11 +36,14 @@ class _GradeState extends State<Grade> {
                 onPageFinished: (url) {
                   _controller.evaluateJavascript(
                       "document.getElementsByClassName('box')[0].style.display='none';"
+                      "document.getElementsByTagName(\"body\")[0].style.background='none';"
+                      // "document.getElementById(\"wrapper\").style.display='none'';"
                       "document.querySelector(\"#slider\").style.display='none';"
                       "document.querySelector(\"#sidebar > div\").style.display='none';"
                       "document.querySelector(\"#footer\").style.display='none';"
                       "document.querySelector(\"#header\").style.display='none';"
                       "document.querySelector(\"#menufront\").style.display='none';"
+                      "document.getElementById('register_no').value = '${widget.details[2]}';"
                       "document.getElementById('register_no').value = '${widget.details[2]}';"
                       "document.getElementById('dob').value = '${widget.details[4]}';");
 
