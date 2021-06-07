@@ -43,7 +43,7 @@ class UploadNotesState extends State<UploadNotes> {
     );
     try {
       await FirebaseStorage.instance
-          .ref("notes/$fileName")
+          .ref('notes/$fileName')
           .putFile(file, metadata);
     } on FirebaseException catch (e) {
       print(e);
@@ -97,6 +97,7 @@ class UploadNotesState extends State<UploadNotes> {
   }
 }
 
+// ignore: must_be_immutable
 class UploadTaskListTile extends StatelessWidget {
   UploadTaskListTile({Key key, this.task}) : super(key: key);
 

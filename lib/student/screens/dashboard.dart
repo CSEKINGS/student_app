@@ -6,6 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/admin/Models/db_model.dart';
 
+// ignore: must_be_immutable
 class Dashboard extends StatefulWidget {
   List details = [];
   var days;

@@ -54,7 +54,6 @@ class _NotesState extends State<Notes> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0),
                   ),
-                  elevation: 3.0,
                   child: ListTile(
                     leading: Icon(
                       Icons.search,
@@ -99,7 +98,6 @@ class _NotesState extends State<Notes> {
                             ],
                           ),
                           child: Card(
-                            elevation: 5.0,
                             child: ListTile(
                               trailing: IconButton(
                                 icon: Icon(
@@ -123,7 +121,6 @@ class _NotesState extends State<Notes> {
                       itemCount: _notesList.length,
                       itemBuilder: (context, index) {
                         return Card(
-                          elevation: 5.0,
                           child: ListTile(
                             trailing: IconButton(
                               icon: Icon(

@@ -61,6 +61,20 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
