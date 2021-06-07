@@ -1,10 +1,10 @@
-# student-app
+# Student app
 
 An app to digitalize the college  works in a cross-platform application.
 
 Don't forget to star the repo.
 
-## Screenshots
+## Screenshots 
 <table>
   <tr>
      <td>Student_login</td>
@@ -47,13 +47,13 @@ Don't forget to star the repo.
 - [ ] Refactoring
 - [ ] Redesign
 
-## How to contribute: 
+## How to contribute
 1. Fork the repository.
 2. Make changes that you feel would not conflict with other modules.
 3. Create a pull request mentioning what you did.
 4. All requests will be accepted within 12 hrs.
 
-## Submitting a issues:
+## Submitting a issues
 1. Make sure to test various devices before creating a ticket.
 2. Specify the log and device descriptions. Otherwise, issue will be closed.
 
