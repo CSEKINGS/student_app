@@ -44,8 +44,8 @@ Don't forget to star the repo.
 
 
 #TODO
-[] Refactoring
-[] Redesign
+- [ ] Refactoring
+- [ ] Redesign
 
 How to contribute: 
 1. Fork the repository.
