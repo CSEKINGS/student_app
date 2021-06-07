@@ -8,7 +8,7 @@ class Contents {
   Contents(this.name);
 
   Contents.fromSnapshot(DocumentSnapshot snapshot)
-      : name = snapshot.data()['name'],
+      : name = snapshot.get('name'),
         key = snapshot.id;
 }
 
@@ -21,8 +21,8 @@ class Item {
   Item(this.name, this.rollNo);
 
   Item.fromSnapshot(DocumentSnapshot snapshot)
-      : name = snapshot.data()['Name'],
-        rollNo = snapshot.data()['Rollno'].toString(),
+      : name = snapshot.get('Name'),
+        rollNo = snapshot.get('Rollno').toString(),
         key = snapshot.id;
 }
 
