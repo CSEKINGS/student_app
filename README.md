@@ -1,6 +1,6 @@
 # Student app
 
-An app to digitalize the college  works in a cross-platform application.
+An app to digitalize the counselling class in a multi-platform application.
 
 Don't forget to star the repo.
 
