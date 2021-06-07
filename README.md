@@ -4,7 +4,7 @@ An app to digitalize the college  works in a cross-platform application.
 
 Don't forget to star the repo.
 
-# Screenshots
+## Screenshots
 <table>
   <tr>
      <td>Student_login</td>
@@ -43,7 +43,7 @@ Don't forget to star the repo.
 </table>
 
 
-# TODO
+## TODO
 - [ ] Refactoring
 - [ ] Redesign
 
