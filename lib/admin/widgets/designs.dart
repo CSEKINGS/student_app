@@ -59,33 +59,8 @@ class _CustomViewState extends State<CustomView> {
                   builder: (context) => Attendance(null, null, widget.text)));
         }
       },
-      child: Container(
+      child: Card(
         margin: EdgeInsets.all(10.0),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(
-            8.0,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(
-                0.0,
-                10.0,
-              ),
-              blurRadius: 15.0,
-            ),
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(
-                0.0,
-                -3.0,
-              ),
-              blurRadius: 10.0,
-            ),
-          ],
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[

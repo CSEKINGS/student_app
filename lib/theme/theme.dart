@@ -2,10 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-// TODO: Dark theming
-
-class Colors {
-  const Colors();
+class GradientColors {
+  const GradientColors();
 
   static const Color loginGradientStart = Color(0xFFfbab66);
   static const Color loginGradientEnd = Color(0xFFf7418c);
@@ -17,3 +15,28 @@ class Colors {
     end: Alignment.bottomCenter,
   );
 }
+
+final darkTheme = ThemeData(
+  primarySwatch: Colors.teal,
+  fontFamily: 'Product Sans',
+  primaryColor: Color(0xFF1F1F1F),
+  scaffoldBackgroundColor: Color(0xFF1F1F1F),
+  brightness: Brightness.dark,
+  backgroundColor: const Color(0xFF262626),
+  accentColor: Colors.teal,
+  floatingActionButtonTheme:
+      FloatingActionButtonThemeData(foregroundColor: Colors.white),
+  dividerColor: Colors.black12,
+);
+
+final lightTheme = ThemeData(
+  primarySwatch: Colors.teal,
+  primaryColor: Colors.teal,
+  fontFamily: 'Product Sans',
+  brightness: Brightness.light,
+  backgroundColor: Colors.white,
+  accentColor: Colors.teal,
+  floatingActionButtonTheme:
+      FloatingActionButtonThemeData(foregroundColor: Colors.white),
+  dividerColor: Colors.white54,
+);

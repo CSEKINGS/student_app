@@ -29,7 +29,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
+      // pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
     );
 
@@ -73,7 +73,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     MaterialStateProperty.all(Colors.deepPurpleAccent)),
             child: const Text(
               'sample btn',
-              style: TextStyle(color: Colors.white),
             ),
           ),
           decoration: pageDecoration,
@@ -100,7 +99,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
       dotsDecorator: const DotsDecorator(
         size: Size(10.0, 10.0),
-        color: Color(0xFFBDBDBD),
         activeSize: Size(22.0, 10.0),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),

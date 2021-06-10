@@ -60,36 +60,30 @@ class UploadNotesState extends State<UploadNotes> {
       children.add(tile);
     });
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Scaffold(
-          key: _scaffoldKey,
-          body: Container(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Center(
-                  child: OutlinedButton(
-                    onPressed: () => openFileExplorer(),
-                    child: Text('Upload notes'),
-                  ),
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: OutlinedButton(
+                  onPressed: () => openFileExplorer(),
+                  child: Text('Upload notes'),
                 ),
-                SizedBox(
-                  height: 20.0,
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Flexible(
+                child: ListView(
+                  children: children,
                 ),
-                Divider(
-                  thickness: 1.0,
-                ),
-                Flexible(
-                  child: ListView(
-                    children: children,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

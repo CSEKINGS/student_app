@@ -282,7 +282,6 @@ class _LoginPageState extends State<LoginPage>
         value,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.white,
           fontSize: 16.0,
         ),
       ),
@@ -299,7 +298,6 @@ class _LoginPageState extends State<LoginPage>
         value,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.white,
           fontSize: 16.0,
         ),
       ),
@@ -367,7 +365,6 @@ class _LoginPageState extends State<LoginPage>
             children: <Widget>[
               Card(
                 elevation: 2.0,
-                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -386,13 +383,11 @@ class _LoginPageState extends State<LoginPage>
                             key: ukey,
                             focusNode: myFocusNodeEmailLogin,
                             keyboardType: TextInputType.emailAddress,
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(fontSize: 16.0),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 Icons.person,
-                                color: Colors.black,
                                 size: 22.0,
                               ),
                               hintText: 'Register No.',
@@ -426,14 +421,12 @@ class _LoginPageState extends State<LoginPage>
                             obscureText: _obscureTextLogin,
                             style: TextStyle(
                               fontSize: 16.0,
-                              color: Colors.black,
                             ),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 FontAwesomeIcons.lock,
                                 size: 22.0,
-                                color: Colors.black,
                               ),
                               hintText: 'Password',
                               hintStyle: TextStyle(fontSize: 17.0),
@@ -444,7 +437,6 @@ class _LoginPageState extends State<LoginPage>
                                       ? FontAwesomeIcons.eye
                                       : FontAwesomeIcons.eyeSlash,
                                   size: 15.0,
-                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -471,20 +463,20 @@ class _LoginPageState extends State<LoginPage>
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: theme.Colors.loginGradientStart,
+                      color: theme.GradientColors.loginGradientStart,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                     BoxShadow(
-                      color: theme.Colors.loginGradientEnd,
+                      color: theme.GradientColors.loginGradientEnd,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                   ],
                   gradient: LinearGradient(
                       colors: [
-                        theme.Colors.loginGradientEnd,
-                        theme.Colors.loginGradientStart
+                        theme.GradientColors.loginGradientEnd,
+                        theme.GradientColors.loginGradientStart
                       ],
                       begin: const FractionalOffset(0.2, 0.2),
                       end: const FractionalOffset(1.0, 1.0),
@@ -493,7 +485,7 @@ class _LoginPageState extends State<LoginPage>
                 ),
                 child: MaterialButton(
                   highlightColor: Colors.transparent,
-                  splashColor: theme.Colors.loginGradientEnd,
+                  splashColor: theme.GradientColors.loginGradientEnd,
                   onPressed: () async {
                     if (ukey.currentState.validate()) {
                       if (passkey.currentState.validate()) {
@@ -507,8 +499,8 @@ class _LoginPageState extends State<LoginPage>
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 25.0,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -578,7 +570,6 @@ class _LoginPageState extends State<LoginPage>
             children: <Widget>[
               Card(
                 elevation: 2.0,
-                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -605,13 +596,11 @@ class _LoginPageState extends State<LoginPage>
                             onSaved: (input) async {
                               givenkey = input;
                             },
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(fontSize: 16.0),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 FontAwesomeIcons.key,
-                                color: Colors.black,
                               ),
                               hintText: 'Key',
                               hintStyle: TextStyle(fontSize: 16.0),
@@ -650,13 +639,11 @@ class _LoginPageState extends State<LoginPage>
                               FilteringTextInputFormatter.deny(
                                   RegExp(r'\s\b|\b\s'))
                             ],
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(fontSize: 16.0),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 FontAwesomeIcons.envelope,
-                                color: Colors.black,
                               ),
                               hintText: 'Email Address',
                               hintStyle: TextStyle(fontSize: 16.0),
@@ -689,8 +676,7 @@ class _LoginPageState extends State<LoginPage>
                             focusNode: myFocusNodePassword,
                             controller: signupPasswordController,
                             obscureText: _obscureTextSignup,
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(fontSize: 16.0),
                             onSaved: (input) {
                               givenpass = input.toString();
                             },
@@ -702,7 +688,6 @@ class _LoginPageState extends State<LoginPage>
                               border: InputBorder.none,
                               icon: Icon(
                                 FontAwesomeIcons.lock,
-                                color: Colors.black,
                               ),
                               hintText: 'Password',
                               hintStyle: TextStyle(fontSize: 16.0),
@@ -713,7 +698,6 @@ class _LoginPageState extends State<LoginPage>
                                       ? FontAwesomeIcons.eye
                                       : FontAwesomeIcons.eyeSlash,
                                   size: 15.0,
-                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -730,20 +714,20 @@ class _LoginPageState extends State<LoginPage>
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: theme.Colors.loginGradientStart,
+                      color: theme.GradientColors.loginGradientStart,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                     BoxShadow(
-                      color: theme.Colors.loginGradientEnd,
+                      color: theme.GradientColors.loginGradientEnd,
                       offset: Offset(1.0, 6.0),
                       blurRadius: 20.0,
                     ),
                   ],
                   gradient: LinearGradient(
                       colors: [
-                        theme.Colors.loginGradientEnd,
-                        theme.Colors.loginGradientStart
+                        theme.GradientColors.loginGradientEnd,
+                        theme.GradientColors.loginGradientStart
                       ],
                       begin: FractionalOffset(0.2, 0.2),
                       end: FractionalOffset(1.0, 1.0),
@@ -753,7 +737,7 @@ class _LoginPageState extends State<LoginPage>
                 child: MaterialButton(
                   //Button field
                   highlightColor: Colors.transparent,
-                  splashColor: theme.Colors.loginGradientEnd,
+                  splashColor: theme.GradientColors.loginGradientEnd,
                   onPressed: () async {
                     processKey();
                     adminkey.currentState.save();
@@ -771,8 +755,8 @@ class _LoginPageState extends State<LoginPage>
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 25.0,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -787,12 +771,12 @@ class _LoginPageState extends State<LoginPage>
 
   void _onSignInButtonPress() {
     _pageController.animateToPage(0,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 
   void _onSignUpButtonPress() {
     _pageController?.animateToPage(1,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 
   void _toggleLogin() {

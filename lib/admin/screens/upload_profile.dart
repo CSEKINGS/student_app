@@ -135,16 +135,16 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildNameField() {
     return TextFormField(
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'Name',
-          hintText: 'Ex: Ramesh M',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'Name',
+        hintText: 'Ex: Ramesh M',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       maxLength: 20,
       validator: (String value) {
         if (value.isEmpty) {
@@ -161,16 +161,16 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildRollNoField() {
     return TextFormField(
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'Roll Number',
-          hintText: 'Ex: B16cs058',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'Roll Number',
+        hintText: 'Ex: B16cs058',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       maxLength: 8,
       validator: (String value) {
         if (value.isEmpty) {
@@ -188,16 +188,16 @@ class _UploadProfile extends State<UploadProfile> {
     return TextFormField(
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'Register Number',
-          hintText: 'Ex: 820617104035',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'Register Number',
+        hintText: 'Ex: 820617104035',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       maxLength: 12,
       validator: (String value) {
         if (value.isEmpty) {
@@ -214,16 +214,16 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildEmailField() {
     return TextFormField(
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'Email',
-          hintText: 'Ex: example@gmail.com',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'Email',
+        hintText: 'Ex: example@gmail.com',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Email Required';
@@ -245,16 +245,16 @@ class _UploadProfile extends State<UploadProfile> {
     return TextFormField(
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'Phone Number',
-          hintText: 'Ex: 9849342931',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'Phone Number',
+        hintText: 'Ex: 9849342931',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       maxLength: 10,
       validator: (String value) {
         if (value.isEmpty) {
@@ -271,16 +271,16 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildBloodGroupField() {
     return TextFormField(
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'Blood Group',
-          hintText: 'Ex: O Positive',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'Blood Group',
+        hintText: 'Ex: O Positive',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Blood Group Required';
@@ -332,16 +332,16 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildAddressField() {
     return TextFormField(
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'Address',
-          hintText: 'Ex: 23,Dubai kuruku santhu, dubai',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'Address',
+        hintText: 'Ex: 23,Dubai kuruku santhu, dubai',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       maxLines: 8,
       validator: (String value) {
         if (value.isEmpty) {
@@ -359,16 +359,16 @@ class _UploadProfile extends State<UploadProfile> {
     return TextFormField(
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
           ),
-          labelText: 'DOB',
-          hintText: 'EX: 30-12-1999',
-          contentPadding: EdgeInsets.all(15.0),
-          filled: true,
-          fillColor: Colors.white54),
+        ),
+        labelText: 'DOB',
+        hintText: 'EX: 30-12-1999',
+        contentPadding: EdgeInsets.all(15.0),
+        filled: true,
+      ),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Address Required';
@@ -402,9 +402,7 @@ class _UploadProfile extends State<UploadProfile> {
         Container(
           child: Text(
             'CLASS',
-            style: TextStyle(
-              color: Colors.black87,
-            ),
+            style: TextStyle(),
           ),
         ),
         Container(
@@ -494,9 +492,7 @@ class _UploadProfile extends State<UploadProfile> {
                         Container(
                           child: Text(
                             'BATCH',
-                            style: TextStyle(
-                              color: Colors.black87,
-                            ),
+                            style: TextStyle(),
                           ),
                         ),
                         buildBatchDropDown()
@@ -512,9 +508,7 @@ class _UploadProfile extends State<UploadProfile> {
                       Container(
                         child: Text(
                           'DEPARTMENT',
-                          style: TextStyle(
-                            color: Colors.black87,
-                          ),
+                          style: TextStyle(),
                         ),
                       ),
                       Container(child: buildDeptDropDown()),
@@ -527,16 +521,12 @@ class _UploadProfile extends State<UploadProfile> {
                   buildAddressField(),
                   SizedBox(height: 10),
                   OutlinedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.blue)),
                     onPressed: () {
                       formKey.currentState.save();
                       upload(context);
                     },
                     child: Text('Submit',
                         style: TextStyle(
-                          color: Colors.blueAccent,
                           fontSize: 16,
                         )), //onPressed
                   ),

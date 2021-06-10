@@ -113,7 +113,7 @@ class _GetDetailsState extends State<GetDetails> {
             },
             child: Text(
               'Enter',
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
+              style: TextStyle(fontSize: 20.0),
             ),
           )
         ],

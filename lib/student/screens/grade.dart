@@ -37,7 +37,6 @@ class _GradeState extends State<Grade> {
                   _controller.evaluateJavascript(
                       "document.getElementsByClassName('box')[0].style.display='none';"
                       "document.getElementsByTagName(\"body\")[0].style.background='none';"
-                      // "document.getElementById(\"wrapper\").style.display='none'';"
                       "document.querySelector(\"#slider\").style.display='none';"
                       "document.querySelector(\"#sidebar > div\").style.display='none';"
                       "document.querySelector(\"#footer\").style.display='none';"

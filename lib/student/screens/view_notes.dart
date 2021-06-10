@@ -46,7 +46,6 @@ class _NotesState extends State<Notes> {
         body: Column(
           children: <Widget>[
             Container(
-              color: Colors.white,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
