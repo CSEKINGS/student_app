@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class Grade extends StatefulWidget {
   final List details;
@@ -22,7 +23,11 @@ class _GradeState extends State<Grade> {
   }
 
   @override
-  Widget build(BuildContext context) => SafeArea(
+  Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return const Center(child: Text('Visit https://coe1.annauniv.edu/home/'));
+    } else {
+      SafeArea(
         child: Scaffold(
           body: Stack(
             children: <Widget>[
@@ -60,4 +65,6 @@ class _GradeState extends State<Grade> {
           ),
         ),
       );
+    }
+  }
 }
