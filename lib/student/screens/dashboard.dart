@@ -66,11 +66,11 @@ class _DashboardState extends State<Dashboard> {
                     Center(
                       child: Card(
                         elevation: 1.5,
-                        margin: EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.all(15.0),
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: InkWell(
-                            customBorder: CircleBorder(),
+                            customBorder: const CircleBorder(),
                             splashColor: Colors.indigoAccent,
                             onTap: () {
                               showDialog(
@@ -80,8 +80,8 @@ class _DashboardState extends State<Dashboard> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8.0)),
-                                      title: Text('Details'),
-                                      content: Container(
+                                      title: const Text('Details'),
+                                      content: SizedBox(
                                         height: 50,
                                         child: Text(
                                             'Total number of days :  ${widget.days}'
@@ -102,11 +102,11 @@ class _DashboardState extends State<Dashboard> {
                               circularStrokeCap: CircularStrokeCap.butt,
                               center: Text(
                                 '$displayPercent' '%',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0),
                               ),
-                              footer: Text('Attendance Percentage',
+                              footer: const Text('Attendance Percentage',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14.0)),
@@ -124,13 +124,13 @@ class _DashboardState extends State<Dashboard> {
                         await preference.remove('foundedclass');
                         await SystemNavigator.pop();
                       },
-                      child: Text('Logout'),
+                      child: const Text('Logout'),
                     ),
                   ],
                 );
               }
 
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }),
       ),
     );

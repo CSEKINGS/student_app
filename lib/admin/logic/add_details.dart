@@ -5,7 +5,7 @@ import 'package:student_app/admin/Models/db_model.dart';
 class AddDetails extends StatefulWidget {
   final String year, dept;
 
-  AddDetails(this.year, this.dept);
+  const AddDetails(this.year, this.dept);
 
   @override
   _AddDetailsState createState() => _AddDetailsState();
@@ -36,11 +36,13 @@ class _AddDetailsState extends State<AddDetails> {
       getRef = obj.getDetailRef(yer);
     }
     getRef.snapshots().listen((event) {
-      setState(() {
-        for (var i = 0; i < event.docs.length; i++) {
-          classes.add(Contents.fromSnapshot(event.docs[i]));
-        }
-      });
+      if (mounted) {
+        setState(() {
+          for (var i = 0; i < event.docs.length; i++) {
+            classes.add(Contents.fromSnapshot(event.docs[i]));
+          }
+        });
+      }
     });
   }
 
@@ -51,15 +53,15 @@ class _AddDetailsState extends State<AddDetails> {
   }
 
   void addClassname(String name) {
-    var yer = widget.year;
+    var year = widget.year;
     var dep = widget.dept;
     CollectionReference addRef;
-    if (yer != null && dep != null) {
-      addRef = obj.getDetailRef2(yer, dep);
-    } else if (yer == null && dep != null) {
+    if (year != null && dep != null) {
+      addRef = obj.getDetailRef2(year, dep);
+    } else if (year == null && dep != null) {
       addRef = obj.getDetailRef(dep);
-    } else if (dep == null && yer != null) {
-      addRef = obj.getDetailRef(yer);
+    } else if (dep == null && year != null) {
+      addRef = obj.getDetailRef(year);
     }
     addRef.add({
       'name': name.toUpperCase(),
@@ -70,7 +72,7 @@ class _AddDetailsState extends State<AddDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('add class'),
+        title: const Text('add class'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -85,15 +87,13 @@ class _AddDetailsState extends State<AddDetails> {
               },
             ),
             ListView.builder(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               itemCount: classes.length,
-              itemBuilder: (context, int index) => Container(
-                child: ListTile(
-                  title: Text(classes[index].name.toString()),
-                ),
+              itemBuilder: (context, int index) => ListTile(
+                title: Text(classes[index].name.toString()),
               ),
             ),
           ],

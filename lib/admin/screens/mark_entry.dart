@@ -15,7 +15,7 @@ class _MarkEntryState extends State<MarkEntry> {
         body: GridView.count(
           crossAxisCount: 2,
           childAspectRatio: 4 / 3,
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           children: <Widget>[

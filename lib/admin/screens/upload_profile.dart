@@ -68,7 +68,7 @@ class _UploadProfile extends State<UploadProfile> {
         _image = File(image.path);
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('No image selected. Please select a image.'),
       ));
@@ -87,31 +87,31 @@ class _UploadProfile extends State<UploadProfile> {
         var ref = FirebaseFirestore.instance
             .collection('collage')
             .doc('student')
-            .collection('$dept')
-            .doc('$batch')
-            .collection('$cls')
-            .doc('$regNo');
+            .collection(dept)
+            .doc(batch)
+            .collection(cls)
+            .doc(regNo);
         await ref.set({
-          'Name': '$name',
-          'Rollno': '$rollNo',
-          'Regno': '$regNo',
-          'Email': '$email',
-          'PhoneNo': '$phoneNo',
-          'BloodGroup': '$blood',
-          'Batch': '$batch',
-          'Department': '$dept',
-          'Address': '$address',
-          'ProfileUrl': '$profileUrl',
-          'DOB': '$dob',
-          'Class': '$cls'
+          'Name': name,
+          'Rollno': rollNo,
+          'Regno': regNo,
+          'Email': email,
+          'PhoneNo': phoneNo,
+          'BloodGroup': blood,
+          'Batch': batch,
+          'Department': dept,
+          'Address': address,
+          'ProfileUrl': profileUrl,
+          'DOB': dob,
+          'Class': cls
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           duration: Duration(seconds: 1),
           content: Text('Profile Picture Uploaded'),
         ));
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Submitted Successfully'),
         ));
         formKey.currentState.reset();
@@ -119,12 +119,12 @@ class _UploadProfile extends State<UploadProfile> {
           _image = null;
         });
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Select a profile picture'),
         ));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Invalid Details'),
       ));
     }
@@ -134,9 +134,9 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildNameField() {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -160,9 +160,9 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildRollNoField() {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -187,9 +187,9 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildRegNoField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -213,9 +213,9 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildEmailField() {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -244,9 +244,9 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildPhoneField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -270,9 +270,9 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildBloodGroupField() {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -295,7 +295,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildBatchDropDown() {
     return DropdownButton(
-      hint: Text('select year'),
+      hint: const Text('select year'),
       onChanged: (String name) {
         setState(() {
           batch = name;
@@ -313,7 +313,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildDeptDropDown() {
     return DropdownButton(
-      hint: Text('select department'),
+      hint: const Text('select department'),
       onChanged: (name) {
         setState(() {
           dept = name;
@@ -331,9 +331,9 @@ class _UploadProfile extends State<UploadProfile> {
 
   Widget buildAddressField() {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -358,9 +358,9 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildDOBField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
@@ -399,28 +399,24 @@ class _UploadProfile extends State<UploadProfile> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          child: Text(
-            'CLASS',
-            style: TextStyle(),
-          ),
+        const Text(
+          'CLASS',
+          style: TextStyle(),
         ),
-        Container(
-          child: DropdownButton(
-            hint: Text('select class'),
-            onChanged: (name) {
-              setState(() {
-                cls = name;
-              });
-            },
-            value: cls,
-            items: classes
-                .map((e) => DropdownMenuItem(
-                      value: e.name,
-                      child: Text(e.name),
-                    ))
-                .toList(),
-          ),
+        DropdownButton(
+          hint: const Text('select class'),
+          onChanged: (name) {
+            setState(() {
+              cls = name;
+            });
+          },
+          value: cls,
+          items: classes
+              .map((e) => DropdownMenuItem(
+                    value: e.name,
+                    child: Text(e.name),
+                  ))
+              .toList(),
         ),
       ],
     );
@@ -438,7 +434,7 @@ class _UploadProfile extends State<UploadProfile> {
             },
             child: CircleAvatar(
               radius: 70,
-              backgroundColor: Color(0xff476cfb),
+              backgroundColor: const Color(0xff476cfb),
               child: ClipOval(
                 child: SizedBox(
                   width: 137.0,
@@ -466,50 +462,45 @@ class _UploadProfile extends State<UploadProfile> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
           child: Container(
-            margin: EdgeInsets.all(20),
+            margin: const EdgeInsets.all(20),
             child: Form(
               key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   uploadProfilePic(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildNameField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildRollNoField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildRegNoField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildPhoneField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildDOBField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                          child: Text(
-                            'BATCH',
-                            style: TextStyle(),
-                          ),
+                        const Text(
+                          'BATCH',
+                          style: TextStyle(),
                         ),
                         buildBatchDropDown()
                       ]),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildEmailField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildBloodGroupField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          'DEPARTMENT',
-                          style: TextStyle(),
-                        ),
+                      const Text(
+                        'DEPARTMENT',
+                        style: TextStyle(),
                       ),
                       Container(child: buildDeptDropDown()),
                     ],
@@ -517,15 +508,15 @@ class _UploadProfile extends State<UploadProfile> {
                   (dept != null && batch != null)
                       ? retrieveClasses(batch, dept)
                       : Container(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildAddressField(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   OutlinedButton(
                     onPressed: () {
                       formKey.currentState.save();
                       upload(context);
                     },
-                    child: Text('Submit',
+                    child: const Text('Submit',
                         style: TextStyle(
                           fontSize: 16,
                         )), //onPressed

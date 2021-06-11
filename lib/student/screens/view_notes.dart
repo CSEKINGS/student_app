@@ -13,17 +13,15 @@ class _NotesState extends State<Notes> {
   List<Reference> _notesList = [];
 
   Future<void> retrieveNotes() async {
-    ListResult result =
-        await FirebaseStorage.instance.ref().child('notes').listAll();
+    var result = await FirebaseStorage.instance.ref().child('notes').listAll();
 
     setState(() {
       _notesList = result.items.toList();
-      print(_notesList);
     });
   }
 
   Future<void> openURL(String filename) async {
-    String furl =
+    var furl =
         await FirebaseStorage.instance.ref('notes/$filename').getDownloadURL();
 
     if (await canLaunch(furl)) {
@@ -45,37 +43,35 @@ class _NotesState extends State<Notes> {
       child: Scaffold(
         body: Column(
           children: <Widget>[
-            Container(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.search,
+                    color: Colors.blue,
                   ),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.search,
-                      color: Colors.blue,
+                  title: TextField(
+                    controller: controller,
+                    decoration: const InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(fontSize: 18.0),
+                      border: InputBorder.none,
                     ),
-                    title: TextField(
-                      controller: controller,
-                      decoration: InputDecoration(
-                        hintText: 'Search',
-                        hintStyle: TextStyle(fontSize: 18.0),
-                        border: InputBorder.none,
-                      ),
-                      onChanged: onSearchTextChanged,
+                    onChanged: onSearchTextChanged,
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(
+                      Icons.close,
                     ),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.close,
-                      ),
-                      onPressed: () {
-                        controller.clear();
-                        onSearchTextChanged('');
-                      },
-                    ),
+                    onPressed: () {
+                      controller.clear();
+                      onSearchTextChanged('');
+                    },
                   ),
                 ),
               ),
@@ -83,11 +79,11 @@ class _NotesState extends State<Notes> {
             Expanded(
               child: _searchResult.isNotEmpty || controller.text.isNotEmpty
                   ? ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemCount: _searchResult.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.lightBlue,
@@ -99,14 +95,14 @@ class _NotesState extends State<Notes> {
                           child: Card(
                             child: ListTile(
                               trailing: IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.file_download,
                                 ),
                                 onPressed: () {
                                   openURL(_searchResult[index].name.toString());
                                 },
                               ),
-                              leading: Icon(Icons.note),
+                              leading: const Icon(Icons.note),
                               title: Text(
                                 _searchResult[index],
                               ),
@@ -116,13 +112,13 @@ class _NotesState extends State<Notes> {
                       },
                     )
                   : ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemCount: _notesList.length,
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
                             trailing: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_downward,
                                 color: Colors.green,
                               ),
@@ -130,7 +126,7 @@ class _NotesState extends State<Notes> {
                                 openURL(_notesList[index].name.toString());
                               },
                             ),
-                            leading: Icon(
+                            leading: const Icon(
                               Icons.insert_drive_file,
                               color: Colors.deepOrange,
                             ),
@@ -153,9 +149,9 @@ class _NotesState extends State<Notes> {
       return;
     }
 
-    _notesList.forEach((movieDetail) {
-      if (movieDetail.toString().toLowerCase().contains(text.toLowerCase())) {
-        _searchResult.add(movieDetail);
+    _notesList.forEach((notes) {
+      if (notes.toString().toLowerCase().contains(text.toLowerCase())) {
+        _searchResult.add(notes);
       }
     });
 

@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void formValidation() {
-    _batch = '20' + initialname.substring(4, 6);
+    _batch = '20${initialname.substring(4, 6)}';
     _dept = initialname.substring(6, 9);
     _regno = initialname;
     switch (_dept) {
@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage>
     for (var i = 0; i < cls.length; i++) {
       await reff1
           .collection(cls[i].name)
-          .where('Regno', isEqualTo: '$_regno')
+          .where('Regno', isEqualTo: _regno)
           .get()
           .then((value) {
         if (value.docs.isNotEmpty) {
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage>
           return null;
         },
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height >= 775.0
@@ -202,13 +202,13 @@ class _LoginPageState extends State<LoginPage>
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Expanded(
+                const Expanded(
                   child: Image(
                       fit: BoxFit.scaleDown,
                       image: AssetImage('assets/image_01.png')),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 1.0),
+                  padding: const EdgeInsets.only(top: 1.0),
                   child: _buildMenuBar(context),
                 ),
                 Expanded(
@@ -281,12 +281,12 @@ class _LoginPageState extends State<LoginPage>
       content: Text(
         value,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16.0,
         ),
       ),
       backgroundColor: Colors.red,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     ));
   }
 
@@ -297,11 +297,11 @@ class _LoginPageState extends State<LoginPage>
       content: Text(
         value,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16.0,
         ),
       ),
-      duration: Duration(seconds: 5),
+      duration: const Duration(seconds: 5),
     ));
   }
 
@@ -309,7 +309,7 @@ class _LoginPageState extends State<LoginPage>
     return Container(
       width: 300.0,
       height: 50.0,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0x552B2B2B),
         borderRadius: BorderRadius.all(Radius.circular(25.0)),
       ),
@@ -356,7 +356,7 @@ class _LoginPageState extends State<LoginPage>
 
   Widget _buildSignIn(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 23.0),
+      padding: const EdgeInsets.only(top: 23.0),
       child: Column(
         children: <Widget>[
           Stack(
@@ -368,14 +368,14 @@ class _LoginPageState extends State<LoginPage>
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Container(
+                child: SizedBox(
                   width: 300.0,
                   height: 220.0,
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             autocorrect: false,
@@ -383,8 +383,8 @@ class _LoginPageState extends State<LoginPage>
                             key: ukey,
                             focusNode: myFocusNodeEmailLogin,
                             keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(fontSize: 16.0),
-                            decoration: InputDecoration(
+                            style: const TextStyle(fontSize: 16.0),
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 Icons.person,
@@ -411,7 +411,7 @@ class _LoginPageState extends State<LoginPage>
                           color: Colors.grey[400],
                         ),
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             autocorrect: false,
@@ -419,17 +419,17 @@ class _LoginPageState extends State<LoginPage>
                             focusNode: myFocusNodePasswordLogin,
                             maxLength: 10,
                             obscureText: _obscureTextLogin,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16.0,
                             ),
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              icon: Icon(
+                              icon: const Icon(
                                 FontAwesomeIcons.lock,
                                 size: 22.0,
                               ),
                               hintText: 'Password',
-                              hintStyle: TextStyle(fontSize: 17.0),
+                              hintStyle: const TextStyle(fontSize: 17.0),
                               suffixIcon: GestureDetector(
                                 onTap: _toggleLogin,
                                 child: Icon(
@@ -458,8 +458,8 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 200.0),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.only(top: 200.0),
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
@@ -493,9 +493,9 @@ class _LoginPageState extends State<LoginPage>
                       }
                     }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 42.0),
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
                     child: Text(
                       'Login',
                       style: TextStyle(
@@ -561,7 +561,7 @@ class _LoginPageState extends State<LoginPage>
 
   Widget _buildSignUp(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 23.0),
+      padding: const EdgeInsets.only(top: 23.0),
       child: Column(
         children: <Widget>[
           Stack(
@@ -580,7 +580,7 @@ class _LoginPageState extends State<LoginPage>
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             key: adminkey,
@@ -596,8 +596,8 @@ class _LoginPageState extends State<LoginPage>
                             onSaved: (input) async {
                               givenkey = input;
                             },
-                            style: TextStyle(fontSize: 16.0),
-                            decoration: InputDecoration(
+                            style: const TextStyle(fontSize: 16.0),
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 FontAwesomeIcons.key,
@@ -620,7 +620,7 @@ class _LoginPageState extends State<LoginPage>
                           color: Colors.grey[400],
                         ),
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             autocorrect: false,
@@ -639,8 +639,8 @@ class _LoginPageState extends State<LoginPage>
                               FilteringTextInputFormatter.deny(
                                   RegExp(r'\s\b|\b\s'))
                             ],
-                            style: TextStyle(fontSize: 16.0),
-                            decoration: InputDecoration(
+                            style: const TextStyle(fontSize: 16.0),
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               icon: Icon(
                                 FontAwesomeIcons.envelope,
@@ -667,7 +667,7 @@ class _LoginPageState extends State<LoginPage>
                           color: Colors.grey[400],
                         ),
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             autocorrect: false,
@@ -676,7 +676,7 @@ class _LoginPageState extends State<LoginPage>
                             focusNode: myFocusNodePassword,
                             controller: signupPasswordController,
                             obscureText: _obscureTextSignup,
-                            style: TextStyle(fontSize: 16.0),
+                            style: const TextStyle(fontSize: 16.0),
                             onSaved: (input) {
                               givenpass = input.toString();
                             },
@@ -686,11 +686,11 @@ class _LoginPageState extends State<LoginPage>
                             ],
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              icon: Icon(
+                              icon: const Icon(
                                 FontAwesomeIcons.lock,
                               ),
                               hintText: 'Password',
-                              hintStyle: TextStyle(fontSize: 16.0),
+                              hintStyle: const TextStyle(fontSize: 16.0),
                               suffixIcon: GestureDetector(
                                 onTap: _toggleSignup,
                                 child: Icon(
@@ -709,8 +709,8 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 260.0),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.only(top: 260.0),
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
@@ -749,7 +749,7 @@ class _LoginPageState extends State<LoginPage>
                       }
                     }
                   },
-                  child: Padding(
+                  child: const Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
                     child: Text(
@@ -771,7 +771,7 @@ class _LoginPageState extends State<LoginPage>
 
   void _onSignInButtonPress() {
     _pageController.animateToPage(0,
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 
   void _onSignUpButtonPress() {

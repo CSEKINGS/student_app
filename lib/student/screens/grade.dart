@@ -4,7 +4,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 class Grade extends StatefulWidget {
   final List details;
 
-  Grade(this.details);
+  const Grade(this.details);
 
   @override
   _GradeState createState() => _GradeState();
@@ -52,7 +52,7 @@ class _GradeState extends State<Grade> {
                 },
               ),
               isLoading
-                  ? Center(
+                  ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : Stack(),

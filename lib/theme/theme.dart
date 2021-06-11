@@ -19,13 +19,13 @@ class GradientColors {
 final darkTheme = ThemeData(
   primarySwatch: Colors.teal,
   fontFamily: 'Product Sans',
-  primaryColor: Color(0xFF1F1F1F),
-  scaffoldBackgroundColor: Color(0xFF1F1F1F),
+  primaryColor: const Color(0xFF1F1F1F),
+  scaffoldBackgroundColor: const Color(0xFF1F1F1F),
   brightness: Brightness.dark,
   backgroundColor: const Color(0xFF262626),
   accentColor: Colors.teal,
   floatingActionButtonTheme:
-      FloatingActionButtonThemeData(foregroundColor: Colors.white),
+      const FloatingActionButtonThemeData(foregroundColor: Colors.white),
   dividerColor: Colors.black12,
 );
 
@@ -37,6 +37,6 @@ final lightTheme = ThemeData(
   backgroundColor: Colors.white,
   accentColor: Colors.teal,
   floatingActionButtonTheme:
-      FloatingActionButtonThemeData(foregroundColor: Colors.white),
+      const FloatingActionButtonThemeData(foregroundColor: Colors.white),
   dividerColor: Colors.white54,
 );

@@ -7,7 +7,7 @@ import 'dialog.dart';
 class CustomView extends StatefulWidget {
   final String text;
 
-  CustomView(this.text);
+  const CustomView(this.text);
 
   @override
   _CustomViewState createState() => _CustomViewState();
@@ -29,12 +29,12 @@ class _CustomViewState extends State<CustomView> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddDetails('year', null)));
+                  builder: (context) => const AddDetails('year', null)));
         } else if (widget.text == 'Add dep') {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddDetails(null, 'department')));
+                  builder: (context) => const AddDetails(null, 'department')));
         } else if (widget.text == 'Delete students') {
           showDialog(
               context: context,
@@ -60,7 +60,7 @@ class _CustomViewState extends State<CustomView> {
         }
       },
       child: Card(
-        margin: EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -74,7 +74,7 @@ class _CustomViewState extends State<CustomView> {
             ),
             Text(
               widget.text,
-              style: TextStyle(fontWeight: FontWeight.w400),
+              style: const TextStyle(fontWeight: FontWeight.w400),
             ),
           ],
         ),

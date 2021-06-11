@@ -17,20 +17,19 @@ class StudentBottomNav extends StatefulWidget {
 }
 
 class _StudentBottomNavState extends State<StudentBottomNav> {
+  _StudentBottomNavState(this.details);
   int _currentIndex = 0;
   List details;
   Future<List> getList;
   var storeValue;
 
-  _StudentBottomNavState(this.details);
-
   Future<bool> _onBackPressed() {
     return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            title: Text(
+            title: const Text(
               'Do you want to exit..?',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
@@ -39,17 +38,17 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
                 onPressed: () => Navigator.of(context).pop(false),
                 color: Colors.red,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               IconButton(
                 onPressed: () async {
                   await SystemNavigator.pop();
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.check,
                   color: Colors.green,
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
             ],
           ),
         ) ??
@@ -59,9 +58,6 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   @override
   void initState() {
     super.initState();
-
-    print('${widget.days}' '########');
-
     _children = [
       Dashboard(details, widget.days),
       Grade(details),
@@ -99,23 +95,23 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
           onTap: onTappedBar,
           currentIndex: _currentIndex,
           items: [
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               label: 'Dashboard',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.assignment_turned_in_outlined),
               label: 'Grade',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.person_outline_rounded),
               label: 'Profile',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.insert_drive_file_outlined),
               label: 'Notes',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.extension_outlined),
               label: 'More',
             ),

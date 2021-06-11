@@ -6,7 +6,7 @@ import '../Models/db_model.dart';
 class Attendance extends StatefulWidget {
   final String year, dept, text;
 
-  Attendance(this.year, this.dept, this.text);
+  const Attendance(this.year, this.dept, this.text);
 
   @override
   _AttendanceState createState() => _AttendanceState();
@@ -123,8 +123,7 @@ class _AttendanceState extends State<Attendance> {
   }
 
   void addDate(String date) {
-    var ref = obj.getDates();
-    ref.add({'name': '$date'});
+    obj.getDates().add({'name': date});
     _addAttendance(date, 'new');
   }
 
@@ -186,14 +185,14 @@ class _AttendanceState extends State<Attendance> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Selections'),
+        title: const Text('Selections'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             (widget.text == 'Delete students' || widget.text == 'Attendance')
                 ? DropdownButton(
-                    hint: Text('select class'),
+                    hint: const Text('select class'),
                     onChanged: (name) {
                       setState(() {
                         cls = name;
@@ -211,10 +210,10 @@ class _AttendanceState extends State<Attendance> {
                 : Container(),
             (widget.text == 'Delete students' || widget.text == 'Attendance')
                 ? ListView.builder(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     itemCount: item.length,
                     itemBuilder: (context, int index) => Container(
                         color: item[index].isSelected
@@ -235,10 +234,10 @@ class _AttendanceState extends State<Attendance> {
                           },
                         )))
                 : ListView.builder(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     itemCount: classes.length,
                     itemBuilder: (context, int index) => Container(
                         color: classes[index].isSelected
@@ -279,7 +278,7 @@ class _AttendanceState extends State<Attendance> {
                   _clearClasses();
                 }
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             )
           ],
         ),

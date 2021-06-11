@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class UploadNotes extends StatefulWidget {
-  UploadNotes() : super();
+  const UploadNotes() : super();
 
   final String title = 'Firebase Storage';
 
@@ -20,7 +20,7 @@ class UploadNotesState extends State<UploadNotes> {
   final List<UploadTask> _tasks = <UploadTask>[];
 
   void openFileExplorer() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    var result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
       file = File(result.files.single.path);

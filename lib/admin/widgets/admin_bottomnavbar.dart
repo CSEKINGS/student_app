@@ -17,7 +17,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
   final List<Widget> _children = [
     DialogBox('Attendance'),
     MarkEntry(),
-    UploadNotes(),
+    const UploadNotes(),
     UploadProfile(),
     SettingsPage(),
   ];
@@ -32,9 +32,9 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
     return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            title: Text(
+            title: const Text(
               'Do you want to exit..?',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
@@ -43,17 +43,17 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
                 onPressed: () => Navigator.of(context).pop(false),
                 color: Colors.red,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               IconButton(
                 onPressed: () async {
                   await SystemNavigator.pop();
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.check,
                   color: Colors.green,
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
             ],
           ),
         ) ??
@@ -77,15 +77,15 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
           onTap: onTappedBar,
           currentIndex: _currentIndex,
           items: [
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.check_box),
               label: 'Attendance',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.person_add_alt_1_outlined),
               label: 'Admin',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.upload_outlined),
               label: 'Notes',
             ),

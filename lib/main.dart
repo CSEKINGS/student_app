@@ -13,6 +13,7 @@ int onBoard;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   await SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
@@ -34,7 +35,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Firebase.initializeApp();
   }
 
   @override

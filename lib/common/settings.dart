@@ -22,8 +22,8 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.brush_outlined),
-            title: Text('Theme'),
+            leading: const Icon(Icons.brush_outlined),
+            title: const Text('Theme'),
             contentPadding: const EdgeInsets.all(16.0),
             trailing: DayNightSwitcher(
               isDarkModeEnabled: _darkTheme,
@@ -36,22 +36,22 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('About'),
+            leading: const Icon(Icons.info_outline),
+            title: const Text('About'),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (ctx) => AlertDialog(
                   backgroundColor: Theme.of(context).backgroundColor,
-                  title: Text('About'),
-                  content:
-                      Text('This is a hobby project made in Flutter by Harish'),
+                  title: const Text('About'),
+                  content: const Text(
+                      'This is a hobby project made in Flutter by Harish'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {
                         Navigator.of(ctx).pop();
                       },
-                      child: Text('okay'),
+                      child: const Text('okay'),
                     ),
                   ],
                 ),
