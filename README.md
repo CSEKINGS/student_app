@@ -1,8 +1,8 @@
 # Student app
 
-An app to digitalize the counselling class in a multi-platform application.
+An app to digitalize the counselling class in a cross-platform application tested in android and web.
 
-Don't forget to star the repo.
+Check the live demo here: https://csekings.github.io/student_app_web/#/
 
 ## Screenshots 
 <table>
