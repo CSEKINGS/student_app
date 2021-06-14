@@ -47,8 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 builder: (ctx) => AlertDialog(
                   backgroundColor: Theme.of(context).backgroundColor,
                   title: const Text('About'),
-                  content: const Text(
-                      'This is a hobby project made in Flutter by Harish'),
+                  content: const Text('Made with love by CSE KINGS'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {
