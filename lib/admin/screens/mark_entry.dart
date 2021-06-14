@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/designs.dart';
@@ -26,6 +27,13 @@ class _MarkEntryState extends State<MarkEntry> {
             const Designs('Delete class'),
             const Designs('Delete department'),
             const Designs('Delete year'),
+            OutlinedButton(
+                onPressed: () async {
+                  final _auth = FirebaseAuth.instance;
+                  await _auth.signOut();
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Sign out'))
           ],
         ),
       ),
