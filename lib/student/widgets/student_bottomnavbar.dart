@@ -63,7 +63,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
       Grade(details),
       Profile(details),
       Notes(),
-      SettingsPage(),
+      const SettingsPage(),
     ];
   }
 

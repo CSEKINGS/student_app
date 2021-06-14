@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+/// grade UI
 class Grade extends StatefulWidget {
-  final List details;
-
+  /// default
   const Grade(this.details);
+
+  /// get register number and DOB to autofill in webview
+  final List details;
 
   @override
   _GradeState createState() => _GradeState();
@@ -27,7 +30,7 @@ class _GradeState extends State<Grade> {
     if (kIsWeb) {
       return const Center(child: Text('Visit https://coe1.annauniv.edu/home/'));
     } else {
-      SafeArea(
+      return SafeArea(
         child: Scaffold(
           body: Stack(
             children: <Widget>[
@@ -47,7 +50,6 @@ class _GradeState extends State<Grade> {
                       "document.querySelector(\"#footer\").style.display='none';"
                       "document.querySelector(\"#header\").style.display='none';"
                       "document.querySelector(\"#menufront\").style.display='none';"
-                      "document.getElementById('register_no').value = '${widget.details[2]}';"
                       "document.getElementById('register_no').value = '${widget.details[2]}';"
                       "document.getElementById('dob').value = '${widget.details[4]}';");
 

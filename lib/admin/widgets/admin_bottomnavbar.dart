@@ -15,11 +15,11 @@ class AdminBottomNav extends StatefulWidget {
 class _AdminBottomNavState extends State<AdminBottomNav> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    DialogBox('Attendance'),
+    const DialogBox('Attendance'),
     MarkEntry(),
     const UploadNotes(),
     UploadProfile(),
-    SettingsPage(),
+    const SettingsPage(),
   ];
 
   void onTappedBar(int index) {

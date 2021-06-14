@@ -14,7 +14,8 @@ import '../theme/theme.dart' as theme;
 // TODO: Refactoring
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  /// default
+  const LoginPage({Key key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -165,19 +166,18 @@ class _LoginPageState extends State<LoginPage>
           .get()
           .then((value) {
         if (value.docs.isNotEmpty) {
-          value.docs.forEach((element) {
+          for (var element in value.docs) {
             password = element.data()['DOB'];
             if (password != pword) {
               invalidSnackBar('Password is incorrect');
             } else {
               foundclass = cls[i].name;
-
               Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (_) => ProcessData(_regno, foundclass)),
               );
             }
-          });
+          }
         }
       });
     }
@@ -194,7 +194,7 @@ class _LoginPageState extends State<LoginPage>
         },
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Container(
+          child: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height >= 775.0
                 ? MediaQuery.of(context).size.height
@@ -478,8 +478,8 @@ class _LoginPageState extends State<LoginPage>
                         theme.GradientColors.loginGradientEnd,
                         theme.GradientColors.loginGradientStart
                       ],
-                      begin: const FractionalOffset(0.2, 0.2),
-                      end: const FractionalOffset(1.0, 1.0),
+                      begin: FractionalOffset(0.2, 0.2),
+                      end: FractionalOffset(1.0, 1.0),
                       stops: [0.0, 1.0],
                       tileMode: TileMode.clamp),
                 ),
@@ -547,7 +547,11 @@ class _LoginPageState extends State<LoginPage>
               email: givenuser, password: givenpass))
           .user;
     } catch (e) {
-      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
     } finally {
       if (user != null) {
         await Navigator.of(context).push(
@@ -573,7 +577,7 @@ class _LoginPageState extends State<LoginPage>
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Container(
+                child: SizedBox(
                   width: 300.0,
                   height: 270.0,
                   child: SingleChildScrollView(
@@ -776,7 +780,7 @@ class _LoginPageState extends State<LoginPage>
 
   void _onSignUpButtonPress() {
     _pageController?.animateToPage(1,
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 
   void _toggleLogin() {

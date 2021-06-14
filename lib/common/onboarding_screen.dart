@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:student_app/common/login.dart';
 
+/// onBoarding page UI
 class OnBoardingPage extends StatefulWidget {
+  /// default constructor
+  const OnBoardingPage({Key key}) : super(key: key);
   @override
   _OnBoardingPageState createState() => _OnBoardingPageState();
 }
@@ -12,7 +15,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   void _onIntroEnd(context) {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
   Widget _buildImage(String assetName) {
@@ -56,33 +59,22 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
         PageViewModel(
           title: 'Announcements',
-          body: 'Get latest news about the college via push notification.',
+          body: 'Get latest news via push notification.',
           image: _buildImage('announce'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: 'Notes and Question banks',
-          body: 'View and download notes prepared by your college on the go',
+          body: 'View and download notes on the go',
           image: _buildImage('notes'),
-          footer: ElevatedButton(
-            onPressed: () {
-              introKey.currentState?.animateScroll(0);
-            },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.deepPurpleAccent)),
-            child: const Text(
-              'sample btn',
-            ),
-          ),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: 'placeholder',
+          title: 'Q/A',
           bodyWidget: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Text('Lets go ', style: bodyStyle),
+              Text('Submit your question in global chat ', style: bodyStyle),
             ],
           ),
           image: _buildImage('announce'),

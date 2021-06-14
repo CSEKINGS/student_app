@@ -5,7 +5,7 @@ import '../logic/get_details.dart';
 class DialogBox extends StatefulWidget {
   final String text;
 
-  DialogBox(this.text);
+  const DialogBox(this.text);
 
   @override
   _DialogBoxState createState() => _DialogBoxState();

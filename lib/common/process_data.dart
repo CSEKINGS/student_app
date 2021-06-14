@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/student/widgets/student_bottomnavbar.dart';
 
+/// this is the initial state which fetches info related to starting the app
 class ProcessData extends StatefulWidget {
   final String _regno, foundclass;
 
-  ProcessData(this._regno, this.foundclass);
+  const ProcessData(this._regno, this.foundclass);
 
   @override
   _ProcessDataState createState() => _ProcessDataState();
@@ -19,12 +20,11 @@ class _ProcessDataState extends State<ProcessData> {
   final Future<SharedPreferences> _preference = SharedPreferences.getInstance();
 
   Future<List> stream() async {
-    var days;
     final preference = await _preference;
     await preference.setString('username', widget._regno);
     await preference.setString('foundedclass', widget.foundclass);
 
-    _batch = '20' + widget._regno.substring(4, 6);
+    _batch = '20${widget._regno.substring(4, 6)}';
     _dept = widget._regno.substring(6, 9);
     switch (_dept) {
       case '101':
@@ -69,31 +69,36 @@ class _ProcessDataState extends State<ProcessData> {
         break;
     }
 
-    var reff = reference
+    reference
         .collection('collage')
         .doc('student')
         .collection(_dept)
         .doc(_batch)
         .collection(widget.foundclass)
         .doc(widget._regno)
-        .snapshots();
-    reff.listen((event) async {
-      details.add(event.data()['Name']);
-      details.add(event.data()['Rollno']);
-      details.add(event.data()['Regno']);
-      details.add(event.data()['PhoneNo']);
-      details.add(event.data()['DOB']);
-      details.add(event.data()['Batch']);
-      details.add(event.data()['Email']);
-      details.add(event.data()['BloodGroup']);
-      details.add(event.data()['Department']);
-      details.add(event.data()['Address']);
-      details.add(event.data()['ProfileUrl']);
-      details.add(event.data()['Class']);
-      var ref2 =
-          reference.collection('collage').doc('date').collection('working');
-      ref2.snapshots().listen((event) {
-        days = 0;
+        .snapshots()
+        .listen((event) async {
+      details
+        ..add(event.data()['Name'])
+        ..add(event.data()['Rollno'])
+        ..add(event.data()['Regno'])
+        ..add(event.data()['PhoneNo'])
+        ..add(event.data()['DOB'])
+        ..add(event.data()['Batch'])
+        ..add(event.data()['Email'])
+        ..add(event.data()['BloodGroup'])
+        ..add(event.data()['Department'])
+        ..add(event.data()['Address'])
+        ..add(event.data()['ProfileUrl'])
+        ..add(event.data()['Class']);
+
+      reference
+          .collection('collage')
+          .doc('date')
+          .collection('working')
+          .snapshots()
+          .listen((event) {
+        var days = 0;
         for (var i = 0; i < event.docs.length; i++) {
           days = days + 1;
           // setState(() {
@@ -120,7 +125,7 @@ class _ProcessDataState extends State<ProcessData> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),

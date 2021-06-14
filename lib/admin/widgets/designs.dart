@@ -4,16 +4,16 @@ import '../logic/add_details.dart';
 import '../logic/attendance.dart';
 import 'dialog.dart';
 
-class CustomView extends StatefulWidget {
+class Designs extends StatefulWidget {
   final String text;
 
-  const CustomView(this.text);
+  const Designs(this.text);
 
   @override
-  _CustomViewState createState() => _CustomViewState();
+  _DesignsState createState() => _DesignsState();
 }
 
-class _CustomViewState extends State<CustomView> {
+class _DesignsState extends State<Designs> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -23,7 +23,7 @@ class _CustomViewState extends State<CustomView> {
           showDialog(
               context: context,
               builder: (BuildContext con) {
-                return DialogBox('Add class');
+                return const DialogBox('Add class');
               });
         } else if (widget.text == 'Add year') {
           Navigator.push(
@@ -39,13 +39,13 @@ class _CustomViewState extends State<CustomView> {
           showDialog(
               context: context,
               builder: (BuildContext con) {
-                return DialogBox('Delete students');
+                return const DialogBox('Delete students');
               });
         } else if (widget.text == 'Delete class') {
           showDialog(
               context: context,
               builder: (BuildContext con) {
-                return DialogBox('Delete class');
+                return const DialogBox('Delete class');
               });
         } else if (widget.text == 'Delete department') {
           Navigator.push(

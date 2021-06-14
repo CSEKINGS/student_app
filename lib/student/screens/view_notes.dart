@@ -27,7 +27,8 @@ class _NotesState extends State<Notes> {
     if (await canLaunch(furl)) {
       await launch(furl);
     } else {
-      throw 'Could not launch $furl';
+      Error error = ArgumentError('Could not launch $furl');
+      throw error;
     }
   }
 
@@ -79,7 +80,6 @@ class _NotesState extends State<Notes> {
             Expanded(
               child: _searchResult.isNotEmpty || controller.text.isNotEmpty
                   ? ListView.builder(
-                      physics: const BouncingScrollPhysics(),
                       itemCount: _searchResult.length,
                       itemBuilder: (context, index) {
                         return Container(
@@ -112,7 +112,6 @@ class _NotesState extends State<Notes> {
                       },
                     )
                   : ListView.builder(
-                      physics: const BouncingScrollPhysics(),
                       itemCount: _notesList.length,
                       itemBuilder: (context, index) {
                         return Card(
@@ -146,15 +145,13 @@ class _NotesState extends State<Notes> {
     _searchResult.clear();
     if (text.isEmpty) {
       setState(() {});
-      return;
     }
 
-    _notesList.forEach((notes) {
+    for (var notes in _notesList) {
       if (notes.toString().toLowerCase().contains(text.toLowerCase())) {
         _searchResult.add(notes);
       }
-    });
-
+    }
     setState(() {});
   }
 }

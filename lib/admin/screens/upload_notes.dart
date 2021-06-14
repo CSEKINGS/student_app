@@ -15,67 +15,79 @@ class UploadNotes extends StatefulWidget {
 }
 
 class UploadNotesState extends State<UploadNotes> {
-  File file;
+  File _file;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final List<UploadTask> _tasks = <UploadTask>[];
 
-  void openFileExplorer() async {
+  void _openFileExplorer() async {
     var result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-      file = File(result.files.single.path);
+      _file = File(result.files.single.path);
     } else {
-      print('no file selected');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No file selected'),
+        ),
+      );
     }
     try {
-      var fileName = file.path.split('/').last;
-      String filePath = file.toString();
-      String extension = file.toString().split('.').last;
-      upload(fileName, filePath, extension);
+      var fileName = _file.path.split('/').last;
+      var filePath = _file.toString();
+      var extension = _file.toString().split('.').last;
+      _upload(fileName, filePath, extension);
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
     }
   }
 
-  void upload(fileName, filePath, extension) async {
-    SettableMetadata metadata = SettableMetadata(
+  void _upload(fileName, filePath, extension) async {
+    var metadata = SettableMetadata(
       contentType: '$extension',
     );
     try {
       await FirebaseStorage.instance
           .ref('notes/$fileName')
-          .putFile(file, metadata);
+          .putFile(_file, metadata);
     } on FirebaseException catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final children = <Widget>[];
-    _tasks.forEach((UploadTask task) {
+    for (var task in _tasks) {
       final Widget tile = UploadTaskListTile(
         task: task,
       );
       children.add(tile);
-    });
+    }
 
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         body: Container(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Center(
                 child: OutlinedButton(
-                  onPressed: () => openFileExplorer(),
-                  child: Text('Upload notes'),
+                  onPressed: _openFileExplorer,
+                  child: const Text('Upload notes'),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               Flexible(
@@ -91,7 +103,6 @@ class UploadNotesState extends State<UploadNotes> {
   }
 }
 
-// ignore: must_be_immutable
 class UploadTaskListTile extends StatelessWidget {
   UploadTaskListTile({Key key, this.task}) : super(key: key);
 

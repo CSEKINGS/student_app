@@ -7,12 +7,11 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/admin/Models/db_model.dart';
 
-// ignore: must_be_immutable
 class Dashboard extends StatefulWidget {
-  List details = [];
-  var days;
-
   Dashboard(this.details, this.days);
+
+  List details = [];
+  int days;
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -23,9 +22,9 @@ class _DashboardState extends State<Dashboard> {
   final references = FirebaseFirestore.instance;
 
   List<Contents> workingDays = [];
-  var presentDays;
+  int presentDays;
   double percentage = 0.0;
-  var displayPercent;
+  String displayPercent;
   Future percents;
 
   Future<bool> getDays() async {
@@ -84,9 +83,9 @@ class _DashboardState extends State<Dashboard> {
                                       content: SizedBox(
                                         height: 50,
                                         child: Text(
-                                            'Total number of days :  ${widget.days}'
+                                            'Total number of days:${widget.days}'
                                             '\n'
-                                            'No of Present days : $presentDays'),
+                                            'No of Present days: $presentDays'),
                                       ),
                                     );
                                   });

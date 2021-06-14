@@ -26,7 +26,9 @@ class Item {
         key = snapshot.id;
 }
 
+/// helper functions
 class DatabaseReference {
+  /// get profile when passing class, year and department as arguments
   CollectionReference getProfile(String cls, String yer, String dep) {
     return (FirebaseFirestore.instance
         .collection('collage/student/$dep/$yer/$cls'));
