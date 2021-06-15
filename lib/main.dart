@@ -49,7 +49,13 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasData) {
             return route();
           } else {
-            return Center(child: CircularProgressIndicator());
+            return SizedBox(
+              height: 100.0,
+              width: 100.0,
+              child: Center(
+                child: Image.asset("assets/graduates.png"),
+              ),
+            );
           }
         },
       ),

@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,36 +58,22 @@ class _DashboardState extends State<Dashboard> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData && snapshot != null) {
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Center(
-                      child: Card(
-                        elevation: 1.5,
-                        margin: const EdgeInsets.all(15.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: InkWell(
-                            customBorder: const CircleBorder(),
-                            splashColor: Colors.indigoAccent,
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext con) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0)),
-                                      title: const Text('Details'),
-                                      content: SizedBox(
-                                        height: 50,
-                                        child: Text(
-                                            'Total number of days:${widget.days}'
-                                            '\n'
-                                            'No of Present days: $presentDays'),
-                                      ),
-                                    );
-                                  });
-                            },
+                    const Padding(
+                      padding: EdgeInsets.only(left: 15.0, top: 15.0),
+                      child: Text('Attendance Percentage',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.0)),
+                    ),
+                    Card(
+                      elevation: 1.5,
+                      margin: const EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
                             child: CircularPercentIndicator(
                               animation: true,
                               animationDuration: 1200,
@@ -105,30 +89,17 @@ class _DashboardState extends State<Dashboard> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0),
                               ),
-                              footer: const Text('Attendance Percentage',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.0)),
                             ),
                           ),
-                        ),
+                          Text('Total number of days:${widget.days}'
+                              '\n'
+                              'No of Present days: $presentDays'),
+                        ],
                       ),
-                    ),
-                    OutlinedButton(
-                      onPressed: () async {
-                        final _auth = FirebaseAuth.instance;
-                        await _auth.signOut();
-                        final preference = await _preference;
-                        await preference.remove('username');
-                        await preference.remove('foundedclass');
-                        await SystemNavigator.pop();
-                      },
-                      child: const Text('Logout'),
                     ),
                   ],
                 );
               }
-
               return const CircularProgressIndicator();
             }),
       ),
