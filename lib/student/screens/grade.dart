@@ -7,7 +7,7 @@ class Grade extends StatefulWidget {
   /// default
   const Grade(this.details);
 
-  /// get register number and DOB to autofill in webview
+  /// get register number and DOB to autofill in web view
   final List details;
 
   @override

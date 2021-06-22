@@ -43,11 +43,13 @@ class _UploadProfile extends State<UploadProfile> {
     var yearRef = obj.getDetailRef('year');
     var depRef = obj.getDetailRef('department');
     yearRef.snapshots().listen((event) {
-      setState(() {
-        for (var i = 0; i < event.docs.length; i++) {
-          year.add(Contents.fromSnapshot(event.docs[i]));
-        }
-      });
+      if (mounted) {
+        setState(() {
+          for (var i = 0; i < event.docs.length; i++) {
+            year.add(Contents.fromSnapshot(event.docs[i]));
+          }
+        });
+      }
     });
     depRef.snapshots().listen((event) {
       if (mounted) {

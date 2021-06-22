@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage>
   final adminpasskey = GlobalKey<FormFieldState>();
   final adminkey = GlobalKey<FormFieldState>();
 
-  //TextEditingController Objects and other contorllers
+  //TextEditingController Objects and other controllers
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
   TextEditingController signupEmailController = TextEditingController();
@@ -405,10 +405,8 @@ class _LoginPageState extends State<LoginPage>
                             },
                           ),
                         ),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
+                        const Divider(
+                          thickness: 2.0,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -585,7 +583,7 @@ class _LoginPageState extends State<LoginPage>
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                              top: 10.0, bottom: 10.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             key: adminkey,
                             //key form field
@@ -618,14 +616,12 @@ class _LoginPageState extends State<LoginPage>
                             },
                           ),
                         ),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
+                        const Divider(
+                          thickness: 2.0,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                              top: 10.0, bottom: 10.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             autocorrect: false,
                             key: adminuserkey,
@@ -665,14 +661,12 @@ class _LoginPageState extends State<LoginPage>
                             },
                           ),
                         ),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
+                        const Divider(
+                          thickness: 2.0,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                              top: 10.0, bottom: 10.0, left: 25.0, right: 25.0),
                           child: TextFormField(
                             autocorrect: false,
                             key: adminpasskey,
