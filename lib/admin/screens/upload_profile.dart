@@ -64,7 +64,8 @@ class _UploadProfile extends State<UploadProfile> {
 
   Future getImage() async {
     try {
-      var image = await picker.getImage(source: ImageSource.gallery);
+      var image = await picker.getImage(
+          source: ImageSource.gallery, maxWidth: 200.0, maxHeight: 200.0);
 
       setState(() {
         _image = File(image.path);

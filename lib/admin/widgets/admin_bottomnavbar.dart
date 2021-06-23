@@ -76,16 +76,16 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
           type: BottomNavigationBarType.fixed,
           onTap: onTappedBar,
           currentIndex: _currentIndex,
-          items: [
-            const BottomNavigationBarItem(
+          items: const [
+            BottomNavigationBarItem(
               icon: Icon(Icons.check_box),
               label: 'Attendance',
             ),
-            const BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.person_add_alt_1_outlined),
               label: 'Admin',
             ),
-            const BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.upload_outlined),
               label: 'Notes',
             ),
