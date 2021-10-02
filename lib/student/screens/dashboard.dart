@@ -2,21 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/admin/Models/db_model.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard(this.details, this.days);
 
-  List details = [];
-  int days;
+  final List<String> details;
+  final int days;
 
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  final Future<SharedPreferences> _preference = SharedPreferences.getInstance();
+  
   final references = FirebaseFirestore.instance;
 
   List<Contents> workingDays = [];
@@ -35,7 +34,8 @@ class _DashboardState extends State<Dashboard> {
         .doc(widget.details[2]);
     ref1.snapshots().listen((event) {
       setState(() {
-        percentage = event.data()['total'].toDouble() / widget.days;
+        percentage =
+            double.parse(event.data()['total'].toString()) / widget.days;
         displayPercent =
             NumberFormat('##.0#', 'en_US').format(percentage * 100);
       });
@@ -53,7 +53,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: FutureBuilder(
+        body: FutureBuilder<dynamic>(
             future: percents,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData && snapshot != null) {

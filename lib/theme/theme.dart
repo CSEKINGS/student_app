@@ -26,7 +26,6 @@ final darkTheme = ThemeData(
   scaffoldBackgroundColor: const Color(0xFF1F1F1F),
   brightness: Brightness.dark,
   backgroundColor: const Color(0xFF262626),
-  accentColor: Colors.orangeAccent,
   floatingActionButtonTheme:
       const FloatingActionButtonThemeData(foregroundColor: Colors.white),
   dividerColor: Colors.black12,
@@ -39,7 +38,6 @@ final lightTheme = ThemeData(
   fontFamily: 'Product Sans',
   brightness: Brightness.light,
   backgroundColor: Colors.white,
-  accentColor: Colors.orangeAccent,
   floatingActionButtonTheme:
       const FloatingActionButtonThemeData(foregroundColor: Colors.white),
   dividerColor: Colors.white54,

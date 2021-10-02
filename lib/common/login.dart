@@ -11,7 +11,6 @@ import 'package:student_app/common/process_data.dart';
 
 import '../theme/theme.dart' as theme;
 
-// TODO: Refactoring
 
 class LoginPage extends StatefulWidget {
   /// default
@@ -167,14 +166,15 @@ class _LoginPageState extends State<LoginPage>
           .then((value) {
         if (value.docs.isNotEmpty) {
           for (var element in value.docs) {
-            password = element.data()['DOB'];
+            password = element.data()['DOB'].toString();
             if (password != pword) {
               invalidSnackBar('Password is incorrect');
             } else {
               foundclass = cls[i].name;
-              Navigator.of(context).push(
+              Navigator.push(
+                context,
                 MaterialPageRoute(
-                    builder: (_) => ProcessData(_regno, foundclass)),
+                    builder: (context) => ProcessData(_regno, foundclass)),
               );
             }
           }

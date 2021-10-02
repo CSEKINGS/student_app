@@ -9,7 +9,7 @@ class Notes extends StatefulWidget {
 
 class _NotesState extends State<Notes> {
   TextEditingController controller = TextEditingController();
-  final List _searchResult = [];
+  final List<String> _searchResult = [];
   List<Reference> _notesList = [];
 
   Future<void> retrieveNotes() async {
@@ -99,7 +99,7 @@ class _NotesState extends State<Notes> {
                                   Icons.file_download,
                                 ),
                                 onPressed: () {
-                                  openURL(_searchResult[index].name.toString());
+                                  openURL(_searchResult[index].toString());
                                 },
                               ),
                               leading: const Icon(Icons.note),
@@ -149,7 +149,7 @@ class _NotesState extends State<Notes> {
 
     for (var notes in _notesList) {
       if (notes.toString().toLowerCase().contains(text.toLowerCase())) {
-        _searchResult.add(notes);
+        _searchResult.add(notes.toString());
       }
     }
     setState(() {});

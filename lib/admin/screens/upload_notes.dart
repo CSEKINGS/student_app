@@ -104,10 +104,11 @@ class UploadNotesState extends State<UploadNotes> {
 }
 
 class UploadTaskListTile extends StatelessWidget {
+  final UploadTask task;
+
   UploadTaskListTile({Key key, this.task}) : super(key: key);
 
-  // final UploadTask task;
-  UploadTask task = FirebaseStorage.instance as UploadTask;
+  
 
   String _bytesTransferred(TaskSnapshot snapshot) {
     return '${snapshot.bytesTransferred}/${snapshot.totalBytes}';

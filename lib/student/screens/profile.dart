@@ -2,7 +2,7 @@ import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  final List details;
+  final List<String> details;
 
   const Profile(this.details);
 
