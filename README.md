@@ -4,6 +4,18 @@ An app to digitalize the counselling class in a cross-platform application teste
 
 Check the live demo here: https://csekings.github.io/student_app_web/#/
 
+## Credentials
+Admin Credentials
+
+key: ``csekings``
+email: ``test@gmail.com``
+password: ``test123``
+
+Student credentials
+
+register no: ``820617104017``
+password: ``13-11-1999``
+
 ## Screenshots 
 <table>
   <tr>
