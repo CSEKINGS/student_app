@@ -85,28 +85,13 @@ class _UploadProfile extends State<UploadProfile> {
             FirebaseStorage.instance.ref().child('profile/$batch/$dept/$regNo');
         var uploadTask = firebaseStorageRef.putFile(_image);
         var url = await (await uploadTask).ref.getDownloadURL();
-        profileUrl = url.toString();
 
-        var ref = FirebaseFirestore.instance
-            .collection('collage')
-            .doc('student')
-            .collection(dept)
-            .doc(batch)
-            .collection(cls)
-            .doc(regNo);
-        await ref.set({
-          'Name': name,
-          'Rollno': rollNo,
-          'Regno': regNo,
-          'Email': email,
-          'PhoneNo': phoneNo,
-          'BloodGroup': blood,
-          'Batch': batch,
-          'Department': dept,
-          'Address': address,
-          'ProfileUrl': profileUrl,
-          'DOB': dob,
-          'Class': cls
+        setState(() {
+          profileUrl = url.toString();
+          print("Hello World");
+          print(url);
+          print(profileUrl);
+          update();
         });
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -131,6 +116,30 @@ class _UploadProfile extends State<UploadProfile> {
         content: Text('Invalid Details'),
       ));
     }
+  }
+
+  Future update() async {
+   FirebaseFirestore.instance
+        .collection('collage')
+        .doc('student')
+        .collection(dept)
+        .doc(batch)
+        .collection(cls)
+        .doc(regNo)
+        .set({
+      'Name': name.toString(),
+      'Rollno': rollNo,
+      'Regno': regNo,
+      'Email': email,
+      'PhoneNo': phoneNo,
+      'BloodGroup': blood,
+      'Batch': batch,
+      'Department': dept,
+      'Address': address,
+      'ProfileUrl': profileUrl,
+      'DOB': dob,
+      'Class': cls
+    });
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

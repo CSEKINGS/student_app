@@ -30,17 +30,17 @@ class _ProfileState extends State<Profile> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    profileCardView('Name :  ${widget.details[0]}'),
-                    profileCardView(
-                        'Roll no : ${widget.details[1].toString().toUpperCase()}'),
-                    profileCardView('Register no : ${widget.details[2]}'),
-                    profileCardView('Phone number : ${widget.details[3]}'),
-                    profileCardView('DOB :  ${widget.details[4]}'),
-                    profileCardView('Batch :  ${widget.details[5]}'),
-                    profileCardView('Email :  ${widget.details[6]}'),
-                    profileCardView('Blood group :  ${widget.details[7]}'),
-                    profileCardView('Department :  ${widget.details[8]}'),
-                    profileCardView('Address :  ${widget.details[9]}'),
+                     profileCardView('Name :  ${widget.details[0]}'),
+                     profileCardView(
+                         'Roll no : ${widget.details[1].toString().toUpperCase()}'),
+                     profileCardView('Register no : ${widget.details[2]}'),
+                     profileCardView('Phone number : ${widget.details[3]}'),
+                     profileCardView('DOB :  ${widget.details[4]}'),
+                     profileCardView('Batch :  ${widget.details[5]}'),
+                     profileCardView('Email :  ${widget.details[6]}'),
+                     profileCardView('Blood group :  ${widget.details[7]}'),
+                     profileCardView('Department :  ${widget.details[8]}'),
+                     profileCardView('Address :  ${widget.details[9]}'),
                   ],
                 ),
               ],
