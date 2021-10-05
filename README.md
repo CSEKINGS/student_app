@@ -69,7 +69,7 @@ password: ``13-11-1999``
 1. Make sure to test various devices before creating a ticket.
 2. Specify the log and device descriptions. Otherwise, issue will be closed.
 
-**Note: Only Android is supported right now.**
+**Note: Android, iOS, Web is supported right now.**
 
 <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
