@@ -110,6 +110,7 @@ class UploadNotesState extends State<UploadNotes> {
                 children: [
                   Container(
                     child: Column(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         uploading
                             ? Padding(
@@ -123,13 +124,17 @@ class UploadNotesState extends State<UploadNotes> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child: Text(
-                                  file_name == ""
-                                      ? "No Notes Selected"
-                                      : file_name,
-                                  style: TextStyle(fontSize: 18),
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    file_name == ""
+                                        ? "No Notes Selected"
+                                        : file_name,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
                                 ),
                               ),
                               file_name == ""
