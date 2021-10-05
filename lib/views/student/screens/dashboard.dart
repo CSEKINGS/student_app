@@ -28,13 +28,14 @@ class _DashboardState extends State<Dashboard> {
         .collection('collage')
         .doc('attendance')
         .collection(widget.details?[8] ?? "unknown")
-        .doc(widget.details?[5]?? "unknown")
-        .collection(widget.details?[11]?? "unknown")
-        .doc(widget.details?[2]?? "unknown");
+        .doc(widget.details?[5] ?? "unknown")
+        .collection(widget.details?[11] ?? "unknown")
+        .doc(widget.details?[2] ?? "unknown");
     ref1.snapshots().listen((event) {
       setState(() {
-        percentage =
-            double.parse(event.data()?['total'].toString() ?? "1") / widget.days??1.0;
+        percentage = double.parse(event.data()?['total'].toString() ?? "1") /
+                widget.days ??
+            1.0;
         displayPercent =
             NumberFormat('##.0#', 'en_US').format(percentage * 100);
       });

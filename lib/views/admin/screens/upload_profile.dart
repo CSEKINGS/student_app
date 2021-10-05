@@ -85,7 +85,7 @@ class _UploadProfile extends State<UploadProfile> {
             FirebaseStorage.instance.ref().child('profile/$batch/$dept/$regNo');
         var uploadTask = firebaseStorageRef.putFile(_image!);
         var url = await (await uploadTask).ref.getDownloadURL();
-        
+
         profileUrl = url.toString();
 
         var ref = FirebaseFirestore.instance
@@ -309,7 +309,7 @@ class _UploadProfile extends State<UploadProfile> {
       items: year
           .map((e) => DropdownMenuItem(
                 value: e.name,
-                child: Text(e.name?? "unknown"),
+                child: Text(e.name ?? "unknown"),
               ))
           .toList(),
     );
@@ -418,7 +418,7 @@ class _UploadProfile extends State<UploadProfile> {
           items: classes
               .map((e) => DropdownMenuItem(
                     value: e.name,
-                    child: Text(e.name ?? "unknown" ),
+                    child: Text(e.name ?? "unknown"),
                   ))
               .toList(),
         ),

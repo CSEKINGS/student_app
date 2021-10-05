@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:student_app/common/settings.dart';
-import 'package:student_app/student/screens/dashboard.dart';
-import 'package:student_app/student/screens/grade.dart';
-import 'package:student_app/student/screens/profile.dart';
-import 'package:student_app/student/screens/view_notes.dart';
+import 'package:student_app/views/common/common_screens.dart';
+import 'package:student_app/views/student/student_screens.dart';
 
 class StudentBottomNav extends StatefulWidget {
   final List details;
