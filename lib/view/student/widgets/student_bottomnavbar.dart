@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:student_app/common/settings.dart';
-import 'package:student_app/student/screens/dashboard.dart';
-import 'package:student_app/student/screens/grade.dart';
-import 'package:student_app/student/screens/profile.dart';
-import 'package:student_app/student/screens/view_notes.dart';
+import 'package:student_app/view/common/common_screens.dart';
+import 'package:student_app/view/student/student_screens.dart';
 
 class StudentBottomNav extends StatefulWidget {
   final List details;
@@ -17,14 +14,11 @@ class StudentBottomNav extends StatefulWidget {
 }
 
 class _StudentBottomNavState extends State<StudentBottomNav> {
- 
   int _currentIndex = 0;
   List<String> details;
   Future<List> getList;
 
-
-  Future<bool> _onBackPressed() async{
-    
+  Future<bool> _onBackPressed() async {
     return showDialog<bool>(
       context: context,
       builder: (context) {
@@ -43,7 +37,6 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
             const SizedBox(height: 16),
             IconButton(
               onPressed: () async {
-               
                 await SystemNavigator.pop();
               },
               icon: const Icon(
@@ -98,23 +91,23 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
           onTap: onTappedBar,
           currentIndex: _currentIndex,
           items: const [
-             BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               label: 'Dashboard',
             ),
-             BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.assignment_turned_in_outlined),
               label: 'Grade',
             ),
-             BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.person_outline_rounded),
               label: 'Profile',
             ),
-             BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.insert_drive_file_outlined),
               label: 'Notes',
             ),
-             BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.extension_outlined),
               label: 'More',
             ),
