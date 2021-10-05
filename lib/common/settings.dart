@@ -12,7 +12,7 @@ import 'package:student_app/theme/theme_shared_pref.dart';
 /// settings UI
 class SettingsPage extends StatefulWidget {
   /// default constructor
-  const SettingsPage({Key key}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   _SettingsPageState createState() => _SettingsPageState();

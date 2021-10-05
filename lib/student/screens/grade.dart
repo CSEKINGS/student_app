@@ -8,7 +8,7 @@ class Grade extends StatefulWidget {
   const Grade(this.details);
 
   /// get register number and DOB to autofill in web view
-  final List details;
+  final List? details;
 
   @override
   _GradeState createState() => _GradeState();
@@ -18,7 +18,7 @@ class _GradeState extends State<Grade> {
   String url = 'https://coe1.annauniv.edu/home/';
   bool isLoading = true;
   final _key = UniqueKey();
-  WebViewController _controller;
+  late WebViewController _controller;
 
   @override
   void initState() {
@@ -50,8 +50,8 @@ class _GradeState extends State<Grade> {
                       "document.querySelector(\"#footer\").style.display='none';"
                       "document.querySelector(\"#header\").style.display='none';"
                       "document.querySelector(\"#menufront\").style.display='none';"
-                      "document.getElementById('register_no').value = '${widget.details[2]}';"
-                      "document.getElementById('dob').value = '${widget.details[4]}';");
+                      "document.getElementById('register_no').value = '${widget.details![2]}';"
+                      "document.getElementById('dob').value = '${widget.details![4]}';");
 
                   setState(() {
                     isLoading = false;

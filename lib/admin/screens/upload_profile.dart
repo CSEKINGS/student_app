@@ -13,7 +13,7 @@ class UploadProfile extends StatefulWidget {
 }
 
 class _UploadProfile extends State<UploadProfile> {
-  String id,
+  String? id,
       name,
       rollNo,
       regNo,
@@ -24,13 +24,13 @@ class _UploadProfile extends State<UploadProfile> {
       dept,
       address,
       dob;
-  File _image;
-  String cls;
+  File? _image;
+  String? cls;
 
-  String profileUrl;
+  String? profileUrl;
   final picker = ImagePicker();
   final reference = FirebaseFirestore.instance;
-  String dep, yer;
+  String? dep, yer;
   List<Contents> year = [];
   List<Contents> department = [];
   List<Contents> classes = [];
@@ -68,7 +68,7 @@ class _UploadProfile extends State<UploadProfile> {
           source: ImageSource.gallery, maxWidth: 200.0, maxHeight: 200.0);
 
       setState(() {
-        _image = File(image.path);
+        _image = File(image!.path);
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -79,20 +79,20 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   Future upload(BuildContext context) async {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState!.validate()) {
       try {
         var firebaseStorageRef =
             FirebaseStorage.instance.ref().child('profile/$batch/$dept/$regNo');
-        var uploadTask = firebaseStorageRef.putFile(_image);
+        var uploadTask = firebaseStorageRef.putFile(_image!);
         var url = await (await uploadTask).ref.getDownloadURL();
         profileUrl = url.toString();
 
         var ref = FirebaseFirestore.instance
             .collection('collage')
             .doc('student')
-            .collection(dept)
+            .collection(dept!)
             .doc(batch)
-            .collection(cls)
+            .collection(cls!)
             .doc(regNo);
         await ref.set({
           'Name': name,
@@ -117,7 +117,7 @@ class _UploadProfile extends State<UploadProfile> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Submitted Successfully'),
         ));
-        formKey.currentState.reset();
+        formKey.currentState!.reset();
         setState(() {
           _image = null;
         });
@@ -149,13 +149,13 @@ class _UploadProfile extends State<UploadProfile> {
         filled: true,
       ),
       maxLength: 20,
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Name required';
         }
         return null;
       },
-      onSaved: (String value) {
+      onSaved: (String? value) {
         name = value;
       },
     );
@@ -175,13 +175,13 @@ class _UploadProfile extends State<UploadProfile> {
         filled: true,
       ),
       maxLength: 8,
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Roll Number Required';
         }
         return null;
       },
-      onSaved: (String value) {
+      onSaved: (String? value) {
         rollNo = value;
       },
     );
@@ -202,13 +202,13 @@ class _UploadProfile extends State<UploadProfile> {
         filled: true,
       ),
       maxLength: 12,
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Register Number Required';
         }
         return null;
       },
-      onSaved: (String value) {
+      onSaved: (String? value) {
         regNo = value;
       },
     );
@@ -227,8 +227,8 @@ class _UploadProfile extends State<UploadProfile> {
         contentPadding: EdgeInsets.all(15.0),
         filled: true,
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Email Required';
         }
         if (!RegExp(
@@ -238,7 +238,7 @@ class _UploadProfile extends State<UploadProfile> {
         }
         return null;
       },
-      onSaved: (String value) {
+      onSaved: (String? value) {
         email = value;
       },
     );
@@ -259,13 +259,13 @@ class _UploadProfile extends State<UploadProfile> {
         filled: true,
       ),
       maxLength: 10,
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Phone Number Required';
         }
         return null;
       },
-      onSaved: (String value) {
+      onSaved: (String? value) {
         phoneNo = value;
       },
     );
@@ -284,14 +284,14 @@ class _UploadProfile extends State<UploadProfile> {
         contentPadding: EdgeInsets.all(15.0),
         filled: true,
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Blood Group Required';
         }
         return null;
       },
-      onSaved: (String value) {
-        blood = value.toUpperCase();
+      onSaved: (String? value) {
+        blood = value!.toUpperCase();
       },
     );
   }
@@ -299,7 +299,7 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildBatchDropDown() {
     return DropdownButton(
       hint: const Text('select year'),
-      onChanged: (String name) {
+      onChanged: (String? name) {
         setState(() {
           batch = name;
         });
@@ -308,7 +308,7 @@ class _UploadProfile extends State<UploadProfile> {
       items: year
           .map((e) => DropdownMenuItem(
                 value: e.name,
-                child: Text(e.name),
+                child: Text(e.name?? "unknown"),
               ))
           .toList(),
     );
@@ -317,7 +317,7 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildDeptDropDown() {
     return DropdownButton(
       hint: const Text('select department'),
-      onChanged: (name) {
+      onChanged: (dynamic name) {
         setState(() {
           dept = name;
         });
@@ -326,7 +326,7 @@ class _UploadProfile extends State<UploadProfile> {
       items: department
           .map((e) => DropdownMenuItem(
                 value: e.name,
-                child: Text(e.name),
+                child: Text(e.name ?? "unknown"),
               ))
           .toList(),
     );
@@ -346,13 +346,13 @@ class _UploadProfile extends State<UploadProfile> {
         filled: true,
       ),
       maxLines: 8,
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Address Required';
         }
         return null;
       },
-      onSaved: (String value) {
+      onSaved: (String? value) {
         address = value;
       },
     );
@@ -372,13 +372,13 @@ class _UploadProfile extends State<UploadProfile> {
         contentPadding: EdgeInsets.all(15.0),
         filled: true,
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value!.isEmpty) {
           return 'Address Required';
         }
         return null;
       },
-      onSaved: (String value) {
+      onSaved: (String? value) {
         dob = value.toString();
       },
     );
@@ -386,7 +386,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   void initiateClass() {
     CollectionReference reference;
-    reference = obj.getDetailRef2(batch, dept);
+    reference = obj.getDetailRef2(batch!, dept!);
     reference.snapshots().listen((event) {
       classes.clear();
       setState(() {
@@ -408,7 +408,7 @@ class _UploadProfile extends State<UploadProfile> {
         ),
         DropdownButton(
           hint: const Text('select class'),
-          onChanged: (name) {
+          onChanged: (dynamic name) {
             setState(() {
               cls = name;
             });
@@ -417,7 +417,7 @@ class _UploadProfile extends State<UploadProfile> {
           items: classes
               .map((e) => DropdownMenuItem(
                     value: e.name,
-                    child: Text(e.name),
+                    child: Text(e.name ?? "unknown" ),
                   ))
               .toList(),
         ),
@@ -444,7 +444,7 @@ class _UploadProfile extends State<UploadProfile> {
                   height: 137.0,
                   child: (_image != null)
                       ? Image.file(
-                          _image,
+                          _image!,
                           fit: BoxFit.fill,
                         )
                       : Image.asset(
@@ -516,7 +516,7 @@ class _UploadProfile extends State<UploadProfile> {
                   const SizedBox(height: 10),
                   OutlinedButton(
                     onPressed: () {
-                      formKey.currentState.save();
+                      formKey.currentState!.save();
                       upload(context);
                     },
                     child: const Text('Submit',

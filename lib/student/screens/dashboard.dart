@@ -7,7 +7,7 @@ import 'package:student_app/admin/Models/db_model.dart';
 class Dashboard extends StatefulWidget {
   Dashboard(this.details, this.days);
 
-  final List<String> details;
+  final List<String>? details;
   final int days;
 
   @override
@@ -15,27 +15,26 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  
   final references = FirebaseFirestore.instance;
 
   List<Contents> workingDays = [];
-  int presentDays;
+  int? presentDays;
   double percentage = 0.0;
-  String displayPercent;
-  Future percents;
+  String? displayPercent;
+  Future? percents;
 
   Future<bool> getDays() async {
     var ref1 = references
         .collection('collage')
         .doc('attendance')
-        .collection(widget.details[8])
-        .doc(widget.details[5])
-        .collection(widget.details[11])
-        .doc(widget.details[2]);
+        .collection(widget.details?[8] ?? "unknown")
+        .doc(widget.details?[5]?? "unknown")
+        .collection(widget.details?[11]?? "unknown")
+        .doc(widget.details?[2]?? "unknown");
     ref1.snapshots().listen((event) {
       setState(() {
         percentage =
-            double.parse(event.data()['total'].toString()) / widget.days;
+            double.parse(event.data()?['total'].toString() ?? "1") / widget.days??1.0;
         displayPercent =
             NumberFormat('##.0#', 'en_US').format(percentage * 100);
       });

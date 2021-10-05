@@ -8,8 +8,8 @@ import 'package:student_app/common/process_data.dart';
 import 'package:student_app/theme/theme.dart';
 import 'package:student_app/theme/theme_notifier.dart';
 
-String initScreen, classFound;
-int onBoard;
+String? initScreen, classFound;
+int? onBoard;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

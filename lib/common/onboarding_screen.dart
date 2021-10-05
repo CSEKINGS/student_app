@@ -5,7 +5,7 @@ import 'package:student_app/common/login.dart';
 /// onBoarding page UI
 class OnBoardingPage extends StatefulWidget {
   /// default constructor
-  const OnBoardingPage({Key key}) : super(key: key);
+  const OnBoardingPage({Key? key}) : super(key: key);
   @override
   _OnBoardingPageState createState() => _OnBoardingPageState();
 }

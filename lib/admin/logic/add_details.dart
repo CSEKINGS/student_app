@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/admin/Models/db_model.dart';
 
 class AddDetails extends StatefulWidget {
-  final String year, dept;
+  final String? year, dept;
 
   const AddDetails(this.year, this.dept);
 
@@ -14,7 +14,7 @@ class AddDetails extends StatefulWidget {
 class _AddDetailsState extends State<AddDetails> {
   List<Contents> classes = [];
   TextEditingController eCtrl = TextEditingController();
-  String name;
+  String? name;
   DatabaseReference obj = DatabaseReference();
 
   @override
@@ -27,7 +27,7 @@ class _AddDetailsState extends State<AddDetails> {
     clearData();
     var yer = widget.year;
     var dep = widget.dept;
-    CollectionReference getRef;
+    late CollectionReference getRef;
     if (yer != null && dep != null) {
       getRef = obj.getDetailRef2(yer, dep);
     } else if (yer == null && dep != null) {
@@ -55,7 +55,7 @@ class _AddDetailsState extends State<AddDetails> {
   void addClassname(String name) {
     var year = widget.year;
     var dep = widget.dept;
-    CollectionReference addRef;
+    late CollectionReference addRef;
     if (year != null && dep != null) {
       addRef = obj.getDetailRef2(year, dep);
     } else if (year == null && dep != null) {

@@ -56,8 +56,8 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
               const SizedBox(width: 16),
             ],
           ),
-        ) ??
-        false;
+        ).then((value) => value as bool) ??
+        false as Future<bool>;
   }
 
   @override

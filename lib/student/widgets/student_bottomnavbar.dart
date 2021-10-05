@@ -17,14 +17,11 @@ class StudentBottomNav extends StatefulWidget {
 }
 
 class _StudentBottomNavState extends State<StudentBottomNav> {
- 
   int _currentIndex = 0;
-  List<String> details;
-  Future<List> getList;
+  List<String>? details;
+  Future<List>? getList;
 
-
-  Future<bool> _onBackPressed() async{
-    
+  Future<bool> _onBackPressed() async {
     return showDialog<bool>(
       context: context,
       builder: (context) {
@@ -43,7 +40,6 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
             const SizedBox(height: 16),
             IconButton(
               onPressed: () async {
-               
                 await SystemNavigator.pop();
               },
               icon: const Icon(
@@ -73,10 +69,10 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   @override
   void dispose() {
     super.dispose();
-    details.clear();
+    details!.clear();
   }
 
-  List<Widget> _children;
+  late List<Widget> _children;
 
   void onTappedBar(int index) {
     setState(() {
@@ -86,40 +82,37 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _children,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          onTap: onTappedBar,
-          currentIndex: _currentIndex,
-          items: const [
-             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: 'Dashboard',
-            ),
-             BottomNavigationBarItem(
-              icon: Icon(Icons.assignment_turned_in_outlined),
-              label: 'Grade',
-            ),
-             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_rounded),
-              label: 'Profile',
-            ),
-             BottomNavigationBarItem(
-              icon: Icon(Icons.insert_drive_file_outlined),
-              label: 'Notes',
-            ),
-             BottomNavigationBarItem(
-              icon: Icon(Icons.extension_outlined),
-              label: 'More',
-            ),
-          ],
-        ),
+    return Scaffold(
+      body: WillPopScope(
+        onWillPop: _onBackPressed,
+        child: _children[_currentIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        onTap: onTappedBar,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment_turned_in_outlined),
+            label: 'Grade',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline_rounded),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.insert_drive_file_outlined),
+            label: 'Notes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.extension_outlined),
+            label: 'More',
+          ),
+        ],
       ),
     );
   }

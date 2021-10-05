@@ -5,7 +5,7 @@ import '../models/db_model.dart';
 
 /// attendance page logic
 class Attendance extends StatefulWidget {
-  final String year, dept, text;
+  final String? year, dept, text;
 
   const Attendance(this.year, this.dept, this.text);
 
@@ -14,8 +14,8 @@ class Attendance extends StatefulWidget {
 }
 
 class _AttendanceState extends State<Attendance> {
-  String cls;
-  String hasDate;
+  String? cls;
+  String? hasDate;
   List<Contents> classes = [];
   List<Item> item = [];
   DatabaseReference obj = DatabaseReference();
@@ -194,7 +194,7 @@ class _AttendanceState extends State<Attendance> {
             (widget.text == 'Delete students' || widget.text == 'Attendance')
                 ? DropdownButton(
                     hint: const Text('select class'),
-                    onChanged: (name) {
+                    onChanged: (dynamic name) {
                       setState(() {
                         cls = name;
                         _getStudent();
@@ -204,7 +204,7 @@ class _AttendanceState extends State<Attendance> {
                     items: classes
                         .map((e) => DropdownMenuItem(
                               value: e.name,
-                              child: Text(e.name),
+                              child: Text(e.name!),
                             ))
                         .toList(),
                   )
@@ -221,7 +221,7 @@ class _AttendanceState extends State<Attendance> {
                             ? Colors.lightBlueAccent
                             : Colors.white,
                         child: ListTile(
-                          title: Text(item[index].name),
+                          title: Text(item[index].name!),
                           subtitle: Text(item[index].rollNo),
                           onTap: () {
                             setState(() {
@@ -245,7 +245,7 @@ class _AttendanceState extends State<Attendance> {
                             ? Colors.lightBlueAccent
                             : Colors.white,
                         child: ListTile(
-                          title: Text(classes[index].name),
+                          title: Text(classes[index].name!),
                           onTap: () {
                             setState(() {
                               classes[index].isSelected = false;

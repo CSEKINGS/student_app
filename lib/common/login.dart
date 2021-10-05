@@ -14,7 +14,7 @@ import '../theme/theme.dart' as theme;
 
 class LoginPage extends StatefulWidget {
   /// default
-  const LoginPage({Key key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -46,11 +46,11 @@ class _LoginPageState extends State<LoginPage>
   TextEditingController signupPasswordController = TextEditingController();
   TextEditingController signupConfirmPasswordController =
       TextEditingController();
-  PageController _pageController;
+  PageController? _pageController;
 
   //FirebaseReferences and its variables
   final reference = FirebaseFirestore.instance;
-  CollectionReference reference1;
+  late CollectionReference reference1;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //Objects
@@ -64,10 +64,10 @@ class _LoginPageState extends State<LoginPage>
   //Variables
   bool _obscureTextLogin = true;
   bool _obscureTextSignup = true;
-  bool valid;
+  bool? valid;
   Color left = Colors.black;
   Color right = Colors.white;
-  String _batch,
+  String? _batch,
       _dept,
       _regno,
       password,
@@ -79,14 +79,14 @@ class _LoginPageState extends State<LoginPage>
       pword;
 
   void processdata() {
-    ukey.currentState.save();
-    passkey.currentState.save();
+    ukey.currentState!.save();
+    passkey.currentState!.save();
     formValidation();
   }
 
   void formValidation() {
-    _batch = '20${initialname.substring(4, 6)}';
-    _dept = initialname.substring(6, 9);
+    _batch = '20${initialname!.substring(4, 6)}';
+    _dept = initialname!.substring(6, 9);
     _regno = initialname;
     switch (_dept) {
       case '101':
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage>
         .doc('entity')
         .collection('class')
         .doc(_dept)
-        .collection(_batch);
+        .collection(_batch!);
     // reference.collection('class').document('$_dept').collection('$_batch');
     reference1.snapshots().listen((event) {
       cls.clear();
@@ -156,11 +156,11 @@ class _LoginPageState extends State<LoginPage>
     var reff1 = reference
         .collection('collage')
         .doc('student')
-        .collection(_dept)
+        .collection(_dept!)
         .doc(_batch);
     for (var i = 0; i < cls.length; i++) {
       await reff1
-          .collection(cls[i].name)
+          .collection(cls[i].name ?? "unknown")
           .where('Regno', isEqualTo: _regno)
           .get()
           .then((value) {
@@ -187,61 +187,55 @@ class _LoginPageState extends State<LoginPage>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
-          return null;
-        },
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height >= 775.0
-                ? MediaQuery.of(context).size.height
-                : 775.0,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                const Expanded(
-                  child: Image(
-                      fit: BoxFit.scaleDown,
-                      image: AssetImage('assets/image_01.png')),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height >= 775.0
+              ? MediaQuery.of(context).size.height
+              : 775.0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              const Expanded(
+                child: Image(
+                    fit: BoxFit.scaleDown,
+                    image: AssetImage('assets/image_01.png')),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 1.0),
+                child: _buildMenuBar(context),
+              ),
+              Expanded(
+                flex: 2,
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (i) {
+                    if (i == 0) {
+                      setState(() {
+                        right = Colors.white;
+                        left = Colors.black;
+                      });
+                    } else if (i == 1) {
+                      setState(() {
+                        right = Colors.black;
+                        left = Colors.white;
+                      });
+                    }
+                  },
+                  children: <Widget>[
+                    ConstrainedBox(
+                      constraints: const BoxConstraints.expand(),
+                      child: _buildSignIn(context),
+                    ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints.expand(),
+                      child: _buildSignUp(context),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 1.0),
-                  child: _buildMenuBar(context),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (i) {
-                      if (i == 0) {
-                        setState(() {
-                          right = Colors.white;
-                          left = Colors.black;
-                        });
-                      } else if (i == 1) {
-                        setState(() {
-                          right = Colors.black;
-                          left = Colors.white;
-                        });
-                      }
-                    },
-                    children: <Widget>[
-                      ConstrainedBox(
-                        constraints: const BoxConstraints.expand(),
-                        child: _buildSignIn(context),
-                      ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints.expand(),
-                        child: _buildSignUp(context),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -393,14 +387,14 @@ class _LoginPageState extends State<LoginPage>
                               hintText: 'Register No.',
                               hintStyle: TextStyle(fontSize: 17.0),
                             ),
-                            validator: (String input) {
-                              if (!RegExp(r'^[0-9]{12}$').hasMatch(input)) {
+                            validator: (String? input) {
+                              if (!RegExp(r'^[0-9]{12}$').hasMatch(input!)) {
                                 return 'Invalid Details';
                               }
 
                               return null;
                             },
-                            onSaved: (String input) {
+                            onSaved: (String? input) {
                               initialname = input;
                             },
                           ),
@@ -438,11 +432,11 @@ class _LoginPageState extends State<LoginPage>
                                 ),
                               ),
                             ),
-                            onSaved: (String input) {
+                            onSaved: (String? input) {
                               pword = input.toString();
                             },
-                            validator: (String input) {
-                              if (!RegExp(r'^[0-9/-]{10}$').hasMatch(input)) {
+                            validator: (String? input) {
+                              if (!RegExp(r'^[0-9/-]{10}$').hasMatch(input!)) {
                                 return 'Password is incorrect';
                               }
 
@@ -485,8 +479,8 @@ class _LoginPageState extends State<LoginPage>
                   highlightColor: Colors.transparent,
                   splashColor: theme.GradientColors.loginGradientEnd,
                   onPressed: () async {
-                    if (ukey.currentState.validate()) {
-                      if (passkey.currentState.validate()) {
+                    if (ukey.currentState!.validate()) {
+                      if (passkey.currentState!.validate()) {
                         processdata();
                       }
                     }
@@ -534,15 +528,15 @@ class _LoginPageState extends State<LoginPage>
     }
   }
 
-  Future<User> getUser() async {
+  Future<User?> getUser() async {
     return _auth.currentUser;
   }
 
   void adminAuth() async {
-    User user;
+    User? user;
     try {
       user = (await _auth.signInWithEmailAndPassword(
-              email: givenuser, password: givenpass))
+              email: givenuser!, password: givenpass!))
           .user;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -607,8 +601,8 @@ class _LoginPageState extends State<LoginPage>
                               hintText: 'Key',
                               hintStyle: TextStyle(fontSize: 16.0),
                             ),
-                            validator: (String input) {
-                              if (input.length < 5) {
+                            validator: (String? input) {
+                              if (input!.length < 5) {
                                 return 'key length must be greater than 5';
                               }
                               return null;
@@ -648,8 +642,8 @@ class _LoginPageState extends State<LoginPage>
                               hintText: 'Email Address',
                               hintStyle: TextStyle(fontSize: 16.0),
                             ),
-                            validator: (String input) {
-                              if (input.isEmpty) {
+                            validator: (String? input) {
+                              if (input!.isEmpty) {
                                 return 'Email Required';
                               }
                               if (!RegExp(
@@ -738,11 +732,11 @@ class _LoginPageState extends State<LoginPage>
                   splashColor: theme.GradientColors.loginGradientEnd,
                   onPressed: () async {
                     processKey();
-                    adminkey.currentState.save();
-                    adminuserkey.currentState.save();
-                    adminpasskey.currentState.save();
-                    if (adminkey.currentState.validate()) {
-                      if (adminuserkey.currentState.validate()) {
+                    adminkey.currentState!.save();
+                    adminuserkey.currentState!.save();
+                    adminpasskey.currentState!.save();
+                    if (adminkey.currentState!.validate()) {
+                      if (adminuserkey.currentState!.validate()) {
                         validateKey();
                       }
                     }
@@ -768,7 +762,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void _onSignInButtonPress() {
-    _pageController.animateToPage(0,
+    _pageController!.animateToPage(0,
         duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 
@@ -791,13 +785,13 @@ class _LoginPageState extends State<LoginPage>
 }
 
 class TabIndicationPainter extends CustomPainter {
-  Paint painter;
+  late Paint painter;
   final double dxTarget;
   final double dxEntry;
   final double radius;
   final double dy;
 
-  final PageController pageController;
+  final PageController? pageController;
 
   TabIndicationPainter(
       {this.dxTarget = 125.0,
@@ -813,7 +807,7 @@ class TabIndicationPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final pos = pageController.position;
+    final pos = pageController!.position;
     var fullExtent =
         (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
 
