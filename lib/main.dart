@@ -2,10 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_app/controller.dart';
+import 'package:student_app/common/login.dart';
+import 'package:student_app/common/onboarding_screen.dart';
+import 'package:student_app/common/process_data.dart';
 import 'package:student_app/theme/theme.dart';
 import 'package:student_app/theme/theme_notifier.dart';
-import 'package:student_app/view/common/common_screens.dart';
 
 String initScreen, classFound;
 int onBoard;
