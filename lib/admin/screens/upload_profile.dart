@@ -85,6 +85,7 @@ class _UploadProfile extends State<UploadProfile> {
             FirebaseStorage.instance.ref().child('profile/$batch/$dept/$regNo');
         var uploadTask = firebaseStorageRef.putFile(_image!);
         var url = await (await uploadTask).ref.getDownloadURL();
+        
         profileUrl = url.toString();
 
         var ref = FirebaseFirestore.instance
