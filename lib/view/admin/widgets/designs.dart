@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/controller.dart';
 
-import '../logic/add_details.dart';
-import '../logic/attendance.dart';
 import 'dialog.dart';
 
 class Designs extends StatefulWidget {
