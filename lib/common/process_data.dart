@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_app/view/common/student_widgets.dart';
+import 'package:student_app/student/widgets/student_bottomnavbar.dart';
 
 /// this is the initial state which fetches info related to starting the app
 class ProcessData extends StatefulWidget {

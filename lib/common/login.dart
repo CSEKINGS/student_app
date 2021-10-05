@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:student_app/admin/Models/db_model.dart';
-import 'package:student_app/controller.dart';
-import 'package:student_app/view/admin/admin_widgets.dart';
+import 'package:student_app/admin/widgets/admin_bottomnavbar.dart';
+import 'package:student_app/common/process_data.dart';
 
-import '/theme/theme.dart' as theme;
+import '../theme/theme.dart' as theme;
+
 
 class LoginPage extends StatefulWidget {
   /// default
