@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_app/admin/Models/db_model.dart';
+import 'package:student_app/models.dart';
 
 class UploadProfile extends StatefulWidget {
   @override
@@ -119,7 +119,7 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   Future update() async {
-   FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('collage')
         .doc('student')
         .collection(dept!)
@@ -158,7 +158,7 @@ class _UploadProfile extends State<UploadProfile> {
         filled: true,
       ),
       maxLength: 20,
-      validator: (String? value)  {
+      validator: (String? value) {
         if (value!.isEmpty) {
           return 'Name required';
         }

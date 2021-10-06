@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:student_app/common/login.dart';
+import 'package:student_app/views/common/common_screens.dart';
 
 /// onBoarding page UI
 class OnBoardingPage extends StatefulWidget {

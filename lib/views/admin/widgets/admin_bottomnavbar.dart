@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:student_app/admin/screens/mark_entry.dart';
-import 'package:student_app/admin/screens/upload_notes.dart';
-import 'package:student_app/admin/screens/upload_profile.dart';
-import 'package:student_app/common/settings.dart';
+import 'package:student_app/views/admin/admin_screens.dart';
+import 'package:student_app/views/common/common_screens.dart';
 
 import 'dialog.dart';
 
