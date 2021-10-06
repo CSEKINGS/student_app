@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:student_app/admin/Models/db_model.dart';
+import 'package:student_app/models.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard(this.details, this.days);

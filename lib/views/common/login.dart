@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:student_app/admin/Models/db_model.dart';
 import 'package:student_app/controllers/process_data.dart';
+import 'package:student_app/models.dart';
 import 'package:student_app/views/admin/admin_widgets.dart';
 
 import '/theme/theme.dart' as theme;

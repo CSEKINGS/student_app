@@ -86,28 +86,12 @@ class _UploadProfile extends State<UploadProfile> {
         var uploadTask = firebaseStorageRef.putFile(_image!);
         var url = await (await uploadTask).ref.getDownloadURL();
 
-        profileUrl = url.toString();
-
-        var ref = FirebaseFirestore.instance
-            .collection('collage')
-            .doc('student')
-            .collection(dept!)
-            .doc(batch)
-            .collection(cls!)
-            .doc(regNo);
-        await ref.set({
-          'Name': name,
-          'Rollno': rollNo,
-          'Regno': regNo,
-          'Email': email,
-          'PhoneNo': phoneNo,
-          'BloodGroup': blood,
-          'Batch': batch,
-          'Department': dept,
-          'Address': address,
-          'ProfileUrl': profileUrl,
-          'DOB': dob,
-          'Class': cls
+        setState(() {
+          profileUrl = url.toString();
+          print("Hello World");
+          print(url);
+          print(profileUrl);
+          update();
         });
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -132,6 +116,30 @@ class _UploadProfile extends State<UploadProfile> {
         content: Text('Invalid Details'),
       ));
     }
+  }
+
+  Future update() async {
+    FirebaseFirestore.instance
+        .collection('collage')
+        .doc('student')
+        .collection(dept!)
+        .doc(batch)
+        .collection(cls!)
+        .doc(regNo)
+        .set({
+      'Name': name.toString(),
+      'Rollno': rollNo,
+      'Regno': regNo,
+      'Email': email,
+      'PhoneNo': phoneNo,
+      'BloodGroup': blood,
+      'Batch': batch,
+      'Department': dept,
+      'Address': address,
+      'ProfileUrl': profileUrl,
+      'DOB': dob,
+      'Class': cls
+    });
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -210,7 +218,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String? value) {
-        regNo = value;
+        regNo = value!;
       },
     );
   }
@@ -309,7 +317,7 @@ class _UploadProfile extends State<UploadProfile> {
       items: year
           .map((e) => DropdownMenuItem(
                 value: e.name,
-                child: Text(e.name ?? "unknown"),
+                child: Text(e.name!),
               ))
           .toList(),
     );
@@ -318,16 +326,16 @@ class _UploadProfile extends State<UploadProfile> {
   Widget buildDeptDropDown() {
     return DropdownButton(
       hint: const Text('select department'),
-      onChanged: (dynamic name) {
+      onChanged: (name) {
         setState(() {
-          dept = name;
+          dept = name.toString();
         });
       },
       value: dept,
       items: department
           .map((e) => DropdownMenuItem(
                 value: e.name,
-                child: Text(e.name ?? "unknown"),
+                child: Text(e.name!),
               ))
           .toList(),
     );
@@ -387,7 +395,7 @@ class _UploadProfile extends State<UploadProfile> {
 
   void initiateClass() {
     CollectionReference reference;
-    reference = obj.getDetailRef2(batch!, dept!);
+    reference = obj.getDetailRef2(batch, dept);
     reference.snapshots().listen((event) {
       classes.clear();
       setState(() {
@@ -409,16 +417,16 @@ class _UploadProfile extends State<UploadProfile> {
         ),
         DropdownButton(
           hint: const Text('select class'),
-          onChanged: (dynamic name) {
+          onChanged: (name) {
             setState(() {
-              cls = name;
+              cls = name.toString();
             });
           },
           value: cls,
           items: classes
               .map((e) => DropdownMenuItem(
                     value: e.name,
-                    child: Text(e.name ?? "unknown"),
+                    child: Text(e.name!),
                   ))
               .toList(),
         ),
