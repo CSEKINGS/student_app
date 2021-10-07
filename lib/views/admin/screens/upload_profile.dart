@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_app/models.dart';
 
@@ -67,9 +68,17 @@ class _UploadProfile extends State<UploadProfile> {
       var image = await picker.pickImage(
           source: ImageSource.gallery, maxWidth: 200.0, maxHeight: 200.0);
 
-      setState(() {
-        _image = File(image!.path);
-      });
+      if (image != null) {
+        ImageCropper.cropImage(sourcePath: image.path)
+            .then((result) => {
+            setState(() {
+              _image = File(result!.path);
+            })
+          }
+        );
+      }
+
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
