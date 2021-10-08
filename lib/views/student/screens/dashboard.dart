@@ -5,7 +5,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:student_app/models.dart';
 
 class Dashboard extends StatefulWidget {
-  Dashboard(this.details, this.days);
+  Dashboard({required this.details, required this.days});
 
   final List<String>? details;
   final int days;
@@ -34,8 +34,7 @@ class _DashboardState extends State<Dashboard> {
     ref1.snapshots().listen((event) {
       setState(() {
         percentage = double.parse(event.data()?['total'].toString() ?? "1") /
-                widget.days ??
-            1.0;
+            widget.days;
         displayPercent =
             NumberFormat('##.0#', 'en_US').format(percentage * 100);
       });
@@ -56,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
         body: FutureBuilder<dynamic>(
             future: percents,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData && snapshot != null) {
+              if (snapshot.hasData) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[

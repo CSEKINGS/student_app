@@ -16,7 +16,7 @@ class ProcessData extends StatefulWidget {
 class _ProcessDataState extends State<ProcessData> {
   final reference = FirebaseFirestore.instance;
   String? _batch, _dept;
-  List details = [];
+  List<String> details = [];
   final Future<SharedPreferences> _preference = SharedPreferences.getInstance();
 
   Future<List> stream() async {
@@ -107,7 +107,7 @@ class _ProcessDataState extends State<ProcessData> {
           // print('$days' + '********');
         }
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => StudentBottomNav(details, days)),
+          MaterialPageRoute(builder: (_) => StudentBottomNav(details:details, days:days)),
         );
       });
     });

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_app/controllers/process_data.dart';
-import 'package:student_app/theme/theme.dart';
-import 'package:student_app/theme/theme_notifier.dart';
+import 'package:student_app/views/utils/theme/theme.dart';
+import 'package:student_app/views/utils/theme/theme_notifier.dart';
 import 'package:student_app/views/common/common_screens.dart';
 
 String? initScreen, classFound;

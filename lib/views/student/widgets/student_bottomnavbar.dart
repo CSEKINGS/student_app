@@ -4,10 +4,10 @@ import 'package:student_app/views/common/common_screens.dart';
 import 'package:student_app/views/student/student_screens.dart';
 
 class StudentBottomNav extends StatefulWidget {
-  final List details;
+  final List<String> details;
   final int days;
 
-  StudentBottomNav(this.details, this.days);
+  StudentBottomNav({required this.details, required this.days});
 
   @override
   _StudentBottomNavState createState() => _StudentBottomNavState();
@@ -15,7 +15,7 @@ class StudentBottomNav extends StatefulWidget {
 
 class _StudentBottomNavState extends State<StudentBottomNav> {
   int _currentIndex = 0;
-  List<String>? details;
+
   Future<List>? getList;
 
   Future<bool> _onBackPressed() async {
@@ -55,9 +55,9 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   void initState() {
     super.initState();
     _children = [
-      Dashboard(details, widget.days),
-      Grade(details),
-      Profile(details),
+      Dashboard(details: widget.details, days: widget.days),
+      Grade(widget.details),
+      Profile(details: widget.details),
       Notes(),
       const SettingsPage(),
     ];
@@ -66,7 +66,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
   @override
   void dispose() {
     super.dispose();
-    details!.clear();
+    widget.details.clear();
   }
 
   late List<Widget> _children;
