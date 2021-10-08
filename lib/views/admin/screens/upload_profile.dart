@@ -14,7 +14,7 @@ class UploadProfile extends StatefulWidget {
 }
 
 class _UploadProfile extends State<UploadProfile> {
-  String? id,
+  String id,
       name,
       rollNo,
       regNo,
