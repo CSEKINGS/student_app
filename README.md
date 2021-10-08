@@ -1,5 +1,7 @@
 # Student app
 
+## Make changes to branch dev, not this branch (master).
+
 An app to digitalize the counselling class in a cross-platform application tested in android and web.
 
 Check the live demo here: https://csekings.github.io/student_app_web/#/
