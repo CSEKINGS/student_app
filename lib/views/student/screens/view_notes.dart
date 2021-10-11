@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:student_app/views/student/screens/notes_viewer.dart';
+import 'package:student_app/views/student/screens/photo_viewer.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'pdf_api.dart';
 
 class Notes extends StatefulWidget {
   @override
@@ -32,6 +38,22 @@ class _NotesState extends State<Notes> {
     }
   }
 
+  Future<void> sendURL(String filename) async {
+    var furl =
+        await FirebaseStorage.instance.ref('notes/$filename').getDownloadURL();
+    if (filename.contains("pdf")) {
+      final file = await PDFApi.loadNetwork(furl);
+      openPDF(context, file);
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => PhotoViewer(url: furl)));
+    }
+  }
+
+  
+  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
+      );
   @override
   void initState() {
     super.initState();
@@ -92,19 +114,24 @@ class _NotesState extends State<Notes> {
                               ),
                             ],
                           ),
-                          child: Card(
-                            child: ListTile(
-                              trailing: IconButton(
-                                icon: const Icon(
-                                  Icons.file_download,
+                          child: GestureDetector(
+                            onTap: () async {
+                              sendURL(_notesList[index].name);
+                            },
+                            child: Card(
+                              child: ListTile(
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.file_download,
+                                  ),
+                                  onPressed: () {
+                                    openURL(_searchResult[index].toString());
+                                  },
                                 ),
-                                onPressed: () {
-                                  openURL(_searchResult[index].toString());
-                                },
-                              ),
-                              leading: const Icon(Icons.note),
-                              title: Text(
-                                _searchResult[index],
+                                leading: const Icon(Icons.note),
+                                title: Text(
+                                  _searchResult[index],
+                                ),
                               ),
                             ),
                           ),
@@ -114,22 +141,27 @@ class _NotesState extends State<Notes> {
                   : ListView.builder(
                       itemCount: _notesList.length,
                       itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            trailing: IconButton(
-                              icon: const Icon(
-                                Icons.arrow_downward,
-                                color: Colors.green,
+                        return GestureDetector(
+                          onTap: () async {
+                            sendURL(_notesList[index].name);
+                          },
+                          child: Card(
+                            child: ListTile(
+                              trailing: IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.green,
+                                ),
+                                onPressed: () {
+                                  openURL(_notesList[index].name.toString());
+                                },
                               ),
-                              onPressed: () {
-                                openURL(_notesList[index].name.toString());
-                              },
+                              leading: const Icon(
+                                Icons.insert_drive_file,
+                                color: Colors.deepOrange,
+                              ),
+                              title: Text(_notesList[index].name),
                             ),
-                            leading: const Icon(
-                              Icons.insert_drive_file,
-                              color: Colors.deepOrange,
-                            ),
-                            title: Text(_notesList[index].name),
                           ),
                         );
                       },
