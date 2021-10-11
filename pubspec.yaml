@@ -21,6 +21,8 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
+  flutter:
+    sdk: flutter
   circular_profile_avatar: ^2.0.5
   cloud_firestore: ^2.5.3
   cupertino_icons: ^1.0.3
@@ -29,8 +31,6 @@ dependencies:
   firebase_auth: ^3.1.2
   firebase_core: ^1.7.0
   firebase_storage: ^10.0.4
-  flutter:
-    sdk: flutter
   flutter_pdfview: ^1.0.1
   flutter_screenutil: ^5.0.0+2
   font_awesome_flutter: ^9.1.0
