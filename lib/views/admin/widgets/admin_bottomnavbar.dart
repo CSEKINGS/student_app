@@ -28,34 +28,33 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
 
   Future<bool> _onBackPressed() {
     return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            title: const Text(
-              'Do you want to exit..?',
-              style: TextStyle(fontWeight: FontWeight.w300),
-            ),
-            actions: <Widget>[
-              CloseButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                color: Colors.red,
-              ),
-              const SizedBox(height: 16),
-              IconButton(
-                onPressed: () async {
-                  await SystemNavigator.pop();
-                },
-                icon: const Icon(
-                  Icons.check,
-                  color: Colors.green,
-                ),
-              ),
-              const SizedBox(width: 16),
-            ],
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0))),
+        title: const Text(
+          'Do you want to exit..?',
+          style: TextStyle(fontWeight: FontWeight.w300),
+        ),
+        actions: <Widget>[
+          CloseButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            color: Colors.red,
           ),
-        ).then((value) => value as bool) ??
-        false as Future<bool>;
+          const SizedBox(height: 16),
+          IconButton(
+            onPressed: () async {
+              await SystemNavigator.pop();
+            },
+            icon: const Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          ),
+          const SizedBox(width: 16),
+        ],
+      ),
+    ).then((value) => value);
   }
 
   @override

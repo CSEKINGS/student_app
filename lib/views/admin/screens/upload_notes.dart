@@ -18,7 +18,7 @@ class UploadNotesState extends State<UploadNotes> {
   late File _file;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final List<UploadTask> _tasks = <UploadTask>[];
-  String file_name = "";
+  String fileName = "";
   bool uploading = false;
 
   void _openFileExplorer() async {
@@ -38,7 +38,7 @@ class UploadNotesState extends State<UploadNotes> {
       var filePath = _file.toString();
       var extension = _file.toString().split('.').last;
       setState(() {
-        file_name = fileName;
+        fileName = fileName;
       });
       _upload(fileName, filePath, extension);
     } catch (e) {
@@ -128,16 +128,16 @@ class UploadNotesState extends State<UploadNotes> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    file_name == ""
+                                    fileName == ""
                                         ? "No Notes Selected"
-                                        : file_name,
+                                        : fileName,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),
                               ),
-                              file_name == ""
+                              fileName == ""
                                   ? SizedBox()
                                   : Padding(
                                       padding:
@@ -171,7 +171,7 @@ class UploadNotesState extends State<UploadNotes> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            file_name = "";
+                            fileName = "";
                           });
                         },
                         child: Text(

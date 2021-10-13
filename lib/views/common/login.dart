@@ -9,7 +9,7 @@ import 'package:student_app/controllers/process_data.dart';
 import 'package:student_app/models.dart';
 import 'package:student_app/views/admin/admin_widgets.dart';
 
-import '/theme/theme.dart' as theme;
+import 'package:student_app/views/utils/theme/theme.dart' as theme;
 
 class LoginPage extends StatefulWidget {
   /// default
