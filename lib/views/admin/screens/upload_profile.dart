@@ -14,7 +14,7 @@ class UploadProfile extends StatefulWidget {
 }
 
 class _UploadProfile extends State<UploadProfile> {
-  String id,
+  String? id,
       name,
       rollNo,
       regNo,
@@ -174,7 +174,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String? value) {
-        name = value;
+        name = value!;
       },
     );
   }
@@ -200,7 +200,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String? value) {
-        rollNo = value;
+        rollNo = value!;
       },
     );
   }
@@ -257,7 +257,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String? value) {
-        email = value;
+        email = value!;
       },
     );
   }
@@ -284,7 +284,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String? value) {
-        phoneNo = value;
+        phoneNo = value!;
       },
     );
   }
@@ -319,7 +319,7 @@ class _UploadProfile extends State<UploadProfile> {
       hint: const Text('select year'),
       onChanged: (String? name) {
         setState(() {
-          batch = name;
+          batch = name!;
         });
       },
       value: batch,
@@ -371,7 +371,7 @@ class _UploadProfile extends State<UploadProfile> {
         return null;
       },
       onSaved: (String? value) {
-        address = value;
+        address = value!;
       },
     );
   }
