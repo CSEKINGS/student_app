@@ -36,64 +36,61 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       imagePadding: EdgeInsets.zero,
     );
 
-    return IntroductionScreen(
-      key: introKey,
-      pages: [
-        PageViewModel(
-          title: 'Timetables',
-          body: 'Get up-to-date timetables in single click.',
-          image: _buildImage('timetable'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: 'Events',
-          body: 'Learn about events and fest.',
-          image: _buildImage('candidate'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: 'Grades',
-          body: 'Check your grades and assessment exams scores.',
-          image: _buildImage('grade'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: 'Announcements',
-          body: 'Get latest news via push notification.',
-          image: _buildImage('announce'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: 'Notes and Question banks',
-          body: 'View and download notes on the go',
-          image: _buildImage('notes'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: 'Q/A',
-          bodyWidget: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('Submit your question in global chat ', style: bodyStyle),
-            ],
+    return SafeArea(
+      child: IntroductionScreen(
+        key: introKey,
+        pages: [
+          PageViewModel(
+            title: 'Timetables',
+            body: 'Get up-to-date timetables in single click.',
+            image: _buildImage('timetable'),
+            decoration: pageDecoration,
           ),
-          image: _buildImage('announce'),
-          decoration: pageDecoration,
-        ),
-      ],
-      onDone: () => _onIntroEnd(context),
-      //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-      showSkipButton: true,
-      skipFlex: 0,
-      nextFlex: 0,
-      skip: const Text('Skip'),
-      next: const Icon(Icons.arrow_forward),
-      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
-      dotsDecorator: const DotsDecorator(
-        size: Size(10.0, 10.0),
-        activeSize: Size(22.0, 10.0),
-        activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+          PageViewModel(
+            title: 'Events',
+            body: 'Learn about events and fest.',
+            image: _buildImage('candidate'),
+            decoration: pageDecoration,
+          ),
+          PageViewModel(
+            title: 'Grades',
+            body: 'Check your grades and assessment exams scores.',
+            image: _buildImage('grade'),
+            decoration: pageDecoration,
+          ),
+          PageViewModel(
+            title: 'Announcements',
+            body: 'Get latest news via push notification.',
+            image: _buildImage('announce'),
+            decoration: pageDecoration,
+          ),
+          PageViewModel(
+            title: 'Notes and Question banks',
+            body: 'View and download notes on the go',
+            image: _buildImage('notes'),
+            decoration: pageDecoration,
+          ),
+          PageViewModel(
+            title: 'Q/A',
+            body: 'Submit your question in global chat',
+            image: _buildImage('announce'),
+            decoration: pageDecoration,
+          ),
+        ],
+        onDone: () => _onIntroEnd(context),
+        //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
+        showSkipButton: true,
+        skipFlex: 0,
+        nextFlex: 0,
+        skip: const Text('Skip'),
+        next: const Icon(Icons.arrow_forward),
+        done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+        dotsDecorator: const DotsDecorator(
+          size: Size(10.0, 10.0),
+          activeSize: Size(22.0, 10.0),
+          activeShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+          ),
         ),
       ),
     );
