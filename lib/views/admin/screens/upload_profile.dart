@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:student_app/models.dart';
 
 class UploadProfile extends StatefulWidget {
@@ -35,7 +36,7 @@ class _UploadProfile extends State<UploadProfile> {
   List<Contents> year = [];
   List<Contents> department = [];
   List<Contents> classes = [];
-
+  TextEditingController dobController = TextEditingController();
   DatabaseReference obj = DatabaseReference();
 
   @override
@@ -69,16 +70,12 @@ class _UploadProfile extends State<UploadProfile> {
           source: ImageSource.gallery, maxWidth: 200.0, maxHeight: 200.0);
 
       if (image != null) {
-        ImageCropper.cropImage(sourcePath: image.path)
-            .then((result) => {
-            setState(() {
-              _image = File(result!.path);
-            })
-          }
-        );
+        ImageCropper.cropImage(sourcePath: image.path).then((result) => {
+              setState(() {
+                _image = File(result!.path);
+              })
+            });
       }
-
-
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -377,8 +374,27 @@ class _UploadProfile extends State<UploadProfile> {
   }
 
   Widget buildDOBField() {
+    DateTime currentDateTime = DateTime.now(),
+        initialDateTime = currentDateTime.add(Duration(days: -(10 * 365))),
+        firstDateTime = currentDateTime.add(Duration(days: -(60 * 365))),
+        lastDateTime = currentDateTime.add(Duration(days: -(5 * 365)));
     return TextFormField(
       keyboardType: TextInputType.phone,
+      controller: dobController,
+      readOnly: true,
+      onTap: () {
+        showDatePicker(
+          context: context,
+          initialDate: initialDateTime,
+          firstDate: firstDateTime,
+          lastDate: lastDateTime,
+        ).then((newDateTime) {
+          if (newDateTime != null) {
+            dobController.text = DateFormat('dd-MM-yyyy').format(newDateTime);
+            dob = DateFormat('dd-MM-yyyy').format(newDateTime);
+          }
+        });
+      },
       decoration: const InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
@@ -392,12 +408,9 @@ class _UploadProfile extends State<UploadProfile> {
       ),
       validator: (String? value) {
         if (value!.isEmpty) {
-          return 'Address Required';
+          return 'Date of Birth Required';
         }
         return null;
-      },
-      onSaved: (String? value) {
-        dob = value.toString();
       },
     );
   }
