@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// grade UI
 class Grade extends StatefulWidget {
@@ -17,8 +15,6 @@ class Grade extends StatefulWidget {
 class _GradeState extends State<Grade> {
   String url = 'https://coe1.annauniv.edu/home/';
   bool isLoading = true;
-  final _key = UniqueKey();
-  late WebViewController _controller;
 
   @override
   void initState() {

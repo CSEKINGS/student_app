@@ -168,6 +168,7 @@ class _UploadProfile extends State<UploadProfile> {
       onSaved: (String? value) {
         name = value;
       },
+      textInputAction: TextInputAction.next,
     );
   }
 
@@ -194,6 +195,7 @@ class _UploadProfile extends State<UploadProfile> {
       onSaved: (String? value) {
         rollNo = value;
       },
+      textInputAction: TextInputAction.next,
     );
   }
 
@@ -221,6 +223,7 @@ class _UploadProfile extends State<UploadProfile> {
       onSaved: (String? value) {
         regNo = value!;
       },
+      textInputAction: TextInputAction.next,
     );
   }
 
@@ -237,6 +240,7 @@ class _UploadProfile extends State<UploadProfile> {
         contentPadding: EdgeInsets.all(15.0),
         filled: true,
       ),
+      keyboardType: TextInputType.emailAddress,
       validator: (String? value) {
         if (value!.isEmpty) {
           return 'Email Required';
@@ -251,6 +255,7 @@ class _UploadProfile extends State<UploadProfile> {
       onSaved: (String? value) {
         email = value;
       },
+      textInputAction: TextInputAction.next,
     );
   }
 

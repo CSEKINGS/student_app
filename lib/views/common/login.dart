@@ -21,30 +21,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  //FocusNode Keys
-  final FocusNode myFocusNodeEmailLogin = FocusNode();
-  final FocusNode myFocusNodePasswordLogin = FocusNode();
-  final FocusNode myFocusNodePassword = FocusNode();
-  final FocusNode myFocusNodeEmail = FocusNode();
-  final FocusNode myFocusNodeName = FocusNode();
-
   //GlobalKeys
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final snack = GlobalKey<ScaffoldState>();
-  final ukey = GlobalKey<FormFieldState>();
-  final passkey = GlobalKey<FormFieldState>();
-  final adminuserkey = GlobalKey<FormFieldState>();
-  final adminpasskey = GlobalKey<FormFieldState>();
-  final adminkey = GlobalKey<FormFieldState>();
+  final studentFormKey = GlobalKey<FormState>();
+  final staffFormKey = GlobalKey<FormState>();
 
   //TextEditingController Objects and other controllers
-  TextEditingController loginEmailController = TextEditingController();
-  TextEditingController loginPasswordController = TextEditingController();
-  TextEditingController signupEmailController = TextEditingController();
-  TextEditingController signupNameController = TextEditingController();
-  TextEditingController signupPasswordController = TextEditingController();
-  TextEditingController signupConfirmPasswordController =
-      TextEditingController();
+  TextEditingController registerNoController = TextEditingController();
+  TextEditingController studentPasswordController = TextEditingController();
+  TextEditingController keyController = TextEditingController();
+  TextEditingController emailAddressController = TextEditingController();
+  TextEditingController staffPasswordController = TextEditingController();
+
   PageController? _pageController;
 
   //FirebaseReferences and its variables
@@ -66,27 +55,13 @@ class _LoginPageState extends State<LoginPage>
   bool? valid;
   Color left = Colors.black;
   Color right = Colors.white;
-  String? _batch,
-      _dept,
-      _regno,
-      password,
-      givenkey,
-      givenuser,
-      givenpass,
-      foundclass,
-      initialname,
-      pword;
-
-  void processdata() {
-    ukey.currentState!.save();
-    passkey.currentState!.save();
-    formValidation();
-  }
+  String? _batch, _dept, _regno, password, foundclass, registerNo;
 
   void formValidation() {
-    _batch = '20${initialname!.substring(4, 6)}';
-    _dept = initialname!.substring(6, 9);
-    _regno = initialname;
+    registerNo = registerNoController.text;
+    _batch = '20${registerNo!.substring(4, 6)}';
+    _dept = registerNo!.substring(6, 9);
+    _regno = registerNo;
     switch (_dept) {
       case '101':
         {
@@ -166,7 +141,7 @@ class _LoginPageState extends State<LoginPage>
         if (value.docs.isNotEmpty) {
           for (var element in value.docs) {
             password = element.data()['DOB'].toString();
-            if (password != pword) {
+            if (password != studentPasswordController.text) {
               invalidSnackBar('Password is incorrect');
             } else {
               foundclass = cls[i].name;
@@ -243,10 +218,6 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   void dispose() {
-    loginEmailController.dispose();
-    myFocusNodePassword.dispose();
-    myFocusNodeEmail.dispose();
-    myFocusNodeName.dispose();
     _pageController?.dispose();
 
     super.dispose();
@@ -365,91 +336,101 @@ class _LoginPageState extends State<LoginPage>
                   width: 300.0,
                   height: 220.0,
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            autocorrect: false,
-                            maxLength: 12,
-                            key: ukey,
-                            focusNode: myFocusNodeEmailLogin,
-                            keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(fontSize: 16.0),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.person,
-                                size: 22.0,
+                    child: Form(
+                      key: studentFormKey,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                                left: 25.0,
+                                right: 25.0),
+                            child: TextFormField(
+                              autocorrect: false,
+                              maxLength: 12,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(fontSize: 16.0),
+                              controller: registerNoController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                icon: Icon(
+                                  Icons.person,
+                                  size: 22.0,
+                                ),
+                                hintText: 'Register No',
+                                hintStyle: TextStyle(fontSize: 17.0),
                               ),
-                              hintText: 'Register No.',
-                              hintStyle: TextStyle(fontSize: 17.0),
-                            ),
-                            validator: (String? input) {
-                              if (!RegExp(r'^[0-9]{12}$').hasMatch(input!)) {
-                                return 'Invalid Details';
-                              }
+                              validator: (input) {
+                                if (input!.isEmpty) {
+                                  return 'Enter Register No';
+                                }
 
-                              return null;
-                            },
-                            onSaved: (String? input) {
-                              initialname = input;
-                            },
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 2.0,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15.0, bottom: 15.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            autocorrect: false,
-                            key: passkey,
-                            focusNode: myFocusNodePasswordLogin,
-                            maxLength: 10,
-                            obscureText: _obscureTextLogin,
-                            style: const TextStyle(
-                              fontSize: 16.0,
+                                return null;
+                              },
+                              textInputAction: TextInputAction.next,
                             ),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: const Icon(
-                                FontAwesomeIcons.lock,
-                                size: 22.0,
+                          ),
+                          const Divider(
+                            thickness: 2.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                                left: 25.0,
+                                right: 25.0),
+                            child: TextFormField(
+                              autocorrect: false,
+                              maxLength: 10,
+                              obscureText: _obscureTextLogin,
+                              controller: studentPasswordController,
+                              style: const TextStyle(
+                                fontSize: 16.0,
                               ),
-                              hintText: 'Password',
-                              hintStyle: const TextStyle(fontSize: 17.0),
-                              suffixIcon: GestureDetector(
-                                onTap: _toggleLogin,
-                                child: Icon(
-                                  _obscureTextLogin
-                                      ? FontAwesomeIcons.eye
-                                      : FontAwesomeIcons.eyeSlash,
-                                  size: 15.0,
+                              onFieldSubmitted: (input) {
+                                if (studentFormKey.currentState!.validate()) {
+                                  formValidation();
+                                }
+                              },
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                icon: const Icon(
+                                  FontAwesomeIcons.lock,
+                                  size: 22.0,
+                                ),
+                                hintText: 'Password',
+                                hintStyle: const TextStyle(fontSize: 17.0),
+                                suffixIcon: GestureDetector(
+                                  onTap: _toggleLogin,
+                                  child: Icon(
+                                    _obscureTextLogin
+                                        ? FontAwesomeIcons.eye
+                                        : FontAwesomeIcons.eyeSlash,
+                                    size: 15.0,
+                                  ),
                                 ),
                               ),
-                            ),
-                            onSaved: (String? input) {
-                              pword = input.toString();
-                            },
-                            validator: (String? input) {
-                              if (!RegExp(r'^[0-9/-]{10}$').hasMatch(input!)) {
-                                return 'Password is incorrect';
-                              }
+                              validator: (input) {
+                                if (input!.isEmpty) {
+                                  return 'Enter Password';
+                                } else if (!RegExp(r'^[0-9/-]{10}$')
+                                    .hasMatch(input)) {
+                                  return 'Password is incorrect';
+                                }
 
-                              return null;
-                            },
+                                return null;
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 200.0),
+                margin: const EdgeInsets.only(top: 210.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
@@ -477,11 +458,9 @@ class _LoginPageState extends State<LoginPage>
                 child: MaterialButton(
                   highlightColor: Colors.transparent,
                   splashColor: theme.GradientColors.loginGradientEnd,
-                  onPressed: () async {
-                    if (ukey.currentState!.validate()) {
-                      if (passkey.currentState!.validate()) {
-                        processdata();
-                      }
+                  onPressed: () {
+                    if (studentFormKey.currentState!.validate()) {
+                      formValidation();
                     }
                   },
                   child: const Padding(
@@ -517,7 +496,7 @@ class _LoginPageState extends State<LoginPage>
 
   void validateKey() {
     for (var i = 0; i < keys1.length; i++) {
-      if (keys1[i].name == givenkey) {
+      if (keys1[i].name == keyController.text) {
         validSnackBar('Loading...');
         adminAuth();
         break;
@@ -535,7 +514,8 @@ class _LoginPageState extends State<LoginPage>
     User? user;
     try {
       user = (await _auth.signInWithEmailAndPassword(
-              email: givenuser!, password: givenpass!))
+              email: emailAddressController.text,
+              password: staffPasswordController.text))
           .user;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -570,137 +550,154 @@ class _LoginPageState extends State<LoginPage>
                 ),
                 child: SizedBox(
                   width: 300.0,
-                  height: 270.0,
+                  height: 310.0,
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, bottom: 10.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            key: adminkey,
-                            //key form field
-                            focusNode: myFocusNodeName,
-                            controller: signupNameController,
-                            keyboardType: TextInputType.visiblePassword,
-                            textCapitalization: TextCapitalization.words,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.deny(
-                                  RegExp(r'\s\b|\b\s'))
-                            ],
-                            onSaved: (input) async {
-                              givenkey = input;
-                            },
-                            style: const TextStyle(fontSize: 16.0),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                FontAwesomeIcons.key,
+                    child: Form(
+                      key: staffFormKey,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 89,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0,
+                                  bottom: 10.0,
+                                  left: 25.0,
+                                  right: 25.0),
+                              child: TextFormField(
+                                controller: keyController,
+                                keyboardType: TextInputType.visiblePassword,
+                                textCapitalization: TextCapitalization.words,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.deny(
+                                      RegExp(r'\s\b|\b\s'))
+                                ],
+                                style: const TextStyle(fontSize: 16.0),
+                                textInputAction: TextInputAction.next,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  icon: Icon(
+                                    FontAwesomeIcons.key,
+                                  ),
+                                  hintText: 'Key',
+                                  hintStyle: TextStyle(fontSize: 16.0),
+                                ),
+                                validator: (input) {
+                                  if (input!.isEmpty) {
+                                    return 'Enter Key';
+                                  } else if (input.length < 5) {
+                                    return 'key length must be greater than 5';
+                                  }
+                                  return null;
+                                  // return null;
+                                },
                               ),
-                              hintText: 'Key',
-                              hintStyle: TextStyle(fontSize: 16.0),
                             ),
-                            validator: (String? input) {
-                              if (input!.length < 5) {
-                                return 'key length must be greater than 5';
-                              }
-                              return null;
-                              // return null;
-                            },
                           ),
-                        ),
-                        const Divider(
-                          thickness: 2.0,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, bottom: 10.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            autocorrect: false,
-                            key: adminuserkey,
-                            //EmailAdress field
-                            focusNode: myFocusNodeEmail,
-                            controller: signupEmailController,
-                            onSaved: (input) {
-                              givenuser = input.toString();
-                            },
-                            // onFieldSubmitted: (String input) {
-                            //   adminuserkey.currentState.validate();
-                            // },
-                            keyboardType: TextInputType.emailAddress,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.deny(
-                                  RegExp(r'\s\b|\b\s'))
-                            ],
-                            style: const TextStyle(fontSize: 16.0),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                FontAwesomeIcons.envelope,
+                          const Divider(
+                            thickness: 2.0,
+                          ),
+                          SizedBox(
+                            height: 89,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0,
+                                  bottom: 10.0,
+                                  left: 25.0,
+                                  right: 25.0),
+                              child: TextFormField(
+                                autocorrect: false,
+                                controller: emailAddressController,
+                                keyboardType: TextInputType.emailAddress,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.deny(
+                                      RegExp(r'\s\b|\b\s'))
+                                ],
+                                style: const TextStyle(fontSize: 16.0),
+                                textInputAction: TextInputAction.next,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  icon: Icon(
+                                    FontAwesomeIcons.envelope,
+                                  ),
+                                  hintText: 'Email Address',
+                                  hintStyle: TextStyle(fontSize: 16.0),
+                                ),
+                                validator: (String? input) {
+                                  if (input!.isEmpty) {
+                                    return 'Enter Email Address';
+                                  } else if (!RegExp(
+                                          r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                      .hasMatch(input)) {
+                                    return 'Valid Email Required';
+                                  }
+                                  return null;
+                                },
                               ),
-                              hintText: 'Email Address',
-                              hintStyle: TextStyle(fontSize: 16.0),
                             ),
-                            validator: (String? input) {
-                              if (input!.isEmpty) {
-                                return 'Email Required';
-                              }
-                              if (!RegExp(
-                                      r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                                  .hasMatch(input)) {
-                                return 'Valid Email Required';
-                              }
-                              return null;
-                            },
                           ),
-                        ),
-                        const Divider(
-                          thickness: 2.0,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, bottom: 10.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            autocorrect: false,
-                            key: adminpasskey,
-                            //PasswordField
-                            focusNode: myFocusNodePassword,
-                            controller: signupPasswordController,
-                            obscureText: _obscureTextSignup,
-                            style: const TextStyle(fontSize: 16.0),
-                            onSaved: (input) {
-                              givenpass = input.toString();
-                            },
-                            inputFormatters: [
-                              FilteringTextInputFormatter.deny(
-                                  RegExp(r'\s\b|\b\s'))
-                            ],
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: const Icon(
-                                FontAwesomeIcons.lock,
-                              ),
-                              hintText: 'Password',
-                              hintStyle: const TextStyle(fontSize: 16.0),
-                              suffixIcon: GestureDetector(
-                                onTap: _toggleSignup,
-                                child: Icon(
-                                  _obscureTextSignup
-                                      ? FontAwesomeIcons.eye
-                                      : FontAwesomeIcons.eyeSlash,
-                                  size: 15.0,
+                          const Divider(
+                            thickness: 2.0,
+                          ),
+                          SizedBox(
+                            height: 89,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0,
+                                  bottom: 10.0,
+                                  left: 25.0,
+                                  right: 25.0),
+                              child: TextFormField(
+                                autocorrect: false,
+                                controller: staffPasswordController,
+                                obscureText: _obscureTextSignup,
+                                style: const TextStyle(fontSize: 16.0),
+                                validator: (input) {
+                                  if (input!.isEmpty) {
+                                    return 'Enter Password';
+                                  }
+                                },
+                                onFieldSubmitted: (input) {
+                                  processKey();
+                                  if (staffFormKey.currentState!.validate()) {
+                                    validateKey();
+                                  }
+                                },
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.deny(
+                                      RegExp(r'\s\b|\b\s'))
+                                ],
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  icon: const Icon(
+                                    FontAwesomeIcons.lock,
+                                  ),
+                                  hintText: 'Password',
+                                  hintStyle: const TextStyle(fontSize: 16.0),
+                                  suffixIcon: GestureDetector(
+                                    onTap: _toggleSignup,
+                                    child: Icon(
+                                      _obscureTextSignup
+                                          ? FontAwesomeIcons.eye
+                                          : FontAwesomeIcons.eyeSlash,
+                                      size: 15.0,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: 10,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 260.0),
+                margin: const EdgeInsets.only(top: 300.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
@@ -729,15 +726,10 @@ class _LoginPageState extends State<LoginPage>
                   //Button field
                   highlightColor: Colors.transparent,
                   splashColor: theme.GradientColors.loginGradientEnd,
-                  onPressed: () async {
+                  onPressed: () {
                     processKey();
-                    adminkey.currentState!.save();
-                    adminuserkey.currentState!.save();
-                    adminpasskey.currentState!.save();
-                    if (adminkey.currentState!.validate()) {
-                      if (adminuserkey.currentState!.validate()) {
-                        validateKey();
-                      }
+                    if (staffFormKey.currentState!.validate()) {
+                      validateKey();
                     }
                   },
                   child: const Padding(
