@@ -50,7 +50,6 @@ class _NotesState extends State<Notes> {
     }
   }
 
-  
   void openPDF(BuildContext context, File file) => Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
       );
@@ -85,22 +84,28 @@ class _NotesState extends State<Notes> {
                       hintStyle: TextStyle(fontSize: 18.0),
                       border: InputBorder.none,
                     ),
+                    textInputAction: TextInputAction.search,
                     onChanged: onSearchTextChanged,
+                    onSubmitted: onSearchTextChanged,
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                    ),
-                    onPressed: () {
-                      controller.clear();
-                      onSearchTextChanged('');
-                    },
-                  ),
+                  trailing: controller.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(
+                            Icons.close,
+                          ),
+                          onPressed: () {
+                            if (controller.text.isNotEmpty) {
+                              controller.clear();
+                              onSearchTextChanged('');
+                            }
+                          },
+                        )
+                      : null,
                 ),
               ),
             ),
             Expanded(
-              child: _searchResult.isNotEmpty || controller.text.isNotEmpty
+              child: _searchResult.isNotEmpty && controller.text.isNotEmpty
                   ? ListView.builder(
                       itemCount: _searchResult.length,
                       itemBuilder: (context, index) {
@@ -114,6 +119,7 @@ class _NotesState extends State<Notes> {
                               ),
                             ],
                           ),
+                          margin: EdgeInsets.all(2.0),
                           child: GestureDetector(
                             onTap: () async {
                               sendURL(_notesList[index].name);
@@ -138,34 +144,50 @@ class _NotesState extends State<Notes> {
                         );
                       },
                     )
-                  : ListView.builder(
-                      itemCount: _notesList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () async {
-                            sendURL(_notesList[index].name);
-                          },
-                          child: Card(
-                            child: ListTile(
-                              trailing: IconButton(
-                                icon: const Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.green,
-                                ),
-                                onPressed: () {
-                                  openURL(_notesList[index].name.toString());
-                                },
-                              ),
-                              leading: const Icon(
-                                Icons.insert_drive_file,
-                                color: Colors.deepOrange,
-                              ),
-                              title: Text(_notesList[index].name),
-                            ),
+                  : _searchResult.isEmpty && controller.text.isNotEmpty
+                      ? Center(
+                          child: Text(
+                            'Notes Not Available',
+                            style: TextStyle(fontSize: 20.0),
                           ),
-                        );
-                      },
-                    ),
+                        )
+                      : _notesList.isNotEmpty
+                          ? ListView.builder(
+                              itemCount: _notesList.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () async {
+                                    sendURL(_notesList[index].name);
+                                  },
+                                  child: Card(
+                                    child: ListTile(
+                                      trailing: IconButton(
+                                        icon: const Icon(
+                                          Icons.arrow_downward,
+                                          color: Colors.green,
+                                        ),
+                                        onPressed: () {
+                                          openURL(_notesList[index]
+                                              .name
+                                              .toString());
+                                        },
+                                      ),
+                                      leading: const Icon(
+                                        Icons.insert_drive_file,
+                                        color: Colors.deepOrange,
+                                      ),
+                                      title: Text(_notesList[index].name),
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Center(
+                              child: Text(
+                                'Notes Not Available',
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
             ),
           ],
         ),
