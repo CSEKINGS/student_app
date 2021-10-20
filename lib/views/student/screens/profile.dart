@@ -1,4 +1,3 @@
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -20,13 +19,8 @@ class _ProfileState extends State<Profile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                CircularProfileAvatar(
-                  widget.details[10],
-                  radius: 110,
-                  backgroundColor: Colors.transparent,
-                  borderWidth: 10,
-                  cacheImage: true,
-                ),
+                CircleAvatar(foregroundImage: NetworkImage(widget.details[10]),radius: 110,backgroundColor: Colors.transparent,),
+               
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[

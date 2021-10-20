@@ -56,7 +56,7 @@ class _StudentBottomNavState extends State<StudentBottomNav> {
     super.initState();
     _children = [
       Dashboard(details: widget.details, days: widget.days),
-      Grade(widget.details),
+      Grade(),
       Profile(details: widget.details),
       Notes(),
       const SettingsPage(),
