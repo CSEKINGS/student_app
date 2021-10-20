@@ -14,7 +14,7 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     const DialogBox('Attendance'),
-    MarkEntry(),
+    AddBatch(),
     const UploadNotes(),
     UploadProfile(),
     const SettingsPage(),

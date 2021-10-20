@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../widgets/designs.dart';
 
-class MarkEntry extends StatefulWidget {
+class AddBatch extends StatefulWidget {
   @override
-  _MarkEntryState createState() => _MarkEntryState();
+  _AddBatchState createState() => _AddBatchState();
 }
 
-class _MarkEntryState extends State<MarkEntry> {
+class _AddBatchState extends State<AddBatch> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

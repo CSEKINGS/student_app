@@ -42,6 +42,7 @@ android {
         applicationId "com.csekings.student_app"
         minSdkVersion 21
         targetSdkVersion 30
+        resConfigs "en"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
