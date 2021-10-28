@@ -1,6 +1,6 @@
 # Student app
 
-## Make changes to branch(dev), not this (master).
+## Make changes to branch(dev), not (master).
 
 An app to digitalize the counselling class in a cross-platform application tested in android and web.
 
