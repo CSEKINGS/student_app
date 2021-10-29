@@ -1,30 +1,67 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:student_app/main.dart';
+import 'package:network_image_mock/network_image_mock.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:student_app/views/student/screens/dashboard.dart';
+import 'package:student_app/views/student/screens/profile.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  List<String> details = [
+    'Harish',
+    'bdjdjsjs',
+    '820617104017',
+    '84949',
+    '13-11-1999',
+    '2017',
+    'gdhdhjs@hss.sn',
+    'JDJDJJENN',
+    'CSE',
+    'bdbdjdj',
+    'https://images.unsplash.com/photo-15645643218370',
+  ];
+  testWidgets('Dashboard screen renders properly', (WidgetTester tester) async {
+    //execute test
+    await tester.pumpWidget(MaterialApp(home: Dashboard(details: details, days: 19)));
+    await tester.pump(Duration(seconds: 7));
+    final Finder titleText = find.text('Attendance Percentage');
+    final Finder percentageText = find.text('10.53%');
+    final Finder noOfDaysText = find.text('Total number of days:19');
+    final Finder presentDaysText = find.text('No of Present days: null');
+    final Finder pieChart = find.byType(CircularPercentIndicator);
+    expect(titleText, findsOneWidget);
+    expect(percentageText, findsOneWidget);
+    expect(noOfDaysText, findsOneWidget);
+    expect(presentDaysText, findsOneWidget);
+    expect(pieChart, findsOneWidget);
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('Profile page displays text and image', (WidgetTester tester)async{
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await mockNetworkImagesFor(() => tester.pumpWidget(MaterialApp(home: Profile(details: details))));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final Finder name = find.text('Name :  Harish');
+    final Finder rollNumber = find.text('Roll no : BDJDJSJS');
+    final Finder registerNo = find.text('Register no : 820617104017');
+    final Finder phoneNo = find.text('Phone number : 84949');
+    final Finder dob = find.text('DOB :  13-11-1999');
+    final Finder batch = find.text('Batch :  2017');
+    final Finder email = find.text('Email :  gdhdhjs@hss.sn');
+    final Finder bg = find.text('Blood group :  JDJDJJENN');
+    final Finder department = find.text('Department :  CSE');
+    final Finder address = find.text('Address :  bdbdjdj');
+    final Finder image = find.byType(CircleAvatar);
+
+    expect(name, findsOneWidget);
+    expect(rollNumber, findsOneWidget);
+    expect(registerNo, findsOneWidget);
+    expect(phoneNo, findsOneWidget);
+    expect(dob, findsOneWidget);
+    expect(batch, findsOneWidget);
+    expect(email, findsOneWidget);
+    expect(bg, findsOneWidget);
+    expect(department, findsOneWidget);
+    expect(address, findsOneWidget);
+    expect(image, findsOneWidget);
+
   });
 }
