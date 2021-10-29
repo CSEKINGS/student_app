@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_image_mock/network_image_mock.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:student_app/views/student/screens/dashboard.dart';
 import 'package:student_app/views/student/screens/profile.dart';
 
 void main() {
@@ -19,21 +17,6 @@ void main() {
     'bdbdjdj',
     'https://images.unsplash.com/photo-15645643218370',
   ];
-  testWidgets('Dashboard screen renders properly', (WidgetTester tester) async {
-    //execute test
-    await tester.pumpWidget(MaterialApp(home: Dashboard(details: details, days: 19)));
-    await tester.pump(Duration(seconds: 7));
-    final Finder titleText = find.text('Attendance Percentage');
-    final Finder percentageText = find.text('10.53%');
-    final Finder noOfDaysText = find.text('Total number of days:19');
-    final Finder presentDaysText = find.text('No of Present days: null');
-    final Finder pieChart = find.byType(CircularPercentIndicator);
-    expect(titleText, findsOneWidget);
-    expect(percentageText, findsOneWidget);
-    expect(noOfDaysText, findsOneWidget);
-    expect(presentDaysText, findsOneWidget);
-    expect(pieChart, findsOneWidget);
-  });
 
   testWidgets('Profile page displays text and image', (WidgetTester tester)async{
 
